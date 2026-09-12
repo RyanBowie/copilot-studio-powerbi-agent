@@ -141,9 +141,12 @@ diagnosis or call them a successful conversation.
 
 The earlier revision discrepancy remains unexplained, but later traces now confirm primary-alias
 resolution and connector-boundary progress. A native `Value`-wrapped row decoding defect was also
-repaired for metadata and generated-query results. The latest evaluation waits at a connection-manager
-verification card before any connector response. No provider denial or completed metadata result
-has been observed; the full visibility gate is unchanged.
+addressed with wrapper normalization, but that did not resolve the caller failure. Actual delayed
+Studio traces show a valid numeric marker becoming null during serialization. A metadata-local
+numeric output schema is now published; post-correction success remains unobserved. Generic-query
+output handling is unchanged in that narrow release and has a potential related type-projection risk.
+The full visibility gate is unchanged; the automated client's connection card is not the user's
+current failure.
 
 ## Suggested evaluation matrix
 

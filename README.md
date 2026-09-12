@@ -37,10 +37,12 @@ the answer incorrectly blamed on Power BI. An explicit primary default, error-st
 metadata retry-stop guards are now published. Later traces confirm alias resolution and progress
 to the connector boundary.
 
-A separate native row-decoding defect was reproduced and repaired: the connector exposes
-`Table(Value:Any)`, so metadata and query decoders now flatten those wrappers before checking rows.
-The full visibility gate remains intact. The latest evaluation waits at the platform connection-manager
-card; no caller connector response, completed metadata retrieval, or generated ranking is yet observed.
+Delayed actual Studio traces now show that the connector returned numeric `AccessProbe=1`, but
+local serialization discarded it as `null`. Flattening wrappers alone did not fix the caller's
+failure. A metadata-local numeric output schema is now published, with safe D1 diagnostics.
+The full visibility gate remains intact; no reconnection or permission change is indicated by
+that trace. Post-correction metadata success is still unobserved. Generic query response handling
+is unchanged in this narrow release and remains unverified.
 
 ### Deployed design
 
@@ -62,8 +64,8 @@ implementations. Preparation/refresh uses an already-authorized owner with read/
 agent users receive no new permissions.
 
 Eight varied direct-query cases passed, including combinations outside the retired compiler and a
-top-100 membership/order regression. The current offline suite comprises **37 Python tests and
-5 client-harness tests**, plus 20 synthetic native Power Fx checks. The native null-serialization
+top-100 membership/order regression. The current offline suite comprises **43 Python tests and
+5 client-harness tests**, plus 40 synthetic native Power Fx checks. The native null-serialization
 caveat is documented in [verification](docs/verification.md). These are not cloud-generated
 conversational-query evidence.
 

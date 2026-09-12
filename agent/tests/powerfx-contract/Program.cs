@@ -20,7 +20,9 @@ foreach (var item in cases.EnumerateArray())
         var value = await engine.EvalAsync(item.GetProperty("expression").GetString()!,
                                           CancellationToken.None, options: options);
         var actual = JsonSerializer.SerializeToElement(value.ToObject());
-        passed = actual.ToString() == expected.ToString() && actual.ValueKind == expected.ValueKind;
+        if (item.TryGetProperty("parseResultJson", out var parseJson) && parseJson.GetBoolean())
+            actual = JsonDocument.Parse(actual.GetString()!).RootElement.Clone();
+        passed = JsonElement.DeepEquals(actual, expected);
         evidence.Add(new { name, passed, actual, expected });
     }
     catch (Exception error)
@@ -28,7 +30,9 @@ foreach (var item in cases.EnumerateArray())
         var exceptionType = error.GetType().FullName;
         passed = item.TryGetProperty("allowedClosedException", out var allowed) &&
                  allowed.GetString() == exceptionType;
-        evidence.Add(new { name, passed, exceptionType, schemaVisibilityEstablished = false });
+        evidence.Add(new { name, passed, exceptionType,
+                          missingAssembly = error is FileNotFoundException missing ? Path.GetFileName(missing.FileName) : null,
+                          schemaVisibilityEstablished = false });
     }
     if (!passed)
         failures++;

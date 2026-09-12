@@ -69,11 +69,44 @@ def verify_components(parsed, schema_name, gpt_source, topics):
             if not required_outputs.issubset(dialog.get("outputType", {}).get("properties", {})):
                 raise RuntimeError("Native error-provenance outputs were dropped: " + name)
         for expected_action in source_begin["actions"]:
-            if expected_action.get("id") in {"setProbeJson", "setResultJson"}:
+            if expected_action.get("id") in {"setProbeJson", "setResultJson", "CheckTypedProbeMarker"}:
                 actual_action = next((action for action in begin.get("actions", [])
                                       if action.get("id") == expected_action["id"]), {})
                 if actual_action.get("value", {}).get("expressionText") != expected_action["value"].removeprefix("="):
                     raise RuntimeError("Native connector row normalization changed: " + name)
+            if expected_action.get("id") == "VerifyCallerSchemaVisibility" and expected_action.get("dynamicOutputSchema"):
+                actual_action = next((a for a in begin["actions"]
+                                      if a.get("id") == "VerifyCallerSchemaVisibility"), {})
+                schema = actual_action.get("dynamicOutputSchema", {})
+                properties = schema.get("properties", {})
+                rows = properties.get("firstTableRows", {}).get("type", {})
+                columns = rows.get("properties", {})
+                if (schema.get("$kind") != "Record" or set(properties) != {"firstTableRows"}
+                        or rows.get("$kind") != "Table" or set(columns) != {"[AccessProbe]"}
+                        or columns.get("[AccessProbe]", {}).get("type", {}).get("$kind") != "Number"):
+                    raise RuntimeError("Native fixed-probe output schema changed: " + name)
+            if expected_action.get("id") == "RequireVerifiedVisibility":
+                expected_branch = expected_action["conditions"][0]
+                diagnostic = next((a for a in expected_branch["actions"]
+                                   if a.get("id") == "BuildSafeProbeDiagnostics"), None)
+                if diagnostic:
+                    actual_guard = next((a for a in begin["actions"]
+                                         if a.get("id") == "RequireVerifiedVisibility"), {})
+                    branch = next(iter(actual_guard.get("conditions", [])), {})
+                    actual_diagnostic = next((a for a in branch.get("actions", [])
+                                              if a.get("id") == "BuildSafeProbeDiagnostics"), {})
+                    message = next((a for a in branch.get("actions", [])
+                                    if a.get("$kind") == "SendActivity"), {})
+                    references = [
+                        segment["expression"].get("variableReference")
+                        for line in message.get("activity", {}).get("text", [])
+                        for segment in line.get("segments", [])
+                        if segment.get("$kind") == "ExpressionSegment"
+                    ]
+                    if (actual_diagnostic.get("value", {}).get("expressionText") != diagnostic["value"][1:]
+                            or references != ["Topic.ProbeDiagnostics", "Topic.ProbeTypedMarkerIsOne"]
+                            or branch.get("condition", {}).get("expressionText") != expected_branch["condition"][1:]):
+                        raise RuntimeError("Native safe probe diagnostic expression/message/guard changed: " + name)
         capabilities[name] = {"trigger": begin["$kind"], "actions": len(begin["actions"]),
                               "inputs": len(dialog.get("inputs", []))}
     return {"nativeAuthoringModel": actual_model, "nativeCapabilities": capabilities,

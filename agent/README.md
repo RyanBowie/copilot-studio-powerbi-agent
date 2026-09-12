@@ -13,7 +13,56 @@ orchestrator is configured to author **new DAX table expressions** from machine-
 Power Fx topics validate the expression boundary and build a bounded DAX execution envelope. The
 standard Power BI connector runs it with **Invoker/end-user authentication**.
 
-### Latest repair: native connector row normalization
+### Current release: caller-backed probe output-type correction, not an E2E claim
+
+**The user's subsequent Studio catalog-only test still failed at
+`schema_probe_output_validation`. The normalization change did not resolve that caller failure.**
+Delayed transcripts became available for both the earlier and latest known Studio failures.
+The earlier transcript's activity timestamps—not its later database creation time—place it
+at 21:27–21:28 BST. That **actual caller trace** records `ProbeRows` as `[{"[AccessProbe]":1}]`, but
+the following `ProbeJson` as `[{"Value":null}]`. The marker was discarded, not simply nested inside
+a populated `Value` wrapper. The earlier synthetic wrapper tests did not establish this behavior.
+The **21:53 BST caller trace now confirms the same loss after normalization**: `ProbeRows` still
+contains the numeric marker, `connectorReturned=true`, but `ProbeJson` is `[null]` and
+`probeResultStatus=missing_marker`. This establishes a local serialization/type problem, not a
+missing response or observed provider denial. That execution predates the output-type correction;
+its transcript was persisted later.
+
+The native connector declares `firstTableRows` as `Table(Value:Any)`, which does not describe those
+actual probe rows. The metadata probe now uses the documented action-local `dynamicOutputSchema`
+to declare its fixed `[AccessProbe]` numeric column. This does not modify the shared connector,
+change the full-column probe, remove schema references or accept an additional response shape.
+The published native compiler also accepts a direct typed `[AccessProbe]` field check, and parsed
+readback verifies the override. **The resulting current caller behavior still needs observation.**
+
+The automation connection-manager card is a separate channel limitation, not a reason to tell the
+already-connected Studio user to reconnect. No new automated conversations were attempted.
+
+The metadata failure branch also appends a safe **D1 diagnostic JSON block**
+to the existing deterministic error. The block reports the actual runtime result status, raw table
+state/count, normalized array count, root/first-value kinds, known marker presence/type/conversion
+result, known `Value` wrapper depth, unbracketed-marker indicators, response-container indicators and
+an error-member-presence flag. It never returns raw rows/JSON, unknown column names, error contents,
+identities or credentials. A separate `TypedMarkerIsOne` Boolean reports the direct typed field check.
+The full query text, input/output binding paths, normalizer, acceptance predicate and private Invoker
+authentication are unchanged; only the probe's output type is corrected. The generated-query action
+and its runtime response handling remain unverified and unchanged in this narrow release.
+
+Interpretation limits are explicit: `blank_or_unbound` cannot distinguish a missing output value
+from a null typed table; `-1` means an unavailable count. Power Fx `IsBlank` includes null/empty text.
+The `IsOne` flags reflect the existing `Value(...) = 1` conversion, not strict JSON numeric typing;
+native tests expose the existing numeric-string/Boolean coercion without changing it.
+An error-shaped member is not an established provider denial. Actual connector exceptions remain
+on the existing separate OnError path.
+
+**Single next observation:** refresh Studio and repeat the same catalog-only prompt once in its
+existing authenticated test pane. Report whether metadata succeeds; if it still fails, copy only the
+`Diagnostic: {..."version":"D1"...}` block and `TypedMarkerIsOne` flag from the final message.
+No dataset selection, reconnection, permission change or business-data query is requested.
+Native compile/readback validates the diagnostic expression and message binding; delivery of its
+values in the user's Studio conversation still requires that observation.
+
+### Previous change: native connector row normalization
 
 The live connector schema declares `firstTableRows` as a single-column Power Fx table:
 `Value: Any`. Ordinary `JSON(...)` therefore produced the synthetic equivalent of
@@ -30,12 +79,12 @@ Exactly one usable `AccessProbe=1` row is still required before disclosing any p
 An invalid response sends a deterministic output-contract error and cancels the current dialog
 stack; it does not ask users to change datasets or grant Read/Build/RLS/OLS permissions.
 
-**Verification boundary:** native compilation/publication and parsed readback pass. The unchanged
+**Previous verification boundary:** native compilation/publication and parsed readback passed. The unchanged
 full-reference zero-row probe returns its expected constant through separate direct authorized REST
-testing; that is not chat/Invoker proof. A fresh metadata-only evaluation reaches the connector
-boundary but returns the platform's connection-manager card asking to verify credentials.
-No completed requesting-user metadata result or cloud-generated query/answer has been observed.
-This is not evidence of a Power BI provider permission denial.
+testing; that is not chat/Invoker proof. A separate metadata-only evaluation reached the connector
+boundary but returned the platform's connection-manager card. The user's later Studio test returned
+and failed the probe validator instead. Neither result establishes a Power BI permission denial.
+No successful requesting-user metadata result or cloud-generated query/answer has been observed.
 
 ### Earlier repair: blank fixed-model alias
 
@@ -74,8 +123,8 @@ metadata attempt reached the client's 120-second timeout without returned activi
 attempt, with a 300-second client budget and an explicit catalog request, returned **HTTP 504**
 (`UnexpectedError`, “An unexpected error occurred.”). Neither failure establishes an
 authentication failure or proves that the connector was reached.
-Those timeouts are historical; the latest observed boundary is the connection-manager card described
-above. No cloud-generated DAX/tool-argument/result conversation has been verified.
+Those timeouts are historical; the latest user-observed boundary is the unresolved probe validation
+failure described above. No cloud-generated DAX/tool-argument/result conversation has been verified.
 
 ### Model-selection and parser correction
 
@@ -225,22 +274,25 @@ lexer/envelope escapes, aliases/sorting/bounds, relative date expressions, share
 generation, metadata authorization gating and advice without business-query execution. Additional
 tests cover Studio-compatible YAML, native-readback rejection of dropped model/topic fields,
 obsolete-tool deletion guards, blank/invalid alias input gates, error provenance, retry termination
-contracts, connector-row normalization and safe client diagnostics: **37 Python tests and 5 Node tests**. The scalar input-gate
+contracts, safe diagnostic output and client diagnostics: **43 Python tests and 5 Node tests**. The scalar input-gate
 regressions execute a small offline evaluator over the generated expressions, not the native
 Power Fx runtime; native compilation/readback and actual chat observations are reported separately.
 
-An additional **20 synthetic native Microsoft Power Fx checks** reproduce the original Value-wrapper
-defect and exercise the exact generated marker and query-envelope expressions. Missing/duplicate/
+An additional **40 synthetic native Microsoft Power Fx checks** cover the original 20 parser checks,
+17 safe diagnostic cases and three fixed-probe typed-output cases. They reproduce the original Value-wrapper
+defect and exercise the exact generated marker, diagnostic and query-envelope expressions. Missing/duplicate/
 invalid markers and malformed envelope counts remain fail-closed. The installed JSON assembly throws
 for its own `ParseJSON(null)` representation: that specific exception is recorded explicitly, and
 the null-marker decoder is tested separately. This does not establish Studio's actual null-value
 representation or a completed connector invocation.
 
 To repeat those synthetic checks, use .NET 10 and existing Microsoft Power Fx Core, Interpreter and
-Json assemblies, including their `en-US` resource satellites. No runtime binaries are included here:
+Json assemblies, their dependencies (including `Microsoft.Bcl.AsyncInterfaces`) and `en-US` resource
+satellites. Supply dependencies before building; clean/rebuild if resolving a missing assembly.
+No runtime binaries are included here:
 
 ```powershell
-python -c "import json,sys;from pathlib import Path;sys.path.insert(0,'tests');from test_probe_contract import native_cases;Path('native-cases.private.json').write_text(json.dumps(native_cases()),encoding='utf-8')"
+python -c "import json,sys;from pathlib import Path;sys.path.insert(0,'tests');from test_probe_contract import native_cases;from test_probe_diagnostics import native_diagnostic_cases;Path('native-cases.private.json').write_text(json.dumps(native_cases()+native_diagnostic_cases()),encoding='utf-8')"
 dotnet run --project tests\powerfx-contract\PowerFxContract.csproj -p:PowerFxLibraryDirectory="<existing-local-library-directory>" -- native-cases.private.json native-results.private.json
 ```
 
@@ -303,6 +355,7 @@ preparation, configuration, permissions and validation; it is not automatic supp
 - [Primary model selection and default behavior](https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-select-agent-model)
 - [Power BI connector](https://learn.microsoft.com/en-us/connectors/powerbi/#run-a-query-against-a-dataset)
 - [Power Fx JSON and FlattenValueTables](https://learn.microsoft.com/en-us/power-platform/power-fx/reference/function-json)
+- [Power Fx ColumnNames and Column for dynamic records](https://learn.microsoft.com/en-us/power-platform/power-fx/reference/function-columnnames-column)
 - [Execute Queries REST contract](https://learn.microsoft.com/en-us/rest/api/power-bi/datasets/execute-queries)
 - [Fabric model definition API and permission requirement](https://learn.microsoft.com/en-us/rest/api/fabric/semanticmodel/items/get-semantic-model-definition)
 

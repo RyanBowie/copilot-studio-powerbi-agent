@@ -30,6 +30,7 @@
     "tests\\test_alias_binding.py",
     "tests\\test_generated_dax.py",
     "tests\\test_probe_contract.py",
+    "tests\\test_probe_diagnostics.py",
     "tests\\test_retire_fixed_tools.py",
     "tests\\test_studio_authoring.py",
     "tests\\test_studio_yaml.py",
@@ -64,6 +65,7 @@
     "tests\\test_alias_binding.py",
     "tests\\test_generated_dax.py",
     "tests\\test_probe_contract.py",
+    "tests\\test_probe_diagnostics.py",
     "tests\\test_retire_fixed_tools.py",
     "tests\\test_studio_authoring.py",
     "tests\\test_studio_yaml.py",
@@ -93,15 +95,10 @@
     "verify-model.py"
   ],
   "changedSincePreviousPackage": [
-    ".gitignore",
     "README.md",
-    "agent.mcs.yml",
     "general_runtime.py",
     "studio_authoring.py",
-    "templates\\agent.mcs.yml",
-    "tests\\powerfx-contract\\PowerFxContract.csproj",
-    "tests\\powerfx-contract\\Program.cs",
-    "tests\\test_probe_contract.py",
+    "tests\\test_probe_diagnostics.py",
     "tests\\test_studio_authoring.py"
   ],
   "pendingSelectiveCopy": [
@@ -120,21 +117,18 @@
     "tests\\test_alias_binding.py",
     "tests\\test_generated_dax.py",
     "tests\\test_probe_contract.py",
+    "tests\\test_probe_diagnostics.py",
     "tests\\test_retire_fixed_tools.py",
     "tests\\test_studio_authoring.py",
     "tests\\test_studio_yaml.py"
   ],
-  "addedSincePreviousPackage": [
-    "tests\\powerfx-contract\\PowerFxContract.csproj",
-    "tests\\powerfx-contract\\Program.cs",
-    "tests\\test_probe_contract.py"
-  ],
+  "addedSincePreviousPackage": [],
   "mergeDocumentation": [
     "README.md"
   ],
   "preserveUnrelatedParentDocumentationAndSite": true,
   "runtime": {
-    "publishedAtUtc": "2026-09-12T20:42:31Z",
+    "publishedAtUtc": "2026-09-12T21:20:21Z",
     "modelAliases": [
       "primary"
     ],
@@ -153,18 +147,23 @@
     "hostedBackendOrPermissionGrantsCreated": false
   },
   "validation": {
-    "currentUnitTests": 42,
-    "pythonContractTests": 37,
+    "currentUnitTests": 48,
+    "pythonContractTests": 43,
     "clientHarnessTests": 5,
-    "nativeSyntheticPowerFxChecks": 20,
+    "nativeSyntheticPowerFxChecks": 40,
+    "nativeSafeDiagnosticCases": 17,
+    "nativeTypedProbeCases": 3,
     "nativeNullRepresentationLimitation": "The installed Json assembly raises NotSupportedException for its own ParseJSON null representation; recorded explicitly as no validation success. The null-marker decoder is also tested separately. Not proof of Studio null handling.",
     "directVariedExpressionCases": 8,
     "originalTop100MembershipAndOrder": "Direct regression passed",
     "unsupportedColumnError": "Observed through direct Power BI API",
     "chatEndToEndPass": false,
-    "chatBoundary": "After publishing the normalization repair, one fresh metadata-only evaluation selects ModelMetadata, resolves the blank alias to primary, passes input validation and reaches schema_visibility_probe with connectorAttempted=true, connectorReturned=false, visibilityVerified=false and probeResultStatus=not_attempted. It returns the platform connection-manager card asking to verify credentials. No requesting-user connector result, provider permission denial, completed metadata response or cloud-generated business query/answer was observed. The older SDK 403 is a separate route; no permissions were changed.",
+    "chatBoundary": "Actual delayed Studio traces now establish the defect. The earlier caller returned numeric AccessProbe=1 but JSON became [{\"Value\":null}]. The latest pre-correction caller likewise returned the marker, connectorReturned=true, but normalized JSON became [null] and probeResultStatus=missing_marker. This is local serialization/type loss, not a missing result or observed provider denial. The metadata action now has a documented numeric output schema matching the actual marker, plus D1/direct typed-field diagnostics. Native compilation/readback passed; post-correction caller success remains unobserved. No new automated conversations, permissions, reconnection or business-query attempts.",
     "latestAliasRepair": "Native-compiled automatic primary default and blank fallback across metadata/query/advice, provenance, duplicate cancellation and eight-attempt budget. An earlier evaluation advertised the old contract for unknown reasons; subsequent pre/post-normalization conversations now demonstrate alias resolution and connector-boundary progress.",
     "latestProbeNormalizationRepair": "Live firstTableRows schema is Table(Value:Any). Native Power Fx reproduces old JSON wrapper rejection; metadata and generated-query normalizers now use JSONFormat.FlattenValueTables. Exactly one usable AccessProbe=1 remains mandatory; invalid output terminates deterministically with a local output-contract error. Unchanged full-reference probe passed separate direct REST testing. Native compilation/publication/readback passed; actual chat-to-query-to-answer remains unverified.",
+    "latestCallerDiagnosticRelease": "Safe D1 scalar facts cover status/counts/kinds/known markers/wrappers/container indicators; TypedMarkerIsOne checks the declared numeric field directly. No raw rows, column lists, error contents or identities. Blank/unbound and Value-conversion limitations are explicit. Copy only D1 plus the typed flag if one catalog-only Studio retry still fails; otherwise report metadata success without copying schema.",
+    "latestTypedProbeOutputCorrection": "Actual earlier caller trace proves marker loss under Table(Value:Any), not merely a synthetic nesting issue. InvokeConnectorAction.dynamicOutputSchema now declares firstTableRows as a table with the fixed [AccessProbe] Number column, only for metadata authorization. Full probe, input/output binding paths, normalizer and acceptance predicate are unchanged. Direct typed-field access native-compiles. Shared connector and generic-query action unchanged; no current chat success claimed.",
+    "freshAutomatedCallsThisDiagnosticRelease": 0,
     "agentStatusWarningTextIndependentlyRetrieved": false,
     "businessRowsOrIdentityValuesPublished": false
   },

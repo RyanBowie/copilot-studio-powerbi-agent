@@ -14,10 +14,10 @@ Expected behavior: invoke metadata retrieval, complete its requesting-user visib
 answer from the prepared catalog. State snapshot freshness and avoid treating missing descriptions
 or an access failure as proof that data does not exist.
 
-**Observed boundary:** the latest evaluator resolves the model alias and reaches a platform
-connection-manager verification card before any connector response. Earlier timeouts and the
-separate published SDK's conversation-start denial are historical, distinct observations.
-Successful metadata disclosure remains unverified.
+**Observed boundary:** actual user Studio traces show a returned numeric probe marker lost during
+local serialization. A targeted metadata output-type correction is published, but post-correction
+metadata success remains unobserved. The automated client's connection card and published SDK's
+conversation-start denial are separate observations, not diagnoses of this user's failure.
 
 ## Multiple dimensions and filters
 

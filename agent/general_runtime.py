@@ -16,11 +16,70 @@ PROBE_STATUS_EXPRESSION = (
     'IfError(Value(First(Table(ParseJSON(Topic.ProbeJson))).Value.\'[AccessProbe]\') = 1, false), "validated", '
     '"unexpected_marker")'
 )
+PROBE_OUTPUT_SCHEMA = {
+    "kind": "Record", "properties": {
+        "firstTableRows": {"type": {"kind": "Table", "properties": {"[AccessProbe]": {"type": "Number"}}}}
+    },
+}
+PROBE_TYPED_MARKER_CHECK = "=IfError(First(Topic.ProbeRows).'[AccessProbe]' = 1, false)"
 
 
 def connector_rows_json(variable):
     # ExecuteDatasetQuery declares firstTableRows as a single-column Value/Any table.
     return f"=JSON({variable}, JSONFormat.FlattenValueTables)"
+
+
+def json_kind(expression):
+    return (f'With({{j:{expression}}}, If(IsBlank(j), "blank", j = "null", "null", '
+            'Left(j,1) = "{", "object", Left(j,1) = "[", "array", '
+            'Left(j,1) = Char(34), "string", j in ["true","false"], "boolean", '
+            'IsNumeric(j), "number", "unrecognized"))')
+
+
+def dynamic_kind(expression):
+    return (f'IfError(With({{v:{expression}}}, If(IsBlank(v), "blank", '
+            'IfError(CountRows(ColumnNames(v)), -1) >= 0, "object", '
+            'IfError(CountRows(Table(v)), -1) >= 0, "array", '
+            + json_kind("JSON(v)") + ')), "unreadable")')
+
+
+def probe_diagnostics_expression():
+    # Only allowlisted scalars leave this expression; never return column lists or row values.
+    return (
+        '=With({n:If(Left(TrimEnds(Topic.ProbeJson),1) = "[", '
+        'IfError(CountRows(Table(ParseJSON(Topic.ProbeJson))), -1), -1)}, '
+        'With({r:If(n > 0, IfError(First(Table(ParseJSON(Topic.ProbeJson))).Value, Blank()), Blank())}, '
+        'With({keys:If(IsBlank(r), Table({Value:""}), IfError(ColumnNames(r), Table({Value:""})))}, '
+        'With({p:"[AccessProbe]" in keys}, JSON({'
+        'version:"D1", status:Topic.probeResultStatus, '
+        'rawRows:IfError(CountRows(Topic.ProbeRows), -1), '
+        'rawState:IfError(If(IsBlank(Topic.ProbeRows), "blank_or_unbound", '
+        'CountRows(Topic.ProbeRows) = 0, "empty", "present"), "unreadable"), '
+        'normalizedRows:n, '
+        'rootKind:' + json_kind("Topic.ProbeJson") + ', '
+        'firstKind:' + dynamic_kind("r") + ', '
+        'markerPresent:p, markerType:If(p, ' + dynamic_kind("r.'[AccessProbe]'") + ', "absent"), '
+        'markerIsOne:If(IsBlank(r), false, IfError(Value(r.\'[AccessProbe]\') = 1, false)), '
+        'valueWrapper:"Value" in keys, '
+        'valueMarkerDepth:If(IsBlank(r), 0, If(IfError(Value(r.Value.\'[AccessProbe]\') = 1, false), 1, '
+        'IfError(Value(r.Value.Value.\'[AccessProbe]\') = 1, false), 2, 0)), '
+        'plainMarkerPresent:"AccessProbe" in keys, '
+        'plainMarkerIsOne:If(IsBlank(r), false, IfError(Value(r.AccessProbe) = 1, false)), '
+        'responseContainer:CountIf(keys, Value in ["firstTableRows","results","tables","rows"]) > 0, '
+        'errorMemberPresent:"error" in keys'
+        '})))))'
+    )
+
+
+def visibility_rejection():
+    action = stop_metadata(
+        "RequireVerifiedVisibility", '=Topic.probeResultStatus <> "validated"',
+        "The connector returned, but metadata stopped at schema_probe_output_validation: the response did not contain exactly one usable AccessProbe=1 row. This is a probe output-contract failure, not an established Power BI permission denial. No prepared metadata was disclosed. The primary model is already selected; do not change permissions or datasets based on this result.")
+    actions = action["conditions"][0]["actions"]
+    actions.insert(2, set_value("ProbeDiagnostics", probe_diagnostics_expression(), "BuildSafeProbeDiagnostics"))
+    message = next(item for item in actions if item["kind"] == "SendActivity")
+    message["activity"] += " Diagnostic: {Topic.ProbeDiagnostics}. TypedMarkerIsOne: {Topic.ProbeTypedMarkerIsOne}. blank_or_unbound cannot distinguish a missing output binding value from a null table; -1 means the count could not be read. Type blank includes null/empty text; IsOne flags reflect the existing Value() conversion. An error member alone is not proof of a provider denial."
+    return action
 
 
 def fx_text(text):
@@ -76,8 +135,8 @@ def reject_metadata(identifier, condition, message):
     return action
 
 
-def connector(config, query, target="Topic.RawRows", identifier="ExecuteGeneratedQuery"):
-    return {
+def connector(config, query, target="Topic.RawRows", identifier="ExecuteGeneratedQuery", output_schema=None):
+    action = {
         "kind": "InvokeConnectorAction", "id": identifier,
         "connectionReference": config["connectionReference"], "connectionProperties": {"mode": "Invoker"},
         "operationId": "ExecuteDatasetQuery", "requestTimeoutInMilliseconds": 30000,
@@ -85,6 +144,9 @@ def connector(config, query, target="Topic.RawRows", identifier="ExecuteGenerate
                               "query": query, "impersonatedUserName": "=Blank()"}},
         "output": {"binding": {"firstTableRows": target}},
     }
+    if output_schema is not None:
+        action["dynamicOutputSchema"] = output_schema
+    return action
 
 
 def topic(display, description, inputs, actions, examples):
@@ -180,14 +242,14 @@ def build_metadata_topic(config, snapshot):
         set_value("stage", "schema_visibility_probe"),
         set_value("Global.AnalyticsStage", "schema_visibility_probe"),
         set_value("connectorAttempted", True),
-        connector(config, schema_probe(snapshot), "Topic.ProbeRows", "VerifyCallerSchemaVisibility"),
+        connector(config, schema_probe(snapshot), "Topic.ProbeRows", "VerifyCallerSchemaVisibility", PROBE_OUTPUT_SCHEMA),
         set_value("connectorReturned", True),
         set_value("stage", "schema_probe_output_validation"),
         set_value("Global.AnalyticsStage", "schema_probe_output_validation"),
+        set_value("ProbeTypedMarkerIsOne", PROBE_TYPED_MARKER_CHECK, "CheckTypedProbeMarker"),
         set_value("ProbeJson", connector_rows_json("Topic.ProbeRows")),
         set_value("probeResultStatus", PROBE_STATUS_EXPRESSION),
-        stop_metadata("RequireVerifiedVisibility", '=Topic.probeResultStatus <> "validated"',
-                      "The connector returned, but metadata stopped at schema_probe_output_validation: the response did not contain exactly one usable AccessProbe=1 row. This is a probe output-contract failure, not an established Power BI permission denial. No prepared metadata was disclosed. The primary model is already selected; do not change permissions or datasets based on this result."),
+        visibility_rejection(),
         set_value("visibilityVerified", True),
         set_value("stage", "metadata_selection"),
         set_value("Global.AnalyticsStage", "metadata_selection"),

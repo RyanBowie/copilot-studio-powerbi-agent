@@ -16,9 +16,9 @@ This is selector-backend evidence, not an independently observed rendered picker
 | Check | Observation |
 |---|---|
 | Owner-prepared primary metadata | 21 tables, 244 columns, 166 measure names, 13 relationships |
-| Offline expression, serialization, authoring, cleanup, alias, and row-decoding suite | 37 Python tests |
+| Offline expression, serialization, authoring, cleanup, alias, row-decoding, and diagnostic suite | 43 Python tests |
 | Corrected client-harness suite | 5 tests |
-| Synthetic native Microsoft Power Fx checks | 20; null-serialization caveat below |
+| Synthetic native Microsoft Power Fx checks | 40; null-serialization caveat below |
 | Varied direct expression cases | Eight passed against the primary model |
 | Original ranking regression | Generic-contract result matched original top-100 membership/order directly |
 | Deliberately invalid column | Actual direct Power BI error observed |
@@ -148,7 +148,43 @@ requests it, before testing metadata again. This is not a recommendation to gran
 change datasets, or substitute maker credentials. No generated business query was attempted
 because metadata retrieval had not completed.
 
-## Historical evidence is not current-runtime proof
+### User retest: the live output-contract failure persists
+
+The user's subsequent catalog-only Studio request returned the new deterministic
+`schema_probe_output_validation` failure message: the connector returned, but the validator did
+not find exactly one usable `AccessProbe=1` row. Thus the normalization repair has not resolved
+the actual caller's failure. This user session progressed beyond the separate automated client's
+connection-manager boundary; it should not be diagnosed from that client's waiting state.
+
+The screenshot does not reveal the row count, marker type, normalization result, or exact
+`probeResultStatus`. Those actual runtime observations are needed to distinguish a missing
+binding, empty response, unexpected structure, or marker failure. The complete visibility gate
+remains in place and no metadata is claimed. Further changes must follow that evidence rather
+than assume another synthetic fixture represents the caller's response.
+
+## Actual caller trace: numeric marker lost during serialization
+
+Delayed transcripts for the user's earlier and 21:53 BST Studio runs show one returned row with
+numeric `AccessProbe=1`. Before normalization, local JSON became `[{"Value":null}]`; after
+normalization it became `[null]`, with `probeResultStatus=missing_marker`. This is observed local
+type/serialization loss, not a missing connector response or provider permission denial.
+Transcript database creation time was later than execution time and must not be mistaken for
+a post-correction test.
+
+At 22:20:21 BST, the metadata connector action was republished with an action-local
+`dynamicOutputSchema` declaring the actual fixed `[AccessProbe]` column as Number. The probe,
+binding paths, normalization, acceptance predicate, Invoker identity, and other components are
+unchanged. Safe D1 facts and a direct `TypedMarkerIsOne` check are retained in the failure message.
+
+The correction is native-compiled and read back, but no subsequent caller success is yet observed.
+One catalog-only retest in the existing connected Studio session is needed. On failure, only the
+D1 block and `TypedMarkerIsOne` flag are required, not raw rows or model metadata. Reconnection,
+permission changes, and dataset selection are not indicated by the actual trace.
+
+Generic-query output handling is unchanged and shares a potential dynamic-type projection risk.
+This release does not establish a working business query or end-to-end analytical answer.
+
+## Historical fixed-query evidence
 
 The earlier fixed/bounded implementation passed its own 25-test suite and direct regressions.
 The user reported liking its original top-100 answer. It also produced incorrect all-history
