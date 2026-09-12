@@ -136,6 +136,37 @@ class NativeAuthoringTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "fixed-probe output schema"):
             verify_components(self.parsed, "example", self.gpt, self.topics)
 
+    def test_native_generic_query_transport_must_be_dynamic_not_value_table(self):
+        from query_transport import OUTPUT_SCHEMA
+        self.topics["Metadata"]["beginDialog"]["actions"] = [{
+            "id": "ExecuteGeneratedQuery", "dynamicOutputSchema": OUTPUT_SCHEMA,
+        }]
+        schema = {"$kind": "Record", "properties": {"firstTableRows": {"type": {"$kind": "Any"}}}}
+        dialog = self.parsed["botComponentChanges"][1]["component"]["dialog"]
+        dialog["beginDialog"]["actions"] = [{
+            "id": "ExecuteGeneratedQuery", "dynamicOutputSchema": schema,
+            "input": {"binding": {"serializerSettings": {"expressionText": "{includeNulls:false}"}}},
+        }]
+        verify_components(self.parsed, "example", self.gpt, self.topics)
+        schema["properties"]["firstTableRows"]["type"] = {"$kind": "Table", "properties": {"Value": {"type": {"$kind": "Any"}}}}
+        with self.assertRaisesRegex(RuntimeError, "generic query dynamic transport"):
+            verify_components(self.parsed, "example", self.gpt, self.topics)
+
+    def test_native_decoder_cancellation_uses_bool_expression_not_python_bool(self):
+        self.topics["Metadata"]["beginDialog"]["actions"] = [{
+            "id": "RequireEnvelope", "conditions": [{"condition": "=SomeFailure", "actions": []}],
+        }]
+        branch = {"condition": {"expressionText": "SomeFailure"}, "actions": [{
+            "$kind": "CancelAllDialogs", "activityProcessed": {"$kind": "BoolExpression", "literalValue": True},
+        }]}
+        self.parsed["botComponentChanges"][1]["component"]["dialog"]["beginDialog"]["actions"] = [{
+            "id": "RequireEnvelope", "conditions": [branch],
+        }]
+        verify_components(self.parsed, "example", self.gpt, self.topics)
+        branch["actions"][0]["activityProcessed"]["literalValue"] = False
+        with self.assertRaisesRegex(RuntimeError, "guard/cancellation"):
+            verify_components(self.parsed, "example", self.gpt, self.topics)
+
 
 if __name__ == "__main__":
     unittest.main()

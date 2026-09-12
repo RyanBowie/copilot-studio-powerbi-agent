@@ -72,6 +72,17 @@ the wrong business meaning or consume excessive resources.
 
 ## Result/error contract
 
+The metadata action declares its fixed numeric probe column. The business-query action instead
+declares `firstTableRows:Any` and serializes that dynamic array directly, avoiding the field loss
+observed with `Table(Value:Any)`. Generated aliases remain unrestricted by business mappings.
+Explicit `includeNulls=false` omits DAX BLANK/null properties; absent declared output fields are
+blank values, not evidence of missing model columns. Empty strings and original numeric values
+are retained. A TOJSON alternative was rejected after observed fractional truncation.
+
+Malformed local output contracts terminate without a DAX retry or provider-permission blame.
+Actual execution errors may receive one correction; a smaller response preview remains bounded
+by the same two-attempt ceiling. No successful repaired caller-visible ranking is yet claimed.
+
 - Up to 100 rows and 16 declared columns.
 - Up to 256 characters per text cell, with a truncation flag.
 - Required Summary/status/count envelope and a 64,000-character preview budget.

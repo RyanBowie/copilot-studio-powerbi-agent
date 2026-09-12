@@ -97,11 +97,11 @@ class GeneratedDaxTests(unittest.TestCase):
     def test_success_requires_owned_envelope_not_http_or_rows_alone(self):
         summary = {"[__kind]": "Summary", "[__status]": "ok", "[__returned]": 1}
         data = {"[__kind]": "Data", "[x]": 1}
-        self.assertEqual(dax.validate_result([summary, data])[1], [data])
+        self.assertEqual(dax.validate_result([summary, data], transported=False)[1], [data])
         for rows in ([], [data], [summary], [summary, summary], [{**summary, "[__status]": "bounds_error"}, data]):
             with self.subTest(rows=rows), self.assertRaises(ValueError):
-                dax.validate_result(rows)
-        self.assertEqual(dax.validate_result([{**summary, "[__returned]": 0}])[1], [])
+                dax.validate_result(rows, transported=False)
+        self.assertEqual(dax.validate_result([{**summary, "[__returned]": 0}], transported=False)[1], [])
 
     def test_native_query_is_invoker_scoped_and_uses_same_template(self):
         query = build_query_topic(CONFIG, SCHEMA)

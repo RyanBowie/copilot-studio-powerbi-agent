@@ -23,26 +23,21 @@ The five-metric compiler and fixed business-query paths have been replaced in th
 The new capabilities retrieve governed model metadata and accept **new DAX table expressions**
 authored by the orchestrator, rather than mapping questions to a predefined metric list.
 
-**This is not yet a demonstrated end-to-end conversational agent.** A YAML serialization defect
-caused Studio to omit model settings and topic bodies. After repair, native authoring readback
-retains GPT-5 Reasoning and evaluation traces select the metadata topic and AI-fill its arguments.
-An earlier metadata attempt returned HTTP 504; no completed connector result was observed.
-The separate published SDK client was denied with HTTP 403 before sending its prompt because its
-token lacked `CopilotStudio.Copilots.Invoke`. Neither failure proves a Power BI login problem.
-The three obsolete fixed tools have been deleted; generic capabilities appear under **Topics**.
-Rendered model-picker state, inference-model telemetry, and the original UI warning remain unverified.
+**Metadata retrieval, cloud-generated DAX and successful provider execution are now observed;
+the repaired final answer remains unverified.** Actual caller traces show two executions each
+returning one successful Summary and 25 Data rows, then local type projection erased all 26 rows.
+That was a response-handling defect, not a demonstrated permission or DAX failure.
 
-A subsequent Studio run exposed a blank model alias and repeated local validation failures, which
-the answer incorrectly blamed on Power BI. An explicit primary default, error-stage outputs, and
-metadata retry-stop guards are now published. Later traces confirm alias resolution and progress
-to the connector boundary.
+The published generic query action now retains `firstTableRows` as dynamic `Any` and serializes
+the array directly, preserving arbitrary generated aliases and numeric precision. Explicit
+`includeNulls=false` omits DAX blank fields; empty strings are retained. TOJSON was evaluated
+but rejected because tested fractional values were truncated. No per-question query mapping
+was introduced. Metadata gating and Invoker identity are unchanged.
 
-Delayed actual Studio traces now show that the connector returned numeric `AccessProbe=1`, but
-local serialization discarded it as `null`. Flattening wrappers alone did not fix the caller's
-failure. A metadata-local numeric output schema is now published, with safe D1 diagnostics.
-The full visibility gate remains intact; no reconnection or permission change is indicated by
-that trace. Post-correction metadata success is still unobserved. Generic query response handling
-is unchanged in this narrow release and remains unverified.
+The three obsolete fixed tools are deleted; generic capabilities appear under **Topics**.
+Native readback retains GPT-5 Reasoning. Rendered-picker state, inference telemetry and the
+original UI warning remain unverified. Earlier evaluator/SDK blockers and their separate
+identities are documented in [verification](docs/verification.md).
 
 ### Deployed design
 
@@ -64,8 +59,8 @@ implementations. Preparation/refresh uses an already-authorized owner with read/
 agent users receive no new permissions.
 
 Eight varied direct-query cases passed, including combinations outside the retired compiler and a
-top-100 membership/order regression. The current offline suite comprises **43 Python tests and
-5 client-harness tests**, plus 40 synthetic native Power Fx checks. The native null-serialization
+top-100 membership/order regression. The current offline suite comprises **50 Python tests and
+5 client-harness tests**, plus 55 synthetic native Power Fx checks. The native null-serialization
 caveat is documented in [verification](docs/verification.md). These are not cloud-generated
 conversational-query evidence.
 

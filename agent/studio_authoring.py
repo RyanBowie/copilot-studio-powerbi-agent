@@ -69,7 +69,8 @@ def verify_components(parsed, schema_name, gpt_source, topics):
             if not required_outputs.issubset(dialog.get("outputType", {}).get("properties", {})):
                 raise RuntimeError("Native error-provenance outputs were dropped: " + name)
         for expected_action in source_begin["actions"]:
-            if expected_action.get("id") in {"setProbeJson", "setResultJson", "CheckTypedProbeMarker"}:
+            if expected_action.get("id") in {"setProbeJson", "setResultJson", "CheckTypedProbeMarker",
+                                             "setRawRowCount", "setEnvelope"}:
                 actual_action = next((action for action in begin.get("actions", [])
                                       if action.get("id") == expected_action["id"]), {})
                 if actual_action.get("value", {}).get("expressionText") != expected_action["value"].removeprefix("="):
@@ -85,6 +86,26 @@ def verify_components(parsed, schema_name, gpt_source, topics):
                         or rows.get("$kind") != "Table" or set(columns) != {"[AccessProbe]"}
                         or columns.get("[AccessProbe]", {}).get("type", {}).get("$kind") != "Number"):
                     raise RuntimeError("Native fixed-probe output schema changed: " + name)
+            if expected_action.get("id") == "ExecuteGeneratedQuery" and expected_action.get("dynamicOutputSchema"):
+                actual_action = next((a for a in begin["actions"]
+                                      if a.get("id") == "ExecuteGeneratedQuery"), {})
+                schema = actual_action.get("dynamicOutputSchema", {})
+                properties = schema.get("properties", {})
+                rows = properties.get("firstTableRows", {}).get("type", {})
+                if (schema.get("$kind") != "Record" or set(properties) != {"firstTableRows"}
+                        or rows.get("$kind") != "Any"
+                        or actual_action.get("input", {}).get("binding", {}).get("serializerSettings", {}).get("expressionText") != "{includeNulls:false}"):
+                    raise RuntimeError("Native generic query dynamic transport schema/null policy changed: " + name)
+            if expected_action.get("id") in {"RequireTransportRows",
+                                             "RequireEnvelope", "ValidateEnvelope"}:
+                actual_guard = next((a for a in begin["actions"]
+                                     if a.get("id") == expected_action["id"]), {})
+                branch = next(iter(actual_guard.get("conditions", [])), {})
+                if (branch.get("condition", {}).get("expressionText") != expected_action["conditions"][0]["condition"][1:]
+                        or not any(a.get("$kind") == "CancelAllDialogs" and
+                                   a.get("activityProcessed", {}).get("literalValue") is True
+                                   for a in branch.get("actions", []))):
+                    raise RuntimeError("Native query decoder guard/cancellation changed: " + name)
             if expected_action.get("id") == "RequireVerifiedVisibility":
                 expected_branch = expected_action["conditions"][0]
                 diagnostic = next((a for a in expected_branch["actions"]

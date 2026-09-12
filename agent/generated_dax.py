@@ -3,6 +3,7 @@
 The lexer protects the envelope boundary; Power BI remains the DAX parser and authorizer.
 """
 import re
+from query_transport import decode_rows
 
 MAX_EXPRESSION = 12000
 MAX_CODE = 4000
@@ -119,10 +120,12 @@ def build_query(request):
     )
 
 
-def validate_result(rows):
+def validate_result(rows, transported=True):
     """Provider errors must be checked by the transport before this envelope check."""
     import json
-    if len(json.dumps(rows, ensure_ascii=True)) > MAX_RESULT_JSON:
+    if transported:
+        rows = decode_rows(rows)
+    if not transported and len(json.dumps(rows, ensure_ascii=True)) > MAX_RESULT_JSON:
         raise ValueError("Result exceeds the preview byte/character budget; reduce rows/columns.")
     summaries = [r for r in rows if r.get("[__kind]") == "Summary"]
     data = [r for r in rows if r.get("[__kind]") == "Data"]
@@ -131,4 +134,7 @@ def validate_result(rows):
     summary = summaries[0]
     if summary.get("[__status]") != "ok" or summary.get("[__returned]") != len(data):
         raise ValueError("Bounds, dates or row-count validation failed.")
+    if transported and (type(summary.get("[__returned]")) is not int
+                        or any(r.get("[__status]") != "ok" for r in data)):
+        raise ValueError("Invalid typed return count or data status.")
     return summary, data

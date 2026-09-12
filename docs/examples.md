@@ -14,10 +14,11 @@ Expected behavior: invoke metadata retrieval, complete its requesting-user visib
 answer from the prepared catalog. State snapshot freshness and avoid treating missing descriptions
 or an access failure as proof that data does not exist.
 
-**Observed boundary:** actual user Studio traces show a returned numeric probe marker lost during
-local serialization. A targeted metadata output-type correction is published, but post-correction
-metadata success remains unobserved. The automated client's connection card and published SDK's
-conversation-start denial are separate observations, not diagnoses of this user's failure.
+**Observed result:** after the numeric output-type correction, the user's Studio answer listed the
+model catalog, measures, snapshot freshness and relationships. Metadata retrieval now succeeds.
+The later business query's successful provider rows were lost locally; its dynamic-output repair
+still needs final caller-visible ranking confirmation. Separate automated-client authorization
+boundaries are not diagnoses of this user's connection.
 
 ## Multiple dimensions and filters
 

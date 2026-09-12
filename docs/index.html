@@ -228,7 +228,7 @@
         </div>
       </div>
     </div>
-    <div class="note"><strong>Experimental deployment, not a verified end-to-end agent.</strong> Actual Studio traces show a valid probe marker lost during local serialization. Wrapper normalization alone did not fix it. A targeted metadata output-type correction is published, but subsequent caller success remains unobserved. Generic-query response handling is unchanged in this narrow release; no complete cloud metadata -> generated DAX -> query -> answer chain is verified.</div>
+    <div class="note"><strong>Metadata and provider execution observed; repaired final answer still unverified.</strong> Actual caller queries returned a successful Summary plus 25 Data rows, then local type projection erased the rows. A generic dynamic-output correction is now published, preserving arbitrary generated fields and numeric precision. No post-correction ranked answer has yet been observed.</div>
     <div class="strip">
       <div><strong>Standard Copilot Studio</strong><span>No alternative agent runtime required.</span></div>
       <div><strong>Existing Power BI model</strong><span>Query the semantic layer, not exported spreadsheets.</span></div>
@@ -351,9 +351,9 @@ ORDER BY 'Date'[YearMonth]</code></pre>
           <div class="check-row"><span class="status">DIRECT TEST</span><span>Counts and a 100-row ranking executed using the audited Interactions metric.</span></div>
           <div class="check-row"><span class="status">USER REPORT</span><span>The user confirmed they liked the top-100 output.</span></div>
           <div class="check-row"><span class="status">SCREENSHOT</span><span>Callable tools and a per-agent connection approval card are visible.</span></div>
-          <div class="check-row"><span class="status">OFFLINE</span><span>The generic source has 43 Python tests, 5 client-harness tests, and 40 synthetic native Power Fx checks; the native null-serialization caveat is documented.</span></div>
+          <div class="check-row"><span class="status">OFFLINE</span><span>The generic source has 50 Python tests, 5 client-harness tests, and 55 synthetic native Power Fx checks; the native null-serialization caveat is documented.</span></div>
           <div class="check-row"><span class="status">DIRECT TEST</span><span>Eight varied expression cases passed, including new combinations and the original ranking membership/order.</span></div>
-          <p class="footnote">These are authored test fixtures, not observed cloud-generated queries. Actual user traces returned the expected numeric probe marker, which local serialization lost. The metadata action now declares that numeric output explicitly; post-correction success remains unobserved. No permission change is indicated by that trace. The automated client's connection card, earlier HTTP 504, and separate SDK HTTP 403 are distinct observations. Generic capabilities live under Topics. Rendered-picker state, inference telemetry, and the original UI warning remain unverified.</p>
+          <p class="footnote">The offline/direct checks are authored fixtures. Separately, actual caller traces establish successful metadata, cloud-authored query arguments, and two successful provider envelopes. Local projection erased those rows. The latest generic output correction retains dynamic fields and precision; the final caller-visible answer remains unverified. Missing declared fields represent DAX blank/null under the explicit null-omission policy. No reconnect or permission change is indicated. Generic capabilities live under Topics; rendered-picker state, inference telemetry and the original UI warning remain unverified.</p>
         </div>
         <div class="panel">
           <h3>Production questions still matter</h3>

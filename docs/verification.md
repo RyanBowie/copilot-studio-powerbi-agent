@@ -2,9 +2,10 @@
 
 ## Current status
 
-**The broader generated-DAX runtime is deployed but not end-to-end verified.** No observed
-conversation establishes metadata retrieval, cloud-authored DAX arguments, Power BI execution,
-and an explained result as a complete chain.
+**Metadata retrieval, cloud-authored DAX and successful provider execution are observed.
+The repaired final user-facing answer is not yet verified.** The actual caller's successful
+rows were lost during local type projection. A generic dynamic-output correction is published;
+the complete query-to-explained-answer chain still needs confirmation.
 
 The Studio model selector showed GPT-4.1 despite raw YAML retaining a reasoning-model hint.
 Native Studio parsing had dropped `aISettings` and topic bodies. Corrected YAML serialization
@@ -16,14 +17,16 @@ This is selector-backend evidence, not an independently observed rendered picker
 | Check | Observation |
 |---|---|
 | Owner-prepared primary metadata | 21 tables, 244 columns, 166 measure names, 13 relationships |
-| Offline expression, serialization, authoring, cleanup, alias, row-decoding, and diagnostic suite | 43 Python tests |
+| Offline expression, serialization, authoring, cleanup, alias, row-decoding, and diagnostic suite | 50 Python tests |
 | Corrected client-harness suite | 5 tests |
-| Synthetic native Microsoft Power Fx checks | 40; null-serialization caveat below |
+| Synthetic native Microsoft Power Fx checks | 55; null-serialization caveat below |
 | Varied direct expression cases | Eight passed against the primary model |
 | Original ranking regression | Generic-contract result matched original top-100 membership/order directly |
 | Deliberately invalid column | Actual direct Power BI error observed |
-| Cloud-generated expression/tool arguments | Not observed |
+| Cloud-generated expression/tool arguments | Recorded in actual caller traces; raw DAX/arguments remain private |
 | Metadata-topic selection and AI-filled metadata arguments | Observed after serialization repair |
+| Successful metadata answer | User-observed catalog, corroborated by caller traces |
+| Successful provider query envelopes | Two executions, each with one ok Summary and 25 Data rows |
 | Complete new-runtime chat answer | Not verified |
 
 Direct cases include multiple groupings/filters, a derived ratio, owner/creator aggregate counts,
@@ -176,13 +179,50 @@ At 22:20:21 BST, the metadata connector action was republished with an action-lo
 binding paths, normalization, acceptance predicate, Invoker identity, and other components are
 unchanged. Safe D1 facts and a direct `TypedMarkerIsOne` check are retained in the failure message.
 
-The correction is native-compiled and read back, but no subsequent caller success is yet observed.
-One catalog-only retest in the existing connected Studio session is needed. On failure, only the
-D1 block and `TypedMarkerIsOne` flag are required, not raw rows or model metadata. Reconnection,
-permission changes, and dataset selection are not indicated by the actual trace.
+The user subsequently confirmed success at 22:55 BST: the Studio answer listed 21 tables,
+166 measures, snapshot freshness, and relationship information. This establishes user-visible
+metadata retrieval after the correction. No reconnect or permission change was required to explain
+the earlier local marker loss. The raw model screenshot is not copied into this publication.
 
-Generic-query output handling is unchanged and shares a potential dynamic-type projection risk.
-This release does not establish a working business query or end-to-end analytical answer.
+### Business-query retest: generic result validation remains blocked
+
+The next user request asked for a top-20 usage ranking with creators and a top-five last-30-days
+view. Its response reported schema grounding, a generated combined expression, an initial execution
+and one corrective retry. The displayed executor diagnostics were `stage=query_result_validation`,
+`connectorAttempted=true`, `connectorReturned=true`, `visibilityVerified=true`, and `status=rejected`,
+with a missing/invalid-envelope error.
+
+This is progress beyond the metadata blocker, not a successful ranked answer. The response's
+narrative alone does not establish the exact generated DAX or provider result. Actual caller trace
+inspection is needed to distinguish provider errors from the generic path's known dynamic-type
+projection risk. No permission change or repeated user prompt is indicated by these flags.
+The generic result handling is being investigated separately from the now-successful metadata path.
+
+### Actual query trace and final dynamic-output correction
+
+Delayed caller traces for the business-query run establish both generated arguments and two
+executions. Each returned one Summary with `status=ok` plus 25 Data rows, matching counts and
+no more-row/text-truncation flags. Local `ResultJson` then contained 26 null entries. This confirms
+local projection loss rather than a need to rewrite the DAX or change permissions.
+
+The final correction was published at 22:59:48 UTC on 12 September 2026. The generic action
+declares `firstTableRows:Any`, counts through `Table(dynamic)`, and serializes the dynamic array
+itself. The original DAX builder, metadata gate, DISTINCT projection, ordering, tie/date/text
+bounds and two-attempt ceiling are preserved. Explicit `includeNulls=false` omits DAX blank
+fields; missing declared aliases mean blank values, not missing schema. Empty strings survive.
+Malformed local result contracts cancel the turn rather than trigger a DAX rewrite or blame
+provider permissions.
+
+A TOJSON string-transport candidate was tested and briefly published, then removed: exact
+comparisons exposed fractional truncation to four decimal places. It is absent from the final
+runtime, and its results must not be used as evidence for the final correction. The dynamic
+path passes native fractional/tiny/large numeric, integer-above-2^53, Boolean, ISO-date, Unicode,
+empty-string and null-omission cases. Eight direct-model regressions pass, including original
+top-100 membership/order and physical-versus-decoded cell comparisons.
+
+No post-correction caller-visible ranking has yet been observed. One original-question retest
+in the existing connected Studio session remains; no metadata-only rerun, reconnect, grants
+or dataset switch are indicated. Keep actual identity/business rows private.
 
 ## Historical fixed-query evidence
 

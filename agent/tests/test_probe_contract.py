@@ -44,35 +44,18 @@ def native_cases():
         {"name": "old-normalizer-rejects-valid-probe",
          "expression": f"With({{R:{row}}}, With({{J:JSON(R)}}, {status}))", "expected": "missing_marker"},
     ]
-    actions = {a["id"]: a for a in build_query_topic(CONFIG, SCHEMA)["beginDialog"]["actions"]}
-    require = actions["RequireEnvelope"]["conditions"][0]["condition"][1:].replace("Topic.Envelope", "E")
-    validate = actions["ValidateEnvelope"]["conditions"][0]["condition"][1:].replace("Topic.Envelope", "E").replace("Topic.Summary", "S")
-    summary = actions["setSummary"]["value"][1:].replace("Topic.Envelope", "E")
-    good = [{"[__kind]": "Summary", "[__status]": "ok", "[__returned]": 1},
-            {"[__kind]": "Data", "[SyntheticValue]": 7}]
-    for name, rows, encoding, expected in [
-        ("old-normalizer-rejects-valid-query-envelope", good, "JSON(R)", True),
-        ("normalized-query-envelope-passes", good, normalizer, False),
-        ("missing-summary-rejected", good[1:], normalizer, True),
-        ("duplicate-summary-rejected", [good[0], *good], normalizer, True),
-        ("wrong-returned-count-rejected", [good[0]], normalizer, True),
-    ]:
-        expression = (f"With({{R:Table(ParseJSON({fx_text(json.dumps(rows))}))}}, "
-                      f"With({{E:Table(ParseJSON({encoding}))}}, "
-                      f"If({require}, true, With({{S:{summary}}}, {validate}))))")
-        cases.append({"name": name, "expression": expression, "expected": expected})
     return cases
 
 
 class ProbeContractTests(unittest.TestCase):
-    def test_both_connector_results_normalize_value_tables(self):
-        for body, identifier, variable in [
-            (build_metadata_topic(CONFIG, SCHEMA), "setProbeJson", "Topic.ProbeRows"),
-            (build_query_topic(CONFIG, SCHEMA), "setResultJson", "Topic.RawRows"),
-        ]:
-            action = next(a for a in body["beginDialog"]["actions"] if a["id"] == identifier)
-            self.assertEqual(action["value"], connector_rows_json(variable))
-            self.assertIn("JSONFormat.FlattenValueTables", action["value"])
+    def test_metadata_normalizes_its_typed_probe_but_query_uses_payload_transport(self):
+        from query_transport import RESULT_EXPRESSION
+        metadata = build_metadata_topic(CONFIG, SCHEMA)
+        action = next(a for a in metadata["beginDialog"]["actions"] if a["id"] == "setProbeJson")
+        self.assertEqual(action["value"], connector_rows_json("Topic.ProbeRows"))
+        query = build_query_topic(CONFIG, SCHEMA)
+        action = next(a for a in query["beginDialog"]["actions"] if a["id"] == "setResultJson")
+        self.assertEqual(action["value"], RESULT_EXPRESSION)
 
     def test_returned_and_validation_stage_follow_connector_before_disclosure(self):
         actions = build_metadata_topic(CONFIG, SCHEMA)["beginDialog"]["actions"]
@@ -99,7 +82,7 @@ class ProbeContractTests(unittest.TestCase):
 
     def test_fixture_cases_cover_real_contract_and_fail_closed_shapes(self):
         cases = native_cases()
-        self.assertEqual(len(cases), 20)
+        self.assertEqual(len(cases), 15)
         self.assertEqual(len({c["name"] for c in cases}), len(cases))
         self.assertTrue(all("PowerBI" not in c["expression"] for c in cases))
         self.assertEqual(dict((name, result) for name, _, result in PROBE_CASES)["provider-error-shaped-row"], "missing_marker")

@@ -10,13 +10,13 @@ class QueryError(RuntimeError):
     pass
 
 
-def query_rows(query):
+def query_rows(query, include_nulls=True):
     url = ("https://api.powerbi.com/v1.0/myorg/groups/" + CONFIG["workspaceId"] +
            "/datasets/" + CONFIG["datasetId"] + "/executeQueries")
     request = urllib.request.Request(url, headers={
         "Authorization": "Bearer " + token("https://analysis.windows.net/powerbi/api"),
         "Content-Type": "application/json"},
-        data=json.dumps({"queries": [{"query": query}], "serializerSettings": {"includeNulls": True}}).encode())
+        data=json.dumps({"queries": [{"query": query}], "serializerSettings": {"includeNulls": include_nulls}}).encode())
     try:
         with urllib.request.urlopen(request, timeout=90) as response:
             payload = json.load(response)

@@ -35,6 +35,13 @@ instructions: |-
   Label all such DAX UNEXECUTED. Contract validation does not prove DAX semantics or successful evaluation.
   Explain formulas/relationships from verified facts, and distinguish proposed definitions from saved ones.
   Only status=success with a valid current Summary envelope establishes execution.
+  Results are ordered JSON row objects. Preserve full numeric precision, Booleans, ISO dates and strings.
+  Missing declared data aliases represent DAX BLANK/null (includeNulls=false), not absent model fields.
+  Empty strings remain empty strings. Do not display raw JSON unless asked.
+  A query_result_validation decoder rejection is local: stop, do not blame provider permissions
+  or rewrite/retry DAX to repair the transport. Only actual execution errors support a corrective query.
+  A response-budget rejection alone may use one smaller preview within the two-attempt ceiling;
+  malformed JSON/header/marker/count contracts require stopping, not another execution.
   On a query error, use the actual error and metadata for at most one corrective execution attempt.
   If the platform terminates the turn, report the failure; never pretend a retry ran.
   Access errors are not model absence. Never fall back to maker credentials or unrelated data.

@@ -13,7 +13,47 @@ orchestrator is configured to author **new DAX table expressions** from machine-
 Power Fx topics validate the expression boundary and build a bounded DAX execution envelope. The
 standard Power BI connector runs it with **Invoker/end-user authentication**.
 
-### Current release: caller-backed probe output-type correction, not an E2E claim
+### Current release: generic dynamic-result correction; final caller answer still unverified
+
+Metadata success is now established by the user's Studio result and matching caller traces.
+The subsequent ranking question reached **two actual executions**. Each returned **one successful
+Summary plus 25 Data rows**; the local `ResultJson` then contained **26 null entries**. The recorded
+Summary had `status=ok`, the matching returned count and no text/more-row truncation flags. This is
+confirmed local type-projection loss—not evidence of an invalid DAX query or provider denial.
+Execution timestamps precede the later transcript storage timestamps.
+
+`ExecuteDatasetQuery` now has an action-local `firstTableRows: Any` output schema. The native topic
+counts `Table(Topic.RawRows)` but serializes the **dynamic array itself**, never a declared
+`Table(Value:Any)` projection. Arbitrary generated aliases and original numbers, Booleans, strings,
+empty strings and ISO date strings survive. `serializerSettings.includeNulls=false` is explicit:
+missing declared aliases represent DAX BLANK/null, not missing model fields. This agrees with the
+connector's documented default and avoids serializing dynamic null fields in affected Power Fx
+versions. The full metadata gate is unchanged.
+
+**TOJSON was evaluated and rejected.** Despite explicit row limits and successful type/ordering
+checks, direct synthetic and actual-model comparisons exposed numeric truncation to four decimal
+places (for example, synthetic `1/7` became `0.1428`). It is absent from the final generated DAX.
+The original DISTINCT, projection, TOPN, complete-key ordering, date expressions, tie checks and
+text limits are unchanged. No business-query mapping or per-question tool was added.
+
+Missing/unreadable rowsets, malformed markers and invalid count/status/flag contracts now stop
+locally using `CancelAllDialogs`. They do not suggest provider permissions or another DAX retry.
+Actual execution errors retain at most one correction; a response-budget rejection alone may use
+one smaller preview within the existing two-attempt ceiling. No credentials, grants, privacy
+settings, shared connector definition or hosted resources were changed.
+
+**Verification:** native compilation/publication/readback pass, including the dynamic type and null
+policy. Full-precision fractional/tiny/large values and an integer above 2^53 pass native checks.
+Separate authorized direct-model checks pass for multiple filters/groupings, derived calculations,
+owner/creator aggregates, dates, empty results, genuine unsupported-column errors and the original
+top-100 membership/order. These are not proof of the final caller-visible answer.
+
+**One final Studio confirmation:** refresh Studio and ask the original ranking/creator/last-30-days
+question once in the existing authenticated test pane. Confirm the returned ordered tables and
+date scope; if it fails, report only status/stage/error, not identity rows. No reconnect, new grant
+or metadata-only rerun is requested. No fresh automated conversations were started.
+
+### Earlier metadata output-type correction
 
 **The user's subsequent Studio catalog-only test still failed at
 `schema_probe_output_validation`. The normalization change did not resolve that caller failure.**
@@ -33,7 +73,7 @@ actual probe rows. The metadata probe now uses the documented action-local `dyna
 to declare its fixed `[AccessProbe]` numeric column. This does not modify the shared connector,
 change the full-column probe, remove schema references or accept an additional response shape.
 The published native compiler also accepts a direct typed `[AccessProbe]` field check, and parsed
-readback verifies the override. **The resulting current caller behavior still needs observation.**
+readback verifies the override. Subsequent Studio metadata success is now observed.
 
 The automation connection-manager card is a separate channel limitation, not a reason to tell the
 already-connected Studio user to reconnect. No new automated conversations were attempted.
@@ -44,9 +84,8 @@ state/count, normalized array count, root/first-value kinds, known marker presen
 result, known `Value` wrapper depth, unbracketed-marker indicators, response-container indicators and
 an error-member-presence flag. It never returns raw rows/JSON, unknown column names, error contents,
 identities or credentials. A separate `TypedMarkerIsOne` Boolean reports the direct typed field check.
-The full query text, input/output binding paths, normalizer, acceptance predicate and private Invoker
-authentication are unchanged; only the probe's output type is corrected. The generated-query action
-and its runtime response handling remain unverified and unchanged in this narrow release.
+That metadata correction left its full query text, binding paths, normalizer, acceptance predicate
+and private Invoker authentication unchanged. The later generic-query correction is described above.
 
 Interpretation limits are explicit: `blank_or_unbound` cannot distinguish a missing output value
 from a null typed table; `-1` means an unavailable count. Power Fx `IsBlank` includes null/empty text.
@@ -55,12 +94,8 @@ native tests expose the existing numeric-string/Boolean coercion without changin
 An error-shaped member is not an established provider denial. Actual connector exceptions remain
 on the existing separate OnError path.
 
-**Single next observation:** refresh Studio and repeat the same catalog-only prompt once in its
-existing authenticated test pane. Report whether metadata succeeds; if it still fails, copy only the
-`Diagnostic: {..."version":"D1"...}` block and `TypedMarkerIsOne` flag from the final message.
-No dataset selection, reconnection, permission change or business-data query is requested.
-Native compile/readback validates the diagnostic expression and message binding; delivery of its
-values in the user's Studio conversation still requires that observation.
+Metadata D1 diagnostics remain available on failures; no extra metadata-only test is currently
+needed. The remaining confirmation concerns the generic query's returned and explained ranking.
 
 ### Previous change: native connector row normalization
 
@@ -124,7 +159,8 @@ attempt, with a 300-second client budget and an explicit catalog request, return
 (`UnexpectedError`, “An unexpected error occurred.”). Neither failure establishes an
 authentication failure or proves that the connector was reached.
 Those timeouts are historical; the latest user-observed boundary is the unresolved probe validation
-failure described above. No cloud-generated DAX/tool-argument/result conversation has been verified.
+failure described above. Caller-generated queries returned successful envelopes before local
+serialization loss; the final decoded and explained ranking still needs confirmation.
 
 ### Model-selection and parser correction
 
@@ -274,12 +310,13 @@ lexer/envelope escapes, aliases/sorting/bounds, relative date expressions, share
 generation, metadata authorization gating and advice without business-query execution. Additional
 tests cover Studio-compatible YAML, native-readback rejection of dropped model/topic fields,
 obsolete-tool deletion guards, blank/invalid alias input gates, error provenance, retry termination
-contracts, safe diagnostic output and client diagnostics: **43 Python tests and 5 Node tests**. The scalar input-gate
+contracts, safe diagnostic output and client diagnostics: **50 Python tests and 5 Node tests**. The scalar input-gate
 regressions execute a small offline evaluator over the generated expressions, not the native
 Power Fx runtime; native compilation/readback and actual chat observations are reported separately.
 
-An additional **40 synthetic native Microsoft Power Fx checks** cover the original 20 parser checks,
-17 safe diagnostic cases and three fixed-probe typed-output cases. They reproduce the original Value-wrapper
+An additional **55 synthetic native Microsoft Power Fx checks** cover 15 probe/parser checks,
+17 safe diagnostic cases, three fixed-probe typed-output cases and 20 current dynamic-query cases.
+They reproduce the original Value-wrapper
 defect and exercise the exact generated marker, diagnostic and query-envelope expressions. Missing/duplicate/
 invalid markers and malformed envelope counts remain fail-closed. The installed JSON assembly throws
 for its own `ParseJSON(null)` representation: that specific exception is recorded explicitly, and
@@ -292,7 +329,7 @@ satellites. Supply dependencies before building; clean/rebuild if resolving a mi
 No runtime binaries are included here:
 
 ```powershell
-python -c "import json,sys;from pathlib import Path;sys.path.insert(0,'tests');from test_probe_contract import native_cases;from test_probe_diagnostics import native_diagnostic_cases;Path('native-cases.private.json').write_text(json.dumps(native_cases()+native_diagnostic_cases()),encoding='utf-8')"
+python -c "import json,sys;from pathlib import Path;sys.path.insert(0,'tests');from test_probe_contract import native_cases;from test_probe_diagnostics import native_diagnostic_cases;from test_query_transport import native_transport_cases;Path('native-cases.private.json').write_text(json.dumps(native_cases()+native_diagnostic_cases()+native_transport_cases()),encoding='utf-8')"
 dotnet run --project tests\powerfx-contract\PowerFxContract.csproj -p:PowerFxLibraryDirectory="<existing-local-library-directory>" -- native-cases.private.json native-results.private.json
 ```
 
@@ -308,8 +345,8 @@ Direct authorized checks cover:
 
 These are **LLM-authored test fixtures applied to the generic contract**, not evidence of cloud chat
 generation. Runtime code does not contain these business queries. Metadata-topic selection and
-AI-filled metadata arguments have now been observed. Actual generated-DAX execution and user-facing
-analytical answers still need verification in an authenticated Studio session.
+AI-filled metadata arguments and caller-generated DAX execution are now observed in real traces.
+The repaired decoder's final user-facing analytical answer still needs Studio confirmation.
 Do not publish business rows, identity values, raw schema snapshots or fabricated screenshots.
 
 The SDK test harness previously ignored `--prompt` outside `--maker-test` and always sent a retired
@@ -356,6 +393,7 @@ preparation, configuration, permissions and validation; it is not automatic supp
 - [Power BI connector](https://learn.microsoft.com/en-us/connectors/powerbi/#run-a-query-against-a-dataset)
 - [Power Fx JSON and FlattenValueTables](https://learn.microsoft.com/en-us/power-platform/power-fx/reference/function-json)
 - [Power Fx ColumnNames and Column for dynamic records](https://learn.microsoft.com/en-us/power-platform/power-fx/reference/function-columnnames-column)
+- [DAX TOJSON, evaluated but rejected for numeric fidelity](https://learn.microsoft.com/en-us/dax/tojson-function-dax)
 - [Execute Queries REST contract](https://learn.microsoft.com/en-us/rest/api/power-bi/datasets/execute-queries)
 - [Fabric model definition API and permission requirement](https://learn.microsoft.com/en-us/rest/api/fabric/semanticmodel/items/get-semantic-model-definition)
 

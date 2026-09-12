@@ -81,11 +81,12 @@ HTTP 504 and, after the later alias repair, the previous local validation error/
 A normal Studio session must still be tested; neither
 topic selection nor an HTTP error establishes that the complete published UI flow works.
 
-The automated evaluation resolves the alias but waits at its connection-manager card. Actual user
-Studio traces separately show a valid probe marker lost during local serialization. Following the
-metadata output-type correction, refresh Studio and run catalog-only once in the existing connected
-session. On failure, capture only D1 and `TypedMarkerIsOne`, not raw rows or metadata. Do not reconnect,
-grant permissions, or change the dataset on the basis of the observed local serialization failure.
+The automated evaluation's connection-manager card is separate from the connected Studio user.
+Metadata now succeeds, and actual caller queries returned successful envelopes before local
+projection erased their fields. After the latest dynamic-output correction, refresh Studio and
+repeat the original ranking question once in the existing connected session. Confirm ordered
+tables and date scope, or capture only status/stage/error on failure. No metadata-only rerun,
+reconnect, grants or dataset change is indicated by the observed local response-handling defect.
 
 `test-studio.cjs` uses an independent project-local browser profile and never the shared MCP browser.
 It does not enter credentials or fabricate interaction evidence.

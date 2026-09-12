@@ -126,8 +126,7 @@ A single Execute Queries call does not arbitrarily join separate datasets.
 
 ## What remains unverified
 
-- Cloud selection of the generated-query capability (metadata selection is observed).
-- Actual cloud-authored expression and argument correctness.
+- General accuracy of cloud-authored expressions across representative questions (actual generation and successful provider execution are observed for the reported ranking).
 - Successful full chat results and explanations.
 - Role-specific metadata access and representative RLS/OLS behavior.
 - Existing-measure implementation explanations and model-authored guidance retrieval.
@@ -139,14 +138,13 @@ restored GPT-5 Reasoning in native selector readback; rendered-picker state, inf
 the original UI warning remain unverified. Do not collapse these into one Power BI authentication
 diagnosis or call them a successful conversation.
 
-The earlier revision discrepancy remains unexplained, but later traces now confirm primary-alias
-resolution and connector-boundary progress. A native `Value`-wrapped row decoding defect was also
-addressed with wrapper normalization, but that did not resolve the caller failure. Actual delayed
-Studio traces show a valid numeric marker becoming null during serialization. A metadata-local
-numeric output schema is now published; post-correction success remains unobserved. Generic-query
-output handling is unchanged in that narrow release and has a potential related type-projection risk.
-The full visibility gate is unchanged; the automated client's connection card is not the user's
-current failure.
+Metadata now succeeds. Actual caller query traces also returned one successful Summary plus
+25 Data rows per execution, but local type projection erased those rows. The latest generic action
+uses `firstTableRows:Any` and serializes the dynamic array directly. Arbitrary generated columns and
+original numeric precision remain supported; no finite business mappings were introduced.
+Explicit `includeNulls=false` means omitted declared fields represent DAX blank/null, not absent
+schema. Empty strings remain distinct. TOJSON was rejected after observed fractional truncation.
+The metadata gate is unchanged. A post-fix caller-visible ranking still needs confirmation.
 
 ## Suggested evaluation matrix
 

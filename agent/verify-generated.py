@@ -6,6 +6,7 @@ from pathlib import Path
 import yaml
 
 from generated_dax import build_query, validate_result
+from query_transport import decode_rows
 from general_runtime import schema_probe
 from powerbi_client import QueryError, query_rows
 
@@ -13,7 +14,11 @@ ROOT = Path(__file__).resolve().parent
 
 
 def check(label, request):
-    summary, data = validate_result(query_rows(build_query(request)))
+    physical = query_rows(build_query(request), include_nulls=False)
+    decoded = decode_rows(physical, expected_columns=[c.strip() for c in request["columns"].split(",")])
+    assert all(all(source.get(key) == value for key, value in row.items())
+               for source, row in zip(physical, decoded)), "Transport changed an original envelope cell."
+    summary, data = validate_result(physical)
     print(json.dumps({"case": label, "directApi": "PASS", "businessRowsPublished": False,
                       "rows": len(data), "hasMore": summary["[__hasMore]"], "chatEndToEnd": False}))
     return summary, data
@@ -22,7 +27,7 @@ def check(label, request):
 def main():
     schema = json.loads((ROOT / "model-schema.private.json").read_text(encoding="utf-8"))
     assert query_rows(schema_probe(schema)) == [{"[AccessProbe]": 1}]
-    print("Current-caller full prepared-column probe: PASS (no business rows).")
+    print("Authorized direct-identity full prepared-column probe: PASS; not chat/Invoker proof.")
     multi = {
         "tableExpression": """SUMMARIZECOLUMNS('Agent'[Platform], 'Agent'[AuthoringSurface],
             FILTER('Agent', 'Agent'[ToolCount] > 0 && 'Agent'[KnowledgeCount] > 0),
