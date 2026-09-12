@@ -172,7 +172,7 @@
     @media (max-width: 640px) {
       .wrap { width: calc(100% - 32px); }
       .header-row { gap: 12px; min-height: 64px; flex-wrap: wrap; padding: 12px 0; }
-      nav { order: 3; width: 100%; font-size: 12px; justify-content: space-between; }
+      nav { order: 3; width: 100%; font-size: 12px; justify-content: space-between; flex-wrap: wrap; }
       .strip, .branch, .example-layout { grid-template-columns: 1fr; }
       .strip > div + div { border-left: 0; border-top: 1px solid var(--cp-border); }
       .tabs { display: grid; grid-template-columns: 1fr 1fr; }
@@ -196,6 +196,7 @@
         <a href="#architecture">Architecture</a>
         <a href="#examples">Examples</a>
         <a href="#screenshots">Screenshots</a>
+        <a href="#limits">Limits</a>
         <a href="#evidence">Evidence</a>
       </nav>
       <button id="theme-toggle" class="icon-button" type="button" aria-label="Switch color theme">Switch theme</button>
@@ -317,6 +318,29 @@ ORDER BY 'Date'[YearMonth]</code></pre>
       </div>
     </section>
 
+    <section id="limits">
+      <div class="section-title"><div><span class="eyebrow">Scope / Discovery / Scale</span><h2>Reusable execution is not<br>automatic model understanding.</h2></div><a href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/docs/capabilities-and-limits.md">Capability and limits guide</a></div>
+      <p class="section-copy">The current agent supports many questions inside one configured schema subset. It does not automatically search every model, discover all fields, or fetch model-authored instructions at runtime.</p>
+      <div class="three-grid">
+        <article class="panel feature"><span class="step-no">IMPLEMENTED</span><h3>Bounded single-model analytics</h3><p>Approved metrics, dimensions, exact filters, date ranges, ranked results, and compiler-backed DAX advice. These are reusable combinations, not unrestricted query generation.</p></article>
+        <article class="panel feature"><span class="step-no">REQUIRES ONBOARDING</span><h3>Another model's meaning</h3><p>Schema, measures, relationships, definitions, permissions, and mappings must be obtained and validated. Changing only a dataset ID is not enough.</p></article>
+        <article class="panel feature"><span class="step-no">NOT YET DEMONSTRATED</span><h3>Automatic multi-model discovery</h3><p>A model catalog, focused metadata retrieval, routing, schema refresh, and cross-model interpretation remain separate work. No model-count or concurrency ceiling has been measured.</p></article>
+      </div>
+      <div class="note"><strong>Not exposed does not mean nonexistent.</strong> Owner/creator details are excluded from this PoC's tools. That does not prove whether they exist in the underlying semantic model. The agent must distinguish restricted scope, unknown metadata, verified absence, and denied access.</div>
+      <div class="panel" style="margin-top:24px">
+        <h3>Second-model probe: structure discovery succeeded</h3>
+        <p>A genuinely different model accepted three constant DAX queries. Its definition was retrieved automatically using the documented Fabric API: <strong>78 tables, 694 columns, 17 measures, and 79 relationships</strong>, including hidden/generated objects.</p>
+        <p class="muted">This used existing read/write model permissions. No nonempty object descriptions were found; authored-instruction discovery remains unproven. The schema has not been wired into the agent, and this is not evidence of automatic business understanding or read-only-user metadata access.</p>
+        <p class="footnote">Observed constant-query request times: 823 / 461 / 538 ms. Three sequential samples, not a benchmark, concurrency test, or complete-chat latency.</p>
+      </div>
+      <div class="panel" style="margin-top:24px">
+        <h3>What a useful scalability test measures</h3>
+        <p class="muted">Metadata coverage and onboarding effort; correct model routing; measure/answer accuracy; schema-drift behavior; permission boundaries; and metadata, query, and complete-chat latency separately.</p>
+        <p>The API documents 120 requests/minute/user and result-size limits. Those are service constraints, not proof of agent throughput. A second report is only another model if its dataset identity differs.</p>
+        <a href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/docs/scalability-experiment.md">Read the second-report experiment and its evidence boundaries</a>
+      </div>
+    </section>
+
     <section id="evidence">
       <div class="section-title"><div><span class="eyebrow">04 / What is proven</span><h2>Evidence without overclaiming.</h2></div><a href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/docs/verification.md">Read the verification notes</a></div>
       <div class="evidence-grid">
@@ -333,7 +357,7 @@ ORDER BY 'Date'[YearMonth]</code></pre>
         <div class="panel">
           <h3>Production questions still matter</h3>
           <details open><summary>Does RLS automatically make this safe?</summary><p>RLS follows the actual execution identity and workspace role. Verify restricted users, Build permission, and the model's sensitive fields. Agent instructions do not enforce authorization.</p></details>
-          <details><summary>Can it answer any question?</summary><p>No guarantee. The model contract, tool input surface, and query-building logic determine what is supported. Generated DAX and business interpretation need evaluation.</p></details>
+          <details><summary>Can it answer any question?</summary><p>No. The current model contract and query compiler expose a finite approved subset. An unsupported field may still exist in the full model. Automatic whole-model discovery and multi-model routing are not implemented.</p></details>
           <details><summary>Is Fabric capacity or MCP required?</summary><p>A Fabric data agent is not required for the connector/REST route. Power BI licensing still applies. Hosted Power BI MCP is a separate optional integration; its query-generation tool has Copilot entitlement requirements.</p></details>
           <details><summary>Are these real business results?</summary><p>The UI screenshots are real. Public example names and numbers are synthetic. No customer result rows or private conversation transcripts are published here.</p></details>
         </div>

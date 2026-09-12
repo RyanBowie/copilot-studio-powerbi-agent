@@ -1,0 +1,59 @@
+{
+  "classification": "anonymized observed read-only results; not synthetic business data",
+  "testDate": "2026-09-12",
+  "distinctModelFromOriginal": true,
+  "reportResolutionHttp": 200,
+  "query": "EVALUATE ROW(\"SmokeTest\",1)",
+  "executionSamples": [
+    {"http": 200, "value": 1, "responseErrors": 0, "elapsedMilliseconds": 823},
+    {"http": 200, "value": 1, "responseErrors": 0, "elapsedMilliseconds": 461},
+    {"http": 200, "value": 1, "responseErrors": 0, "elapsedMilliseconds": 538}
+  ],
+  "timingMethod": "Client stopwatch around each synchronous HTTP request through download. Token acquisition and local JSON validation excluded. Sequential constant queries, not a benchmark or full agent latency.",
+  "remoteMcp": {
+    "modelSchema": "artifact-not-found or access-unavailable",
+    "reportSchema": "artifact-not-found or access-unavailable",
+    "errorCode": -32600,
+    "causeEstablished": false,
+    "modelAbsenceEstablished": false
+  },
+  "fabricDefinition": {
+    "operation": "getDefinition",
+    "format": "TMSL",
+    "submissionHttp": 202,
+    "finalStatus": "Succeeded",
+    "resultHttp": 200,
+    "tables": 78,
+    "columns": 694,
+    "measures": 17,
+    "relationships": 79,
+    "includesHiddenOrGeneratedObjects": true,
+    "nonemptyObjectDescriptions": 0,
+    "linguisticMetadataPresent": true,
+    "authoredInstructionDiscoveryProven": false,
+    "submissionMilliseconds": 920,
+    "statusRequestMilliseconds": 361,
+    "resultDownloadMilliseconds": 3073,
+    "retryAfterWaitSeconds": 20,
+    "totalEndToEndLatencyMeasured": false,
+    "documentedModelPermissions": "read and write",
+    "documentedDelegatedScopes": ["SemanticModel.ReadWrite.All", "Item.ReadWrite.All"],
+    "permissionChangesMade": false,
+    "readOnlyUserAccessProven": false
+  },
+  "notTested": [
+    "agent integration of discovered schema",
+    "automatic model routing",
+    "portability of the original compiler mappings",
+    "model-specific business query semantics",
+    "end-to-end conversation on the second model",
+    "restricted-user metadata access",
+    "concurrency, throughput or model-count limits"
+  ],
+  "privacy": "No model/report/tenant identifiers, object names, expressions, raw definitions, source queries, user identities or business rows.",
+  "documentation": [
+    "https://learn.microsoft.com/en-us/rest/api/fabric/semanticmodel/items/get-semantic-model-definition",
+    "https://learn.microsoft.com/en-us/rest/api/fabric/articles/long-running-operation",
+    "https://learn.microsoft.com/en-us/rest/api/power-bi/datasets/execute-queries"
+  ]
+}

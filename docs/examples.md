@@ -101,3 +101,5 @@ The deployed advice topic returns the compiler's bounded query, including its Su
 **Expected behavior**
 
 Explain whether the model contains an approved satisfaction metric; do not substitute Interactions as if it meant satisfaction. Do not expose owner email addresses through this demonstration. Offer a supported aggregate alternative.
+
+Do not claim the underlying model lacks owner/creator fields merely because the approved contract excludes them. Say that these fields are **not exposed by the current PoC tools**, and that full-model presence/absence has not been established.

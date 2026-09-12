@@ -13,11 +13,17 @@ This repository packages a proof of concept, its reusable agent source, and a pu
 - [Setup and adaptation](docs/setup.md)
 - [Example prompts and output contracts](docs/examples.md)
 - [Evidence and known limitations](docs/verification.md)
+- [Capabilities, model discovery, and scaling limits](docs/capabilities-and-limits.md)
+- [Second-report scalability experiment](docs/scalability-experiment.md)
 - [Public-release checklist](docs/public-release.md)
 
 ## What this demonstrates
 
 The agent connects to an existing Power BI semantic model using the **Power BI connector**, rather than a Fabric data agent. A curated model contract grounds its interpretation of metrics, dimensions, dates, and DAX.
+
+**Current scope: one configured model, not automatic whole-model or multi-model discovery.** Unavailable through the approved tools does not mean absent from the underlying model. The [capability and limits guide](docs/capabilities-and-limits.md) explains model onboarding, metadata/instruction retrieval, safe response wording, and what a scalability evaluation must measure.
+
+**Second-model evidence:** a separate authorized report resolved to a distinct model. Generic constant DAX passed, and a documented Fabric API retrieved its structural definition automatically. This proves a metadata-acquisition path, **not** automatic agent onboarding or business understanding. It used existing read/write model permissions; read-only-user parity and authored-instruction discovery remain unproven. See the [experiment and measured timings](docs/scalability-experiment.md).
 
 The implementation preserves the smoke-test, governance-count, and top-100-agent tools and adds a **reusable analytics topic**, a **connector-free DAX-advice topic**, and a clarification topic. The source and verification guide describe the actual supported scope; this is not a promise of arbitrary natural-language access to every model.
 

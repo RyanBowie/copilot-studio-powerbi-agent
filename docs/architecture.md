@@ -6,6 +6,8 @@ The example's `Agent365` name belongs to a custom semantic model/report. It does
 
 The same architecture can target other compatible semantic models. The example's table names, metrics, relationships, and DAX are not universal; adaptation and validation are required.
 
+See [capabilities and limits](capabilities-and-limits.md) for how schema discovery differs from query execution, what model-authored guidance can provide, and the proposed model-catalog architecture. That multi-model architecture is **not implemented** in the current agent.
+
 ## The reusable pattern
 
 1. An authenticated user asks a business question.
@@ -61,6 +63,7 @@ Power BI is responsible for access enforcement. Read/Build permissions and row-l
 - Enforce constraints in the query-building/execution layer wherever possible; prose is not enforcement.
 - Check both transport errors and errors embedded in the response.
 - Report unsupported questions, empty results, date coverage, and truncation explicitly.
+- Distinguish an approved-tool restriction from full-model absence or an actual permission failure.
 - Do not return owner identities, transcripts, or individual interaction records in this demonstration.
 
 An approved fixed top-100 query can remain alongside reusable analytics. Tools should be organized by capability, not multiplied for each natural-language wording.

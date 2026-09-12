@@ -38,6 +38,7 @@ def main():
     required = [
         "README.md", "docs/index.html", "docs/architecture.md", "docs/setup.md",
         "docs/examples.md", "docs/verification.md", "docs/public-release.md",
+        "docs/capabilities-and-limits.md", "docs/scalability-experiment.md",
         "docs/assets/architecture.excalidraw", "docs/assets/architecture.svg",
         "docs/assets/tools-initial-poc.png", "docs/assets/connection-approval.png",
         "agent/README.md",
