@@ -1,8 +1,9 @@
 # Metadata-grounded generated-DAX architecture
 
-**Deployment is not proof of successful chat orchestration.** The new generic runtime is deployed,
-but metadata -> cloud-generated DAX -> execution -> explanation has not been observed end to end.
-See [verification](verification.md) for the separate preview-routing and SDK-authorization blockers.
+**The core workflow is user-observed working:** metadata retrieval, a dated usage ranking, and
+a contextual creator/owner follow-up. This is not proof of universal query correctness or scaling.
+See [verification](verification.md) for evidence levels, the unresolved combined request, and
+historical preview/SDK blockers.
 
 The example named `Agent365` is a custom Power BI model/report, not Microsoft Agent 365.
 That distinction belongs in documentation, not runtime prompts.
@@ -81,7 +82,8 @@ are retained. A TOJSON alternative was rejected after observed fractional trunca
 
 Malformed local output contracts terminate without a DAX retry or provider-permission blame.
 Actual execution errors may receive one correction; a smaller response preview remains bounded
-by the same two-attempt ceiling. No successful repaired caller-visible ranking is yet claimed.
+by the same two-attempt ceiling. Dated ranking and contextual creator answers are user-observed;
+the combined single-turn request remains outside the verified scope.
 
 - Up to 100 rows and 16 declared columns.
 - Up to 256 characters per text cell, with a truncation flag.

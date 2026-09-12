@@ -2,10 +2,11 @@
 
 ## Current status
 
-**Metadata retrieval, cloud-authored DAX and successful provider execution are observed.
-The repaired final user-facing answer is not yet verified.** The actual caller's successful
-rows were lost during local type projection. A generic dynamic-output correction is published;
-the complete query-to-explained-answer chain still needs confirmation.
+**The core PoC workflow is now user-observed successful:** metadata retrieval, a dated usage
+ranking, and a contextual creator/owner follow-up retaining the date window and usage order.
+Matching post-correction traces and every displayed value have not been independently checked.
+The original combined single-turn two-scope request remains unresolved; this is not universal
+query correctness, a load benchmark, or a multi-model validation claim.
 
 The Studio model selector showed GPT-4.1 despite raw YAML retaining a reasoning-model hint.
 Native Studio parsing had dropped `aISettings` and topic bodies. Corrected YAML serialization
@@ -27,7 +28,9 @@ This is selector-backend evidence, not an independently observed rendered picker
 | Metadata-topic selection and AI-filled metadata arguments | Observed after serialization repair |
 | Successful metadata answer | User-observed catalog, corroborated by caller traces |
 | Successful provider query envelopes | Two executions, each with one ok Summary and 25 Data rows |
-| Complete new-runtime chat answer | Not verified |
+| User-visible dated ranking | User confirmed success; explicit metric, UTC anchor, dates and descending usage order |
+| Contextual creator/owner follow-up | User confirmed success; same date window and usage ordering |
+| Original combined single-turn request | Still unresolved; not superseded by narrower successful cases |
 
 Direct cases include multiple groupings/filters, a derived ratio, owner/creator aggregate counts,
 the familiar ranking, explicit dates, complete-month comparisons, a table outside the old compiler,
@@ -151,7 +154,7 @@ requests it, before testing metadata again. This is not a recommendation to gran
 change datasets, or substitute maker credentials. No generated business query was attempted
 because metadata retrieval had not completed.
 
-### User retest: the live output-contract failure persists
+### Earlier user retest: the output-contract failure persisted
 
 The user's subsequent catalog-only Studio request returned the new deterministic
 `schema_probe_output_validation` failure message: the connector returned, but the validator did
@@ -184,7 +187,7 @@ The user subsequently confirmed success at 22:55 BST: the Studio answer listed 2
 metadata retrieval after the correction. No reconnect or permission change was required to explain
 the earlier local marker loss. The raw model screenshot is not copied into this publication.
 
-### Business-query retest: generic result validation remains blocked
+### Earlier business-query retest: generic result validation failed
 
 The next user request asked for a top-20 usage ranking with creators and a top-five last-30-days
 view. Its response reported schema grounding, a generated combined expression, an initial execution
@@ -196,7 +199,7 @@ This is progress beyond the metadata blocker, not a successful ranked answer. Th
 narrative alone does not establish the exact generated DAX or provider result. Actual caller trace
 inspection is needed to distinguish provider errors from the generic path's known dynamic-type
 projection risk. No permission change or repeated user prompt is indicated by these flags.
-The generic result handling is being investigated separately from the now-successful metadata path.
+This prompted the generic result-handling investigation described next.
 
 ### Actual query trace and final dynamic-output correction
 
@@ -220,9 +223,33 @@ path passes native fractional/tiny/large numeric, integer-above-2^53, Boolean, I
 empty-string and null-omission cases. Eight direct-model regressions pass, including original
 top-100 membership/order and physical-versus-decoded cell comparisons.
 
-No post-correction caller-visible ranking has yet been observed. One original-question retest
-in the existing connected Studio session remains; no metadata-only rerun, reconnect, grants
-or dataset switch are indicated. Keep actual identity/business rows private.
+No post-correction caller-visible ranking has yet been observed. At 00:20 BST on 13 September,
+the user supplied another failure showing the same envelope-error and retry wording, and explicitly
+confirmed that it was a new response after refreshing Studio and starting a new test session.
+It must not be dismissed as an earlier answer still displayed in the pane.
+
+The next investigation correlates that execution's timestamp, actual topic contract, returned shape
+and normalized result with the published correction. Native authoring readback alone is insufficient
+to establish what ran. No additional refresh/retry, permission change, dataset switch or speculative
+type change is indicated before that reconciliation. Actual identity/business rows remain private.
+
+## User-observed success after the final correction
+
+At 00:26 BST on 13 September, the user confirmed a successful last-30-days usage ranking.
+The answer defined usage as audit-log interaction counts, used UTC anchor 12 September,
+stated the inclusive 14 August-12 September window, and displayed descending usage counts.
+The screenshot is cropped, with 19 numbered entries visible in an answer described as top 20;
+it does not establish every returned row or independently verify every number.
+
+At 00:27 BST, the user asked "now get me their creator details" and confirmed success.
+The answer resolved the reference to the previously ranked agents and retained the same
+date window and usage ordering while adding creator/owner details. This demonstrates the
+requested contextual follow-up behavior, not a field-specific fixed-query tool.
+
+No names, emails, identifiers or business values are copied here. Matching post-publication
+traces were not yet available during the bounded read-only check, so the prior combined-request
+failure is not attributed to caching, an old session or unsupported creator fields. No live/source
+changes, republishing, retests or further user requests followed these successful observations.
 
 ## Historical fixed-query evidence
 

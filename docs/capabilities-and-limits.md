@@ -1,8 +1,8 @@
 # Capabilities, metadata, and scaling limits
 
-**This is an experimental generated-DAX implementation, not a verified general conversational
-analyst.** The source contract has moved beyond the retired five-metric compiler, but successful
-cloud metadata retrieval -> generated expression -> execution -> final answer has not been observed.
+**This is an experimental generated-DAX implementation with user-observed core workflow success.**
+Metadata retrieval, a dated usage ranking and a contextual creator/owner follow-up now work in
+the reported Studio session. This does not establish correctness for every question or identity.
 
 The custom model/report called `Agent365` is not Microsoft Agent 365.
 
@@ -17,7 +17,7 @@ The custom model/report called `Agent365` is not Microsoft Agent 365.
 | Owner/creator fields | Actual metadata and requesting-user permissions | Blanket demo exclusion |
 | Dates | Generated scalar expressions over a trusted UTC anchor | Paired dates or a fixed last-30-days resolver |
 | Top-100 ranking | Generic-contract regression scenario | Specialized fixed tool |
-| Chat proof | Not achieved | User reported successful original ranking; not proof of the new path |
+| Chat evidence | User-observed dated ranking and creator follow-up; combined single-turn case unresolved | User reported successful original fixed ranking |
 
 Removing a finite list does not guarantee a correct answer to every question. Missing data, ambiguous
 definitions, permission boundaries, language constraints, and incorrect generated logic still matter.
@@ -127,7 +127,7 @@ A single Execute Queries call does not arbitrarily join separate datasets.
 ## What remains unverified
 
 - General accuracy of cloud-authored expressions across representative questions (actual generation and successful provider execution are observed for the reported ranking).
-- Successful full chat results and explanations.
+- Original combined single-turn two-scope request, complete value-by-value checks, and general answer accuracy beyond the successful dated-ranking/creator workflow.
 - Role-specific metadata access and representative RLS/OLS behavior.
 - Existing-measure implementation explanations and model-authored guidance retrieval.
 - Automatic schema drift handling, multi-model routing, realistic load, and concurrency.
@@ -144,7 +144,8 @@ uses `firstTableRows:Any` and serializes the dynamic array directly. Arbitrary g
 original numeric precision remain supported; no finite business mappings were introduced.
 Explicit `includeNulls=false` means omitted declared fields represent DAX blank/null, not absent
 schema. Empty strings remain distinct. TOJSON was rejected after observed fractional truncation.
-The metadata gate is unchanged. A post-fix caller-visible ranking still needs confirmation.
+The metadata gate is unchanged. Post-fix dated ranking and contextual creator/owner answers
+are now user-observed; the combined single-turn request is not reverified.
 
 ## Suggested evaluation matrix
 

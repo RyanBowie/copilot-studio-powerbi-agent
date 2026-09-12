@@ -17,16 +17,20 @@ This repository packages a proof of concept, its reusable agent source, and a pu
 - [Second-report scalability experiment](docs/scalability-experiment.md)
 - [Public-release checklist](docs/public-release.md)
 
-## Current status: broader design, unresolved chat verification
+## Current status: core workflow observed working
 
 The five-metric compiler and fixed business-query paths have been replaced in the deployed design.
 The new capabilities retrieve governed model metadata and accept **new DAX table expressions**
 authored by the orchestrator, rather than mapping questions to a predefined metric list.
 
-**Metadata retrieval, cloud-generated DAX and successful provider execution are now observed;
-the repaired final answer remains unverified.** Actual caller traces show two executions each
-returning one successful Summary and 25 Data rows, then local type projection erased all 26 rows.
-That was a response-handling defect, not a demonstrated permission or DAX failure.
+**The user has now observed metadata retrieval, a dated usage ranking, and a contextual
+creator/owner follow-up working in Studio.** The follow-up retained the same date window
+and usage order without a separate fixed-query tool. Identity-bearing screenshots are not published.
+
+This is scoped PoC success, not universal correctness. The earlier combined, single-turn
+two-ranking request remains unresolved; matching post-correction traces and every displayed
+value have not been independently verified. Earlier traces did establish successful provider
+queries whose rows were lost locally, leading to the response-handling correction.
 
 The published generic query action now retains `firstTableRows` as dynamic `Any` and serializes
 the array directly, preserving arbitrary generated aliases and numeric precision. Explicit

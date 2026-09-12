@@ -76,7 +76,7 @@ def main():
         if index < len(nodes) - 1:
             arrow(f"main-{index}", x + 244, 245, x + 272, 245)
     box("contract", 320, 400, 430, 150, "Governed metadata snapshot", "Owner preparation / refresh; caller visibility probe.\nNo complete business-meaning guarantee.", True)
-    box("advice", 800, 400, 560, 150, "Advice: business query is unexecuted", "Metadata authorization may still query Power BI.\nFull cloud-generated query chaining remains unverified.", True)
+    box("advice", 800, 400, 560, 150, "Advice: business query is unexecuted", "Metadata authorization may still query Power BI.\nOther query shapes still require validation.", True)
     arrow("grounding", 435, 395, 435, 340)
     arrow("advice-path", 560, 335, 870, 395)
     text("identity-note", 40, 580, "Power BI permissions and RLS follow the execution identity. Agent instructions are not an authorization boundary.", 16, 1350)

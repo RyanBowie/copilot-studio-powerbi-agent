@@ -32,4 +32,10 @@ These are screenshots of the documentation itself, not a deployed public GitHub 
 
 ## Public-release review
 
+Later user-supplied screenshots confirmed a dated usage ranking and a contextual creator/owner
+follow-up. They contain business values and, in the follow-up, real names, emails and identifiers.
+They are deliberately not copied into this repository or embedded in the site. The successful
+scenarios are documented in [verification](verification.md) without those values. The synthetic
+ranking illustration remains labeled synthetic; it is not substituted as photographic proof.
+
 Review all images at full resolution before changing repository visibility. Microsoft product UI and trademarks remain their owners' property. Publication permissions and licensing must be reviewed by the repository owner; no public release has been assumed.

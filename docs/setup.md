@@ -83,10 +83,11 @@ topic selection nor an HTTP error establishes that the complete published UI flo
 
 The automated evaluation's connection-manager card is separate from the connected Studio user.
 Metadata now succeeds, and actual caller queries returned successful envelopes before local
-projection erased their fields. After the latest dynamic-output correction, refresh Studio and
-repeat the original ranking question once in the existing connected session. Confirm ordered
-tables and date scope, or capture only status/stage/error on failure. No metadata-only rerun,
-reconnect, grants or dataset change is indicated by the observed local response-handling defect.
+projection erased their fields. After the dynamic-output correction, the user confirmed a dated
+ranking and contextual creator/owner follow-up. Preserve that working deployment. The original
+combined request remains unresolved, but no further user retry or permission change is requested.
+For your own deployment, follow the layered evaluation matrix rather than assuming those results
+transfer to another model or identity.
 
 `test-studio.cjs` uses an independent project-local browser profile and never the shared MCP browser.
 It does not enter credentials or fabricate interaction evidence.

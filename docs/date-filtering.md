@@ -55,6 +55,9 @@ subsequently replaced; its specialist top-100 query is no longer a runtime depen
 
 Direct generic-expression checks include explicit-date rankings and complete-month comparisons.
 These checks do not establish successful cloud generation, topic selection, or final chat wording.
-See [verification](verification.md) for the unresolved test routes.
+Separately, the user observed a successful dated ranking with the 14 August-12 September
+inclusive window, followed by creator details retaining that scope. This is not proof of every
+relative-date expression or source timezone. See [verification](verification.md) for evidence
+levels, the unresolved combined request, and historical test-route boundaries.
 
 [Copilot Studio date and time handling](https://learn.microsoft.com/en-us/microsoft-copilot-studio/manage-date-and-time)

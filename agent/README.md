@@ -13,7 +13,14 @@ orchestrator is configured to author **new DAX table expressions** from machine-
 Power Fx topics validate the expression boundary and build a bounded DAX execution envelope. The
 standard Power BI connector runs it with **Invoker/end-user authentication**.
 
-### Current release: generic dynamic-result correction; final caller answer still unverified
+### Current release: core workflow observed working after dynamic-result correction
+
+The user has confirmed successful metadata retrieval, a last-30-days usage ranking, and a
+contextual creator/owner follow-up retaining the same date window and usage order. The working
+deployment is preserved. This is user-observed scoped success: matching post-fix execution
+traces and every displayed value have not been independently verified. The original combined,
+single-turn two-scope request remains unresolved; no universal query-correctness claim is made.
+Real names, emails, IDs and business values from the successful screenshots are not published.
 
 Metadata success is now established by the user's Studio result and matching caller traces.
 The subsequent ranking question reached **two actual executions**. Each returned **one successful
@@ -48,10 +55,9 @@ Separate authorized direct-model checks pass for multiple filters/groupings, der
 owner/creator aggregates, dates, empty results, genuine unsupported-column errors and the original
 top-100 membership/order. These are not proof of the final caller-visible answer.
 
-**One final Studio confirmation:** refresh Studio and ask the original ranking/creator/last-30-days
-question once in the existing authenticated test pane. Confirm the returned ordered tables and
-date scope; if it fails, report only status/stage/error, not identity rows. No reconnect, new grant
-or metadata-only rerun is requested. No fresh automated conversations were started.
+**Observed confirmation:** separate dated-ranking and creator-follow-up answers now succeed in
+the user's connected Studio session. No further user run, reconnect, grant or deployment change
+is requested. The unresolved combined case is tracked in [verification](../docs/verification.md).
 
 ### Earlier metadata output-type correction
 
@@ -95,7 +101,7 @@ An error-shaped member is not an established provider denial. Actual connector e
 on the existing separate OnError path.
 
 Metadata D1 diagnostics remain available on failures; no extra metadata-only test is currently
-needed. The remaining confirmation concerns the generic query's returned and explained ranking.
+needed. Successful dated ranking and contextual creator answers are now user-observed.
 
 ### Previous change: native connector row normalization
 
@@ -158,9 +164,9 @@ metadata attempt reached the client's 120-second timeout without returned activi
 attempt, with a 300-second client budget and an explicit catalog request, returned **HTTP 504**
 (`UnexpectedError`, “An unexpected error occurred.”). Neither failure establishes an
 authentication failure or proves that the connector was reached.
-Those timeouts are historical; the latest user-observed boundary is the unresolved probe validation
-failure described above. Caller-generated queries returned successful envelopes before local
-serialization loss; the final decoded and explained ranking still needs confirmation.
+Those timeouts and the probe-validation failure are historical. Caller-generated queries returned
+successful envelopes before local serialization loss; after correction, dated ranking and creator
+follow-up answers are now user-observed successful.
 
 ### Model-selection and parser correction
 
@@ -346,7 +352,7 @@ Direct authorized checks cover:
 These are **LLM-authored test fixtures applied to the generic contract**, not evidence of cloud chat
 generation. Runtime code does not contain these business queries. Metadata-topic selection and
 AI-filled metadata arguments and caller-generated DAX execution are now observed in real traces.
-The repaired decoder's final user-facing analytical answer still needs Studio confirmation.
+The user has since confirmed successful dated-ranking and contextual creator/owner answers.
 Do not publish business rows, identity values, raw schema snapshots or fabricated screenshots.
 
 The SDK test harness previously ignored `--prompt` outside `--maker-test` and always sent a retired

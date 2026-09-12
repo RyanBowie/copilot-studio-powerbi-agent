@@ -16,9 +16,9 @@ or an access failure as proof that data does not exist.
 
 **Observed result:** after the numeric output-type correction, the user's Studio answer listed the
 model catalog, measures, snapshot freshness and relationships. Metadata retrieval now succeeds.
-The later business query's successful provider rows were lost locally; its dynamic-output repair
-still needs final caller-visible ranking confirmation. Separate automated-client authorization
-boundaries are not diagnoses of this user's connection.
+After the generic output correction, dated usage ranking and contextual creator/owner answers
+also succeeded in the user's Studio session. Separate automated-client authorization boundaries
+are not diagnoses of that user's connection.
 
 ## Multiple dimensions and filters
 
@@ -88,6 +88,12 @@ Exact measure expressions are not retained by the current metadata preparation p
 not pretend to know an existing measure's implementation merely because its name is in the catalog.
 
 ## Owner/creator questions and actual access
+
+**User-observed successful follow-up:** after receiving a dated usage ranking, the user asked
+"now get me their creator details". The answer retained the same date window and usage order,
+then added creator/owner information. The identity-bearing screenshot and values are not published.
+The earlier combined, single-turn two-scope request remains unresolved; this confirms the
+contextual follow-up, not every possible combined request.
 
 > Which fields describe an agent's creator, and can you count records with that information?
 
