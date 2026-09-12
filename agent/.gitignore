@@ -9,3 +9,5 @@ __pycache__/
 legacy/
 verification*.json
 live-*.json
+**/bin/
+**/obj/

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <Target Name="RequirePowerFxLibraries" BeforeTargets="ResolveReferences">
+    <Error Condition="'$(PowerFxLibraryDirectory)' == ''" Text="Set PowerFxLibraryDirectory to existing Microsoft Power Fx Core, Interpreter and Json DLLs." />
+  </Target>
+  <ItemGroup>
+    <Reference Include="Microsoft.PowerFx.Core"><HintPath>$(PowerFxLibraryDirectory)\Microsoft.PowerFx.Core.dll</HintPath></Reference>
+    <Reference Include="Microsoft.PowerFx.Interpreter"><HintPath>$(PowerFxLibraryDirectory)\Microsoft.PowerFx.Interpreter.dll</HintPath></Reference>
+    <Reference Include="Microsoft.PowerFx.Json"><HintPath>$(PowerFxLibraryDirectory)\Microsoft.PowerFx.Json.dll</HintPath></Reference>
+  </ItemGroup>
+</Project>

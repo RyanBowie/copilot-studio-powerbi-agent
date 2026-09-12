@@ -9,6 +9,18 @@ from studio_yaml import dumps
 
 ROOT = Path(__file__).resolve().parent
 OUTPUT = ROOT / ".generated-private"
+PROBE_STATUS_EXPRESSION = (
+    '=If(IsBlank(Topic.ProbeJson) || Topic.ProbeJson = "null" || CountRows(Topic.ProbeRows) = 0, "missing_output", '
+    'CountRows(Topic.ProbeRows) <> 1, "unexpected_row_count", '
+    'IfError(IsBlank(First(Table(ParseJSON(Topic.ProbeJson))).Value.\'[AccessProbe]\'), true), "missing_marker", '
+    'IfError(Value(First(Table(ParseJSON(Topic.ProbeJson))).Value.\'[AccessProbe]\') = 1, false), "validated", '
+    '"unexpected_marker")'
+)
+
+
+def connector_rows_json(variable):
+    # ExecuteDatasetQuery declares firstTableRows as a single-column Value/Any table.
+    return f"=JSON({variable}, JSONFormat.FlattenValueTables)"
 
 
 def fx_text(text):
@@ -34,6 +46,8 @@ def fixed_model_initialization(stage):
         set_value("stage", stage),
         set_value("Global.AnalyticsStage", stage),
         set_value("connectorAttempted", False),
+        set_value("connectorReturned", False),
+        set_value("probeResultStatus", "not_attempted"),
         set_value("visibilityVerified", False),
         set_value("resolvedModelAlias", '=Coalesce(Topic.modelAlias, "primary")', "ResolveFixedModelAlias"),
     ]
@@ -103,6 +117,8 @@ def topic(display, description, inputs, actions, examples):
             "status": {"type": "String", "description": "success, advice, rejected, or stopped; never infer success from a completed turn."},
             "stage": {"type": "String", "description": "Actual local stage. metadata_input_validation/query_input_validation happen before any connector attempt; do not call their rejections authorization failures."},
             "connectorAttempted": {"type": "Boolean", "description": "True only when execution advances to the connector node; not proof Power BI received, authorized or completed a request."},
+            "connectorReturned": {"type": "Boolean", "description": "True only after the connector node returned normally. Not proof the returned rows passed validation or that no provider-body error exists."},
+            "probeResultStatus": {"type": "String", "description": "not_attempted, missing_output, unexpected_row_count, missing_marker, unexpected_marker, or validated. A result-contract rejection is not a provider permission denial."},
             "visibilityVerified": {"type": "Boolean", "description": "True only after validating a successful caller schema-visibility probe."},
             "resolvedModelAlias": {"type": "String", "description": "Blank input resolves to primary. Nonempty invalid aliases are rejected; connector IDs never come from these inputs."},
             "error": {"type": "String", "description": "Actual contract/envelope error; no invented model absence."},
@@ -165,10 +181,13 @@ def build_metadata_topic(config, snapshot):
         set_value("Global.AnalyticsStage", "schema_visibility_probe"),
         set_value("connectorAttempted", True),
         connector(config, schema_probe(snapshot), "Topic.ProbeRows", "VerifyCallerSchemaVisibility"),
-        set_value("ProbeJson", "=JSON(Topic.ProbeRows)"),
-        reject_metadata("RequireVerifiedVisibility",
-               '=CountRows(Topic.ProbeRows) <> 1 || IfError(Value(First(Table(ParseJSON(Topic.ProbeJson))).Value.\'[AccessProbe]\') <> 1, true)',
-               "The connector step returned, but its result did not establish schema visibility. No prepared metadata is disclosed. Do not infer an authorization failure or missing fields without a provider error supporting that claim."),
+        set_value("connectorReturned", True),
+        set_value("stage", "schema_probe_output_validation"),
+        set_value("Global.AnalyticsStage", "schema_probe_output_validation"),
+        set_value("ProbeJson", connector_rows_json("Topic.ProbeRows")),
+        set_value("probeResultStatus", PROBE_STATUS_EXPRESSION),
+        stop_metadata("RequireVerifiedVisibility", '=Topic.probeResultStatus <> "validated"',
+                      "The connector returned, but metadata stopped at schema_probe_output_validation: the response did not contain exactly one usable AccessProbe=1 row. This is a probe output-contract failure, not an established Power BI permission denial. No prepared metadata was disclosed. The primary model is already selected; do not change permissions or datasets based on this result."),
         set_value("visibilityVerified", True),
         set_value("stage", "metadata_selection"),
         set_value("Global.AnalyticsStage", "metadata_selection"),
@@ -292,9 +311,10 @@ def build_query_topic(config, snapshot, advice=False):
             set_value("Global.AnalyticsStage", "query_execution"),
             set_value("connectorAttempted", True),
             connector(config, "=Topic.generatedDax"),
+            set_value("connectorReturned", True),
             set_value("stage", "query_result_validation"),
             set_value("Global.AnalyticsStage", "query_result_validation"),
-            set_value("ResultJson", "=JSON(Topic.RawRows)"),
+            set_value("ResultJson", connector_rows_json("Topic.RawRows")),
             reject("ResponseBudget", "=Len(Topic.ResultJson) > 64000 || CountRows(Topic.RawRows) > Topic.limit + 1",
                    "Result exceeds the response budget; no result is claimed. Reduce rows/columns once; do not silently truncate."),
             set_value("Envelope", "=Table(ParseJSON(Topic.ResultJson))"),

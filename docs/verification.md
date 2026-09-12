@@ -16,8 +16,9 @@ This is selector-backend evidence, not an independently observed rendered picker
 | Check | Observation |
 |---|---|
 | Owner-prepared primary metadata | 21 tables, 244 columns, 166 measure names, 13 relationships |
-| Offline expression, serialization, authoring, cleanup, and alias-repair suite | 32 Python tests |
+| Offline expression, serialization, authoring, cleanup, alias, and row-decoding suite | 37 Python tests |
 | Corrected client-harness suite | 5 tests |
+| Synthetic native Microsoft Power Fx checks | 20; null-serialization caveat below |
 | Varied direct expression cases | Eight passed against the primary model |
 | Original ranking regression | Generic-contract result matched original top-100 membership/order directly |
 | Deliberately invalid column | Actual direct Power BI error observed |
@@ -101,6 +102,51 @@ However, fresh evaluation still returned the old error/output contract three tim
 This does not establish execution of the repaired revision; the reason for that discrepancy is
 unresolved. No connector progress, effective retry cancellation, or successful ranking was observed.
 Passing offline scalar-gate tests is not native Power Fx execution evidence.
+
+### Later Studio run reaches the visibility stage
+
+A later user screenshot shows one metadata call completing in 5.10 seconds. Its final answer
+reports `stage=schema_visibility_probe`, `connectorAttempted=true`, `visibilityVerified=false`,
+and `status=rejected`. This is new evidence of the repaired diagnostic path being reached,
+rather than the previous local-input error. The screenshot does not expose the connector's
+actual returned rows or provider error, and does not establish successful metadata authorization.
+
+The investigation separates connector/provider failure from output binding or response-shape
+validation failure. The answer's generic recommendation to change permissions or choose a dataset
+is not supported by these flags alone. No permissions, model routing, or execution identity are
+changed on that basis. One completed topic is not a successful analytical answer or proof that
+every retry guard works.
+
+### Row-normalization defect repaired; latest conversation waits for connection verification
+
+The native connector declares `firstTableRows` as `Table(Value:Any)`. Default JSON serialization
+preserves a `Value` wrapper that the previous metadata and query decoders did not expect.
+Synthetic native Microsoft Power Fx execution reproduces rejection of a valid wrapped probe.
+This establishes a concrete decoder defect, but the exact pre-repair Studio caller response
+was not captured.
+
+Both normalizers now use `JSONFormat.FlattenValueTables`. Exactly one usable `AccessProbe=1`
+is still required; invalid output produces an explicit output-contract failure and ends the
+current dialog stack. The unchanged all-column probe separately returned the expected constant
+through authorized direct REST. That is not proof of the requesting user's connector access.
+
+The correction was compiled, published, and read back at 20:42:31 UTC on 12 September 2026.
+Thirty-seven Python and five Node tests pass. Twenty synthetic native Power Fx checks reproduce
+the wrapper defect and exercise marker/envelope handling. The installed JSON assembly throws
+`NotSupportedException` for its own `ParseJSON(null)` representation; that case is recorded as
+a limitation, not validation success. A separate null-marker decoder check does not establish
+Studio's actual null serialization.
+
+The latest fresh metadata-only evaluation resolves the blank alias to `primary`, passes local
+validation, and reaches a platform connection-manager card requesting credential verification.
+Its trace records `connectorAttempted=true`, `connectorReturned=false`,
+`probeResultStatus=not_attempted`, and `visibilityVerified=false`. This is a waiting conversation,
+not a completed rejected connector result. No provider denial or returned rows were observed.
+
+Use an already connected Studio session, or verify the existing Invoker connection if the platform
+requests it, before testing metadata again. This is not a recommendation to grant permissions,
+change datasets, or substitute maker credentials. No generated business query was attempted
+because metadata retrieval had not completed.
 
 ## Historical evidence is not current-runtime proof
 

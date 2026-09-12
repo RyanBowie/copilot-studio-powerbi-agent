@@ -139,8 +139,11 @@ restored GPT-5 Reasoning in native selector readback; rendered-picker state, inf
 the original UI warning remain unverified. Do not collapse these into one Power BI authentication
 diagnosis or call them a successful conversation.
 
-The later blank-alias repair is published, but fresh evaluation still returned its predecessor's
-local validation error and output contract. The runtime/source revision discrepancy remains unresolved.
+The earlier revision discrepancy remains unexplained, but later traces now confirm primary-alias
+resolution and connector-boundary progress. A native `Value`-wrapped row decoding defect was also
+repaired for metadata and generated-query results. The latest evaluation waits at a connection-manager
+verification card before any connector response. No provider denial or completed metadata result
+has been observed; the full visibility gate is unchanged.
 
 ## Suggested evaluation matrix
 

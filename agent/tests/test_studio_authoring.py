@@ -61,7 +61,8 @@ class NativeAuthoringTests(unittest.TestCase):
             {"id": "ResolveFixedModelAlias", "value": {"expressionText": 'Coalesce(Topic.modelAlias, "primary")'}}
         ]
         dialog["outputType"] = {"properties": {
-            name: {} for name in ("stage", "connectorAttempted", "visibilityVerified", "resolvedModelAlias")
+            name: {} for name in ("stage", "connectorAttempted", "connectorReturned", "probeResultStatus",
+                                 "visibilityVerified", "resolvedModelAlias")
         }}
         verify_components(self.parsed, "example", self.gpt, self.topics)
         for defect in ("default", "resolver", "provenance"):
@@ -75,6 +76,16 @@ class NativeAuthoringTests(unittest.TestCase):
                 value["outputType"]["properties"].pop("connectorAttempted")
             with self.subTest(defect=defect), self.assertRaises(RuntimeError):
                 verify_components(parsed, "example", self.gpt, self.topics)
+
+    def test_native_connector_row_normalization_is_verified(self):
+        expected = '=JSON(Topic.ProbeRows, JSONFormat.FlattenValueTables)'
+        self.topics["Metadata"]["beginDialog"]["actions"] = [{"id": "setProbeJson", "value": expected}]
+        dialog = self.parsed["botComponentChanges"][1]["component"]["dialog"]
+        dialog["beginDialog"]["actions"] = [{"id": "setProbeJson", "value": {"expressionText": expected[1:]}}]
+        verify_components(self.parsed, "example", self.gpt, self.topics)
+        dialog["beginDialog"]["actions"][0]["value"]["expressionText"] = "JSON(Topic.ProbeRows)"
+        with self.assertRaisesRegex(RuntimeError, "normalization"):
+            verify_components(self.parsed, "example", self.gpt, self.topics)
 
 
 if __name__ == "__main__":

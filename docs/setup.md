@@ -81,6 +81,11 @@ HTTP 504 and, after the later alias repair, the previous local validation error/
 A normal Studio session must still be tested; neither
 topic selection nor an HTTP error establishes that the complete published UI flow works.
 
+The latest evaluation now resolves the alias and reaches the platform's connection-manager card.
+Use an already connected Studio session or verify the existing Invoker connection when prompted,
+then test metadata before requesting a business query. Do not treat a waiting connection card or
+an output-decoding failure as grounds to grant permissions or change the configured dataset.
+
 `test-studio.cjs` uses an independent project-local browser profile and never the shared MCP browser.
 It does not enter credentials or fabricate interaction evidence.
 

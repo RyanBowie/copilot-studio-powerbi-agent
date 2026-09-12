@@ -14,9 +14,10 @@ Expected behavior: invoke metadata retrieval, complete its requesting-user visib
 answer from the prepared catalog. State snapshot freshness and avoid treating missing descriptions
 or an access failure as proof that data does not exist.
 
-**Observed boundary:** after serialization repair, the evaluator selected metadata and AI-filled its
-arguments. A later metadata attempt returned HTTP 504 without confirmed completion. The separate
-published SDK was denied before sending its prompt. Successful metadata disclosure remains unverified.
+**Observed boundary:** the latest evaluator resolves the model alias and reaches a platform
+connection-manager verification card before any connector response. Earlier timeouts and the
+separate published SDK's conversation-start denial are historical, distinct observations.
+Successful metadata disclosure remains unverified.
 
 ## Multiple dimensions and filters
 

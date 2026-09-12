@@ -64,9 +64,16 @@ def verify_components(parsed, schema_name, gpt_source, topics):
                              if action.get("id") == "ResolveFixedModelAlias"), {})
             if resolver.get("value", {}).get("expressionText") != 'Coalesce(Topic.modelAlias, "primary")':
                 raise RuntimeError("Native blank-alias runtime resolution was dropped: " + name)
-            required_outputs = {"stage", "connectorAttempted", "visibilityVerified", "resolvedModelAlias"}
+            required_outputs = {"stage", "connectorAttempted", "connectorReturned", "probeResultStatus",
+                                "visibilityVerified", "resolvedModelAlias"}
             if not required_outputs.issubset(dialog.get("outputType", {}).get("properties", {})):
                 raise RuntimeError("Native error-provenance outputs were dropped: " + name)
+        for expected_action in source_begin["actions"]:
+            if expected_action.get("id") in {"setProbeJson", "setResultJson"}:
+                actual_action = next((action for action in begin.get("actions", [])
+                                      if action.get("id") == expected_action["id"]), {})
+                if actual_action.get("value", {}).get("expressionText") != expected_action["value"].removeprefix("="):
+                    raise RuntimeError("Native connector row normalization changed: " + name)
         capabilities[name] = {"trigger": begin["$kind"], "actions": len(begin["actions"]),
                               "inputs": len(dialog.get("inputs", []))}
     return {"nativeAuthoringModel": actual_model, "nativeCapabilities": capabilities,

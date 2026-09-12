@@ -13,24 +13,51 @@ orchestrator is configured to author **new DAX table expressions** from machine-
 Power Fx topics validate the expression boundary and build a bounded DAX execution envelope. The
 standard Power BI connector runs it with **Invoker/end-user authentication**.
 
-### Latest repair: blank fixed-model alias
+### Latest repair: native connector row normalization
 
-The observed "Only the onboarded primary model is available..." error came from local input
-validation before the schema-visibility connector node, not a Power BI authorization failure.
-Metadata, generated-query and advice topics now use non-prompting `AutomaticTaskInput` with
-`defaultValue: primary`, plus native initialization `Coalesce(Topic.modelAlias, "primary")`.
-Nonempty invalid aliases remain invalid; connector workspace/model IDs remain trusted configuration.
+The live connector schema declares `firstTableRows` as a single-column Power Fx table:
+`Value: Any`. Ordinary `JSON(...)` therefore produced the synthetic equivalent of
+`[{"Value":{"[AccessProbe]":1}}]`, while our decoder expected `[{"[AccessProbe]":1}]`.
+Native Microsoft Power Fx execution reproduces the resulting false visibility rejection.
+Both metadata-probe and generated-query results now use the documented
+`JSON(..., JSONFormat.FlattenValueTables)` option. No columns were removed from the probe,
+no permission check was bypassed, and connector targets/authentication are unchanged.
 
-Outputs identify `stage`, `connectorAttempted`, `visibilityVerified` and `resolvedModelAlias`.
-A connector attempt does not prove that Power BI received or authorized it. Identical failed
-metadata requests within a user message stop via `CancelAllDialogs`; an eight-attempt message
-budget permits catalog-plus-table retrieval. These guards are native-compiled, but cancellation
-has not yet been observed in chat.
+Metadata advances to `schema_probe_output_validation` only after the connector returns.
+`connectorReturned` and `probeResultStatus` distinguish that boundary from the connector node
+and identify missing output, unexpected row counts, missing markers and unexpected markers.
+Exactly one usable `AccessProbe=1` row is still required before disclosing any prepared metadata.
+An invalid response sends a deterministic output-contract error and cancels the current dialog
+stack; it does not ask users to change datasets or grant Read/Build/RLS/OLS permissions.
 
-Native authoring readback confirms the repair after publication. However, a fresh evaluation
-still returned the previous error and output contract three times, then fallback. The runtime/source
-revision discrepancy remains unresolved; caching is only a hypothesis. Neither the blank-alias
-runtime fix nor the requested dated usage/creator ranking is end-to-end verified.
+**Verification boundary:** native compilation/publication and parsed readback pass. The unchanged
+full-reference zero-row probe returns its expected constant through separate direct authorized REST
+testing; that is not chat/Invoker proof. A fresh metadata-only evaluation reaches the connector
+boundary but returns the platform's connection-manager card asking to verify credentials.
+No completed requesting-user metadata result or cloud-generated query/answer has been observed.
+This is not evidence of a Power BI provider permission denial.
+
+### Earlier repair: blank fixed-model alias
+
+The observed “Only the onboarded primary model is available…” error came from local input
+validation **before** the schema-visibility connector node. It was not a Power BI authorization
+failure. The fixed alias had been declared as a `ManualTaskInput`, but the observed topic input
+was blank. Metadata, generated-query and advice topics now use a supported non-prompting
+`AutomaticTaskInput` with `defaultValue: primary`, plus explicit native initialization
+`Coalesce(Topic.modelAlias, "primary")`. Nonempty invalid aliases are preserved and rejected;
+connector workspace/model IDs remain fixed trusted configuration.
+
+Outputs now identify `stage`, `connectorAttempted`, `visibilityVerified` and `resolvedModelAlias`.
+A connector attempt is not proof that Power BI received or authorized a request. Identical failed
+metadata requests in the same user message are stopped using `CancelAllDialogs`; an eight-attempt
+message budget also bounds metadata calls while permitting catalog-plus-table retrieval.
+These guards are native-compiled; cancellation has not yet been observed in chat.
+
+Native authoring readback confirms the new input/default, fallback, provenance outputs and terminal
+actions. An earlier evaluation returned the previous error/output contract three times and fallback;
+its revision discrepancy was not explained. The subsequent metadata-only evaluation now resolves a
+blank alias to `primary`, passes the local guard and reaches the connection-manager boundary.
+That is observed alias-routing progress, not a completed metadata or usage/creator/date answer.
 
 **Deployment is not a chat-success claim.** Unit and direct Power BI checks pass. The corrected SDK
 client now forwards custom prompts to the published endpoint, but its conversation-start request
@@ -47,7 +74,8 @@ metadata attempt reached the client's 120-second timeout without returned activi
 attempt, with a 300-second client budget and an explicit catalog request, returned **HTTP 504**
 (`UnexpectedError`, “An unexpected error occurred.”). Neither failure establishes an
 authentication failure or proves that the connector was reached.
-No cloud-generated DAX/tool-argument/result conversation has been verified.
+Those timeouts are historical; the latest observed boundary is the connection-manager card described
+above. No cloud-generated DAX/tool-argument/result conversation has been verified.
 
 ### Model-selection and parser correction
 
@@ -196,9 +224,25 @@ The current unit suite covers unrestricted expression combinations, ownership-fi
 lexer/envelope escapes, aliases/sorting/bounds, relative date expressions, shared native-template
 generation, metadata authorization gating and advice without business-query execution. Additional
 tests cover Studio-compatible YAML, native-readback rejection of dropped model/topic fields,
-obsolete-tool deletion guards, alias input gates, error provenance, retry termination and safe client
-diagnostics: **32 Python tests and 5 Node tests**. Scalar input-gate tests use a small offline
-evaluator over generated expressions, not the native Power Fx runtime.
+obsolete-tool deletion guards, blank/invalid alias input gates, error provenance, retry termination
+contracts, connector-row normalization and safe client diagnostics: **37 Python tests and 5 Node tests**. The scalar input-gate
+regressions execute a small offline evaluator over the generated expressions, not the native
+Power Fx runtime; native compilation/readback and actual chat observations are reported separately.
+
+An additional **20 synthetic native Microsoft Power Fx checks** reproduce the original Value-wrapper
+defect and exercise the exact generated marker and query-envelope expressions. Missing/duplicate/
+invalid markers and malformed envelope counts remain fail-closed. The installed JSON assembly throws
+for its own `ParseJSON(null)` representation: that specific exception is recorded explicitly, and
+the null-marker decoder is tested separately. This does not establish Studio's actual null-value
+representation or a completed connector invocation.
+
+To repeat those synthetic checks, use .NET 10 and existing Microsoft Power Fx Core, Interpreter and
+Json assemblies, including their `en-US` resource satellites. No runtime binaries are included here:
+
+```powershell
+python -c "import json,sys;from pathlib import Path;sys.path.insert(0,'tests');from test_probe_contract import native_cases;Path('native-cases.private.json').write_text(json.dumps(native_cases()),encoding='utf-8')"
+dotnet run --project tests\powerfx-contract\PowerFxContract.csproj -p:PowerFxLibraryDirectory="<existing-local-library-directory>" -- native-cases.private.json native-results.private.json
+```
 
 Direct authorized checks cover:
 
@@ -258,6 +302,7 @@ preparation, configuration, permissions and validation; it is not automatic supp
 - [System variables, including LastMessage.Id](https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-variables-about#system-variables)
 - [Primary model selection and default behavior](https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-select-agent-model)
 - [Power BI connector](https://learn.microsoft.com/en-us/connectors/powerbi/#run-a-query-against-a-dataset)
+- [Power Fx JSON and FlattenValueTables](https://learn.microsoft.com/en-us/power-platform/power-fx/reference/function-json)
 - [Execute Queries REST contract](https://learn.microsoft.com/en-us/rest/api/power-bi/datasets/execute-queries)
 - [Fabric model definition API and permission requirement](https://learn.microsoft.com/en-us/rest/api/fabric/semanticmodel/items/get-semantic-model-definition)
 

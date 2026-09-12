@@ -34,8 +34,13 @@ Rendered model-picker state, inference-model telemetry, and the original UI warn
 
 A subsequent Studio run exposed a blank model alias and repeated local validation failures, which
 the answer incorrectly blamed on Power BI. An explicit primary default, error-stage outputs, and
-metadata retry-stop guards are now published. Fresh evaluation still returned the previous error/output
-contract, so execution of that repair and successful metadata retrieval remain unconfirmed.
+metadata retry-stop guards are now published. Later traces confirm alias resolution and progress
+to the connector boundary.
+
+A separate native row-decoding defect was reproduced and repaired: the connector exposes
+`Table(Value:Any)`, so metadata and query decoders now flatten those wrappers before checking rows.
+The full visibility gate remains intact. The latest evaluation waits at the platform connection-manager
+card; no caller connector response, completed metadata retrieval, or generated ranking is yet observed.
 
 ### Deployed design
 
@@ -57,8 +62,10 @@ implementations. Preparation/refresh uses an already-authorized owner with read/
 agent users receive no new permissions.
 
 Eight varied direct-query cases passed, including combinations outside the retired compiler and a
-top-100 membership/order regression. The current offline suite comprises **32 Python tests and
-5 client-harness tests**. These are not cloud-generated conversational-query evidence.
+top-100 membership/order regression. The current offline suite comprises **37 Python tests and
+5 client-harness tests**, plus 20 synthetic native Power Fx checks. The native null-serialization
+caveat is documented in [verification](docs/verification.md). These are not cloud-generated
+conversational-query evidence.
 
 The useful top-100 presentation remains a regression goal, not a runtime business-query dependency.
 No successful new-runtime screenshot is fabricated. See [architecture](docs/architecture.md),
