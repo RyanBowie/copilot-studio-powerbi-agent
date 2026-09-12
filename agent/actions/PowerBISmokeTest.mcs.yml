@@ -1,0 +1,25 @@
+kind: TaskDialog
+modelDisplayName: Power BI smoke test
+modelDescription: Run the Power BI connectivity smoke test. No input is required. Always execute the fixed DAX query returning SmokeTest equal to 1. Never ask the user for DAX.
+inputs:
+  - kind: ManualTaskInput
+    propertyName: groupid
+    value: __WORKSPACE_ID__
+  - kind: ManualTaskInput
+    propertyName: datasetid
+    value: __DATASET_ID__
+  - kind: ManualTaskInput
+    propertyName: query
+    value: EVALUATE ROW("SmokeTest", 1)
+  - kind: ManualTaskInput
+    propertyName: impersonatedUserName
+    value: =Blank()
+outputs:
+  - propertyName: Response
+action:
+  kind: InvokeConnectorTaskAction
+  connectionReference: __CONNECTION_REFERENCE__
+  connectionProperties:
+    mode: Invoker
+  operationId: ExecuteDatasetQuery
+outputMode: All

@@ -1,0 +1,49 @@
+kind: TaskDialog
+modelDisplayName: Power BI top 100 agents by usage
+modelDescription: Get the top 100 agents by actual audited interaction count (usage, popularity, most used, highest traffic). Fixed query, no inputs or DAX required. Uses the verified Interactions measure grouped by AgentKey and AgentName through the active inventory relationship, across the full available audit window. Returns at most 100 aggregate rows, count descending with AgentKey tie-breaking, plus actual window start and end. No individual users, sessions, transcripts, or messages are returned.
+inputs:
+  - kind: ManualTaskInput
+    propertyName: groupid
+    value: __WORKSPACE_ID__
+  - kind: ManualTaskInput
+    propertyName: datasetid
+    value: __DATASET_ID__
+  - kind: ManualTaskInput
+    propertyName: query
+    value: |-
+      DEFINE
+        VAR WindowStart = [First Interaction]
+        VAR WindowEnd = [Last Interaction]
+        VAR AgentUsage =
+          FILTER(
+            SUMMARIZECOLUMNS(
+              'Agent'[AgentKey],
+              'Agent'[AgentName],
+              "InteractionCount", [Interactions]
+            ),
+            NOT ISBLANK('Agent'[AgentKey]) && [InteractionCount] > 0
+          )
+        VAR TopAgents =
+          TOPN(100, AgentUsage, [InteractionCount], DESC, 'Agent'[AgentKey], ASC)
+      EVALUATE
+        SELECTCOLUMNS(
+          TopAgents,
+          "AgentKey", 'Agent'[AgentKey],
+          "AgentName", 'Agent'[AgentName],
+          "Interactions", [InteractionCount],
+          "WindowStart", WindowStart,
+          "WindowEnd", WindowEnd
+        )
+      ORDER BY [Interactions] DESC, [AgentKey] ASC
+  - kind: ManualTaskInput
+    propertyName: impersonatedUserName
+    value: =Blank()
+outputs:
+  - propertyName: Response
+action:
+  kind: InvokeConnectorTaskAction
+  connectionReference: __CONNECTION_REFERENCE__
+  connectionProperties:
+    mode: Invoker
+  operationId: ExecuteDatasetQuery
+outputMode: All

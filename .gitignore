@@ -1,0 +1,15 @@
+# Tenant-bound deployment state must never enter this repository.
+.mcs/
+.env
+.env.*
+!.env.example
+config.local.json
+*.local.json
+*.zip
+*.har
+*.log
+node_modules/
+__pycache__/
+.venv/
+artifacts/private/
+deployment/

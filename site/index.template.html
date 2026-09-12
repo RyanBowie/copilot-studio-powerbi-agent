@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A standard Copilot Studio agent that queries Power BI and explains model-grounded DAX, without Fabric data agents. Architecture, examples, and implementation evidence.">
+  <title>Copilot Studio + Power BI | A practical agent blueprint</title>
+  <script>
+    (() => {
+      const param = new URLSearchParams(window.location.search).get("scoutTheme");
+      const theme =
+        param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --cp-bg: #f7f4ef;
+      --cp-bg-elevated: #fcfbf8;
+      --cp-surface: #ffffff;
+      --cp-surface-soft: #f5f5f5;
+      --cp-border: #dedede;
+      --cp-border-strong: #919191;
+      --cp-text: #242424;
+      --cp-text-muted: #5c5c5c;
+      --cp-text-soft: #6f6f6f;
+      --cp-accent: #b11f4b;
+      --cp-accent-hover: #9a1a41;
+      --cp-accent-soft: rgba(177, 31, 75, 0.08);
+      --cp-accent-fg: #ffffff;
+      --cp-success: #16a34a;
+      --cp-danger: #dc2626;
+      --cp-warning: #f59e0b;
+      --cp-link: #0078d4;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+      --cp-overlay: rgba(255, 255, 255, 0.8);
+      --cp-panel: rgba(255, 255, 255, 0.86);
+      --cp-panel-strong: rgba(255, 255, 255, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.55);
+      --cp-highlight: rgba(177, 31, 75, 0.12);
+    }
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --cp-bg: #3d3b3a;
+      --cp-bg-elevated: #343231;
+      --cp-surface: #292929;
+      --cp-surface-soft: #2e2e2e;
+      --cp-border: #474747;
+      --cp-border-strong: #5f5f5f;
+      --cp-text: #dedede;
+      --cp-text-muted: #919191;
+      --cp-text-soft: #b0b0b0;
+      --cp-accent: #fd8ea1;
+      --cp-accent-hover: #fb7b91;
+      --cp-accent-soft: rgba(253, 142, 161, 0.14);
+      --cp-accent-fg: #1a1a1a;
+      --cp-success: #4ade80;
+      --cp-danger: #f87171;
+      --cp-warning: #fbbf24;
+      --cp-link: #4da6ff;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+      --cp-overlay: rgba(41, 41, 41, 0.88);
+      --cp-panel: rgba(41, 41, 41, 0.72);
+      --cp-panel-strong: rgba(41, 41, 41, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.04);
+      --cp-highlight: rgba(253, 142, 161, 0.12);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+    body { margin: 0; background: var(--cp-bg); color: var(--cp-text); font-family: "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.65; }
+    a { color: var(--cp-link); text-underline-offset: 4px; }
+    button { font: inherit; cursor: pointer; }
+    :focus-visible { outline: 3px solid var(--cp-accent); outline-offset: 4px; }
+    .skip { position: absolute; top: -100px; left: 16px; z-index: 10; padding: 12px; background: var(--cp-surface); }
+    .skip:focus { top: 8px; }
+    .wrap { width: min(1160px, calc(100% - 64px)); margin: auto; }
+    header { position: sticky; top: 0; z-index: 5; background: var(--cp-bg-elevated); border-bottom: 1px solid var(--cp-border); }
+    .header-row { min-height: 72px; display: flex; align-items: center; gap: 28px; }
+    .brand { color: var(--cp-text); font-weight: 700; text-decoration: none; letter-spacing: -.02em; margin-right: auto; }
+    .brand span { display: inline-grid; place-items: center; width: 30px; height: 30px; margin-right: 8px; color: var(--cp-accent-fg); background: var(--cp-accent); border-radius: 8px; }
+    nav { display: flex; gap: 24px; font-size: 14px; }
+    nav a { color: var(--cp-text-muted); text-decoration: none; }
+    nav a:hover { color: var(--cp-accent); }
+    .icon-button { border: 1px solid var(--cp-border); background: var(--cp-surface); color: var(--cp-text); padding: 7px 12px; border-radius: .625rem; font-size: 13px; }
+    .hero { padding: 76px 0 56px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 56px; align-items: center; }
+    .eyebrow { display: block; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--cp-accent); margin-bottom: 20px; }
+    h1 { font-size: clamp(36px, 4.8vw, 60px); line-height: 1.08; letter-spacing: -.05em; margin: 0 0 24px; font-weight: 650; }
+    h1 em { color: var(--cp-accent); font-style: normal; }
+    .lead { font-size: 18px; color: var(--cp-text-muted); max-width: 580px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .button { display: inline-block; padding: 11px 20px; border-radius: .625rem; background: var(--cp-accent); border: 1px solid var(--cp-accent); color: var(--cp-accent-fg); font-weight: 600; text-decoration: none; font-size: 14px; }
+    .button:hover { background: var(--cp-accent-hover); }
+    .button.secondary { background: var(--cp-surface); color: var(--cp-text); border-color: var(--cp-border); }
+    .chat-card { background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 16px; overflow: hidden; }
+    .chat-title { border-bottom: 1px solid var(--cp-border); padding: 16px 20px; display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 13px; }
+    .small-tag { color: var(--cp-text-muted); background: var(--cp-surface-soft); border: 1px solid var(--cp-border); border-radius: 100px; padding: 3px 10px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+    .chat-body { padding: 24px; }
+    .bubble { padding: 14px 16px; border-radius: 12px; font-size: 14px; }
+    .bubble.user { background: var(--cp-accent-soft); border: 1px solid var(--cp-border); margin-left: 28px; margin-bottom: 24px; }
+    .tool-call { display: inline-flex; align-items: center; gap: 8px; color: var(--cp-text-muted); font-size: 12px; margin-bottom: 12px; }
+    .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--cp-accent); }
+    .chat-body p { font-size: 14px; margin: 0 0 12px; }
+    .footnote { font-size: 12px !important; color: var(--cp-text-muted); margin-top: 12px !important; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+    th { color: var(--cp-text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; font-weight: 600; }
+    td, th { padding: 10px 8px; border-bottom: 1px solid var(--cp-border); }
+    td:last-child, th:last-child { text-align: right; }
+    .strip { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--cp-border); border-radius: 16px; background: var(--cp-bg-elevated); }
+    .strip > div { padding: 20px 24px; }
+    .strip > div + div { border-left: 1px solid var(--cp-border); }
+    .strip strong { display: block; font-size: 15px; }
+    .strip span { font-size: 13px; color: var(--cp-text-muted); }
+    section { padding: 68px 0 0; }
+    .section-title { display: flex; justify-content: space-between; gap: 24px; align-items: end; margin-bottom: 24px; }
+    .section-title .eyebrow { margin-bottom: 8px; }
+    h2 { margin: 0; font-size: 32px; letter-spacing: -.035em; line-height: 1.2; font-weight: 650; }
+    h3 { margin: 0 0 8px; font-size: 18px; letter-spacing: -.02em; }
+    .section-copy { max-width: 700px; color: var(--cp-text-muted); margin: 16px 0 24px; }
+    .panel { background: var(--cp-surface); border: 1px solid var(--cp-border); padding: 28px; border-radius: 16px; }
+    .architecture-visual { overflow-x: auto; }
+    .flow-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; min-width: 830px; align-items: stretch; }
+    .flow-node { border: 1px solid var(--cp-border); background: var(--cp-surface-soft); padding: 20px 16px; border-radius: .625rem; position: relative; }
+    .flow-node:not(:last-child)::after { content: "\2192"; position: absolute; right: -18px; top: 44%; color: var(--cp-text-soft); }
+    .flow-node b { display: block; font-size: 14px; margin: 12px 0 8px; }
+    .flow-node small { color: var(--cp-text-muted); font-size: 12px; line-height: 1.5; display: block; }
+    .step-no { color: var(--cp-accent); font-size: 11px; font-weight: 700; letter-spacing: .08em; }
+    .branch { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+    .branch > div { border-left: 3px solid var(--cp-accent); padding: 12px 16px; background: var(--cp-accent-soft); font-size: 13px; }
+    .branch strong { display: block; margin-bottom: 4px; }
+    .three-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px; }
+    .feature { padding: 24px; }
+    .feature p { color: var(--cp-text-muted); font-size: 14px; margin-bottom: 0; }
+    .feature .step-no { display: block; margin-bottom: 12px; }
+    .example-layout { display: grid; grid-template-columns: 290px 1fr; gap: 24px; }
+    .tabs { display: flex; flex-direction: column; gap: 8px; }
+    .tab { text-align: left; padding: 16px; border-radius: .625rem; border: 1px solid var(--cp-border); background: var(--cp-surface); color: var(--cp-text); }
+    .tab[aria-selected="true"] { background: var(--cp-accent-soft); border-color: var(--cp-accent); }
+    .tab strong { display: block; font-size: 14px; }
+    .tab span { display: block; color: var(--cp-text-muted); font-size: 12px; margin-top: 4px; }
+    [hidden] { display: none !important; }
+    .prompt-box { background: var(--cp-bg-elevated); border: 1px solid var(--cp-border); border-radius: .625rem; padding: 16px; margin: 16px 0 24px; display: flex; gap: 16px; align-items: start; }
+    .prompt-box p { margin: 0; flex: 1; }
+    .copy { font-size: 12px; padding: 5px 10px; background: var(--cp-surface); color: var(--cp-text); border: 1px solid var(--cp-border); border-radius: 6px; }
+    .example-panel p, .example-panel li { font-size: 14px; }
+    .note { background: var(--cp-accent-soft); border-left: 3px solid var(--cp-accent); padding: 16px 20px; margin-top: 24px; font-size: 14px; }
+    .screen-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; align-items: start; }
+    figure { margin: 0; overflow: hidden; border: 1px solid var(--cp-border); border-radius: 16px; background: var(--cp-surface); }
+    figure img { width: 100%; display: block; height: auto; }
+    figcaption { padding: 20px; font-size: 13px; color: var(--cp-text-muted); }
+    figcaption strong { display: block; font-size: 15px; color: var(--cp-text); margin-bottom: 6px; }
+    .evidence-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .check-row { padding: 14px 0; border-bottom: 1px solid var(--cp-border); font-size: 14px; display: flex; gap: 12px; }
+    .check-row:last-child { border: none; }
+    .status { min-width: 78px; font-size: 11px; font-weight: 700; padding-top: 3px; color: var(--cp-accent); }
+    .muted { color: var(--cp-text-muted); }
+    details { border-bottom: 1px solid var(--cp-border); padding: 16px 0; }
+    summary { cursor: pointer; font-weight: 600; font-size: 15px; }
+    details p { font-size: 14px; color: var(--cp-text-muted); }
+    .release { display: flex; gap: 32px; align-items: center; justify-content: space-between; margin: 64px 0 32px; background: var(--cp-accent-soft); border: 1px solid var(--cp-border); padding: 32px; border-radius: 16px; }
+    .release p { color: var(--cp-text-muted); max-width: 680px; margin-bottom: 0; font-size: 14px; }
+    footer { padding: 24px 0 40px; font-size: 12px; color: var(--cp-text-muted); display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; border-top: 1px solid var(--cp-border); }
+    code { font-family: Consolas, "Courier New", Courier, monospace; font-size: .9em; overflow-wrap: anywhere; }
+    pre { overflow-x: auto; background: var(--cp-bg-elevated); border: 1px solid var(--cp-border); border-radius: .625rem; padding: 16px; }
+    @media (max-width: 940px) {
+      .hero { grid-template-columns: 1fr; gap: 32px; padding-top: 48px; }
+      .hero .chat-card { max-width: 600px; }
+      nav { gap: 16px; }
+      .three-grid { grid-template-columns: 1fr; }
+      .screen-grid, .evidence-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .wrap { width: calc(100% - 32px); }
+      .header-row { gap: 12px; min-height: 64px; flex-wrap: wrap; padding: 12px 0; }
+      nav { order: 3; width: 100%; font-size: 12px; justify-content: space-between; }
+      .strip, .branch, .example-layout { grid-template-columns: 1fr; }
+      .strip > div + div { border-left: 0; border-top: 1px solid var(--cp-border); }
+      .tabs { display: grid; grid-template-columns: 1fr 1fr; }
+      .section-title, .release { display: block; }
+      .section-title > a { display: inline-block; margin-top: 12px; }
+      .release .button { margin-top: 20px; }
+      .panel { padding: 20px; }
+      h2 { font-size: 28px; }
+      section { padding-top: 48px; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    @media print { header, .actions, .copy, .release { display: none; } .wrap { width: 100%; } .hero { padding-top: 12px; } section { break-inside: avoid; } }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header>
+    <div class="wrap header-row">
+      <a class="brand" href="#main"><span aria-hidden="true">P</span> Copilot Studio + Power BI</a>
+      <nav aria-label="Main navigation">
+        <a href="#architecture">Architecture</a>
+        <a href="#examples">Examples</a>
+        <a href="#screenshots">Screenshots</a>
+        <a href="#evidence">Evidence</a>
+      </nav>
+      <button id="theme-toggle" class="icon-button" type="button" aria-label="Switch color theme">Switch theme</button>
+    </div>
+  </header>
+  <main id="main" class="wrap">
+    <div class="hero">
+      <div>
+        <span class="eyebrow">A practical agent blueprint</span>
+        <h1>Your semantic model.<br>Your questions.<br><em>No Fabric data agent.</em></h1>
+        <p class="lead">A standard Copilot Studio agent that calls Power BI for analytics and helps explain DAX using the model's own definitions.</p>
+        <div class="actions">
+          <a class="button" href="#architecture">Explore the architecture</a>
+          <a class="button secondary" href="https://github.com/RyanBowie/copilot-studio-powerbi-agent">View repository</a>
+        </div>
+        <p class="footnote">Private preparation draft. Documentation is Pages-ready; no public site is enabled.</p>
+      </div>
+      <div class="chat-card">
+        <div class="chat-title"><strong>A question, not another tool</strong><span class="small-tag">Synthetic illustration</span></div>
+        <div class="chat-body">
+          <div class="bubble user">Give me the top 100 agents by usage.</div>
+          <div class="tool-call"><span class="dot"></span> Power BI query &middot; end-user connection</div>
+          <p><strong>Agents ranked by Interactions</strong><br><span class="muted">Illustrative excerpt &middot; selected reporting period</span></p>
+          <table aria-label="Synthetic ranking excerpt">
+            <thead><tr><th>Agent</th><th>Interactions</th></tr></thead>
+            <tbody><tr><td>Service Desk Demo</td><td>1,284</td></tr><tr><td>Policy Finder Demo</td><td>976</td></tr><tr><td>Onboarding Demo</td><td>811</td></tr></tbody>
+          </table>
+          <p class="footnote">Invented names and values. Three-row documentation excerpt, not a live result or a full top 100.</p>
+        </div>
+      </div>
+    </div>
+    <div class="strip">
+      <div><strong>Standard Copilot Studio</strong><span>No alternative agent runtime required.</span></div>
+      <div><strong>Existing Power BI model</strong><span>Query the semantic layer, not exported spreadsheets.</span></div>
+      <div><strong>Your execution identity</strong><span>Explicit end-user connection, no maker fallback.</span></div>
+    </div>
+    <div class="note"><strong>A custom example, not Microsoft Agent 365.</strong> The demonstration model/report happens to be named <code>Agent365</code>. It is not the Microsoft product or an official product schema. Use this pattern with other compatible Power BI models by adapting the model context, queries, configuration, and permissions.</div>
+
+    <section id="architecture">
+      <div class="section-title"><div><span class="eyebrow">01 / How it works</span><h2>A small set of capabilities.<br>Many different questions.</h2></div><a href="assets/architecture.excalidraw" download>Download editable diagram</a></div>
+      <p class="section-copy">The model contract supplies context. The tool supplies execution. The agent supplies interpretation. None of these responsibilities should be confused with the others.</p>
+      <div class="panel">
+        <div class="architecture-visual" role="img" aria-label="Authenticated user question flows through Copilot Studio, a grounded analytics tool, Power BI connector, and the semantic model. Model context supports interpretation; DAX advice can return without execution.">
+          <div class="flow-grid">
+            <div class="flow-node"><span class="step-no">01 / ASK</span><b>Business question</b><small>Natural language from an authenticated user.</small></div>
+            <div class="flow-node"><span class="step-no">02 / INTERPRET</span><b>Copilot Studio</b><small>Standard orchestrator + curated model context.</small></div>
+            <div class="flow-node"><span class="step-no">03 / PREPARE</span><b>Analytics topic</b><small>Power Fx validation and model-scoped query construction.</small></div>
+            <div class="flow-node"><span class="step-no">04 / EXECUTE</span><b>Power BI connector</b><small>Run a query against a dataset as the caller.</small></div>
+            <div class="flow-node"><span class="step-no">05 / RETURN</span><b>Semantic model</b><small>Measures and permitted data -> grounded answer.</small></div>
+          </div>
+        </div>
+        <div class="branch">
+          <div><strong>Grounding is a maintained contract</strong>Tables, columns, measures, relationships, date grain, and business meanings. Query execution alone does not discover this.</div>
+          <div><strong>DAX advice is a separate path</strong>Explain model-specific DAX without executing it. Mark suggestions as unexecuted; never imply that a measure was saved.</div>
+        </div>
+      </div>
+      <div class="three-grid">
+        <article class="panel feature"><span class="step-no">PRESERVE</span><h3>The top-100 experience</h3><p>Keep the successful ranking presentation as a regression scenario, including ordering, metric definition, and all requested rows up to the limit.</p></article>
+        <article class="panel feature"><span class="step-no">GENERALIZE</span><h3>Tools by capability</h3><p>Reuse analytics inputs across supported questions. The implemented model and input contract determine the boundaries, not a promise to answer anything.</p></article>
+        <article class="panel feature"><span class="step-no">EXPLAIN</span><h3>DAX with context</h3><p>Use real model names, explain filter context and time scope, and distinguish a query from a measure. Suggested code is not verified code.</p></article>
+      </div>
+      <div class="note"><strong>Implemented scope:</strong> five metrics; one grouping; one exact categorical filter; optional paired audit dates up to 366 days; sorting; and 1-100 aggregate groups plus a Summary row. The original three tools remain alongside reusable analytics and advice topics. The local Python compiler generates source and tests; it is not a hosted runtime service.</div>
+    </section>
+
+    <section id="examples">
+      <div class="section-title"><div><span class="eyebrow">02 / Example conversations</span><h2>Ask for an answer. Or ask how.</h2></div><span class="small-tag">Public-safe examples</span></div>
+      <p class="section-copy">These examples document the intended experience and evaluation criteria. Synthetic values are clearly marked; supported combinations and test status live in the source documentation.</p>
+      <div class="example-layout">
+        <div class="tabs" role="tablist" aria-label="Example conversations" aria-orientation="vertical">
+          <button class="tab" role="tab" id="tab-rank" aria-controls="panel-rank" aria-selected="true" tabindex="0" data-tab="rank"><strong>Rank the agents</strong><span>Preserve the initial success</span></button>
+          <button class="tab" role="tab" id="tab-analyze" aria-controls="panel-analyze" aria-selected="false" tabindex="-1" data-tab="analyze"><strong>Explore the model</strong><span>Reusable analytics inputs</span></button>
+          <button class="tab" role="tab" id="tab-dax" aria-controls="panel-dax" aria-selected="false" tabindex="-1" data-tab="dax"><strong>Help me write DAX</strong><span>Advice, without execution</span></button>
+          <button class="tab" role="tab" id="tab-limits" aria-controls="panel-limits" aria-selected="false" tabindex="-1" data-tab="limits"><strong>Know the boundary</strong><span>No invented schema or metrics</span></button>
+        </div>
+        <div class="panel example-panel" id="panel-rank" role="tabpanel" aria-labelledby="tab-rank" tabindex="0">
+          <span class="eyebrow">Question -> ranked result</span><h3>Keep the useful answer format</h3>
+          <div class="prompt-box"><p id="prompt-rank">Give me the top 100 agents by usage.</p><button class="copy" data-copy="prompt-rank" type="button">Copy</button></div>
+          <p><strong>Illustrative output:</strong> Agents ranked by audited Interactions for the selected period. Return every available requested row up to 100 and state the date scope.</p>
+          <table aria-label="Synthetic example ranked agents"><thead><tr><th>Rank</th><th>Agent</th><th>Interactions</th></tr></thead><tbody><tr><td>1</td><td>Service Desk Demo</td><td>1,284</td></tr><tr><td>2</td><td>Policy Finder Demo</td><td>976</td></tr><tr><td>3</td><td>Onboarding Demo</td><td>811</td></tr></tbody></table>
+          <p class="footnote">Synthetic three-row excerpt only. Agent names and values are invented; this table is not test evidence.</p>
+        </div>
+        <div class="panel example-panel" id="panel-analyze" role="tabpanel" aria-labelledby="tab-analyze" tabindex="0" hidden>
+          <span class="eyebrow">Question -> supported aggregation</span><h3>Reuse a capability, not a canned answer</h3>
+          <div class="prompt-box"><p id="prompt-analyze">Show usage by environment for the last complete month available in the data.</p><button class="copy" data-copy="prompt-analyze" type="button">Copy</button></div>
+          <p><strong>Expected answer contract:</strong> identify the usage metric, actual date window, supported environment grouping, ordering, and data freshness. Execute the query rather than guessing numbers.</p>
+          <p>Supported groupings include platform, environment, region, risk, activity, agent, month, day, and client host, with metric-specific restrictions. Follow with <em>"Now show the top ten agents for that same period."</em> The agent should make a new query using the same relevant date context.</p>
+          <div class="note">Evaluation scenario, not a recorded transcript. If a requested grouping or comparison is not implemented, the answer must say so.</div>
+        </div>
+        <div class="panel example-panel" id="panel-dax" role="tabpanel" aria-labelledby="tab-dax" tabindex="0" hidden>
+          <span class="eyebrow">Question -> model-grounded explanation</span><h3>Teach the query, not just its result</h3>
+          <div class="prompt-box"><p id="prompt-dax">Explain how to rank agents by Interactions in DAX using this model. Explain filter context and do not run it yet.</p><button class="copy" data-copy="prompt-dax" type="button">Copy</button></div>
+          <p>A good response uses the actual approved schema, explains why the grouping and measure fit the question, and discusses date filters and tie handling.</p>
+          <pre><code>EVALUATE
+SUMMARIZECOLUMNS(
+    'Date'[YearMonth],
+    "Sessions", [Interaction Sessions]
+)
+ORDER BY 'Date'[YearMonth]</code></pre>
+          <p class="footnote">Model-grounded illustration, not executed as shown or captured from a live answer. The actual advice topic emits the bounded compiler query with its Summary row.</p>
+          <ul><li>State whether the code is a DAX query or a measure.</li><li>Prefer existing measures with the right business definition.</li><li>Label the answer <strong>suggested DAX, not executed</strong>.</li><li>Do not claim to create or save anything in Power BI.</li></ul>
+          <p class="footnote">This integration is read-only. Model authoring is not implied by DAX guidance.</p>
+        </div>
+        <div class="panel example-panel" id="panel-limits" role="tabpanel" aria-labelledby="tab-limits" tabindex="0" hidden>
+          <span class="eyebrow">Question -> honest boundary</span><h3>Unsupported should be explicit</h3>
+          <div class="prompt-box"><p id="prompt-limits">Rank agents by customer satisfaction and include their owners' email addresses.</p><button class="copy" data-copy="prompt-limits" type="button">Copy</button></div>
+          <p><strong>Expected behavior:</strong> establish whether an approved satisfaction metric exists. Do not quietly substitute usage for satisfaction. Do not expose owner email addresses through this demonstration.</p>
+          <p>Explain the missing capability and offer a supported aggregate alternative rather than inventing fields or returning a generic unrelated-topic message.</p>
+        </div>
+      </div>
+      <div id="copy-status" class="footnote" aria-live="polite"></div>
+    </section>
+
+    <section id="screenshots">
+      <div class="section-title"><div><span class="eyebrow">03 / In Copilot Studio</span><h2>Real interface. Clear provenance.</h2></div></div>
+      <p class="section-copy">Actual user-provided screenshots from the initial three-tool PoC, cropped to the relevant interface. These show registration and consent, not successful execution or the later expanded tool set.</p>
+      <div class="screen-grid">
+        <figure><img src="__TOOLS_SCREENSHOT__" width="1254" height="369" loading="lazy" alt="Actual Copilot Studio Tools section listing Power BI governance counts, smoke test, and top 100 agents by usage."><figcaption><strong>The initial callable tools</strong>The three connector tools made the first smoke, count, and ranking scenarios available. This is a historical PoC view, not a guarantee of the latest tool inventory.</figcaption></figure>
+        <figure><img src="__CONSENT_SCREENSHOT__" width="694" height="520" loading="lazy" alt="Actual Copilot Studio Connect to continue card requesting permission to run a Power BI query using the user's credentials, with Allow and Cancel buttons."><figcaption><strong>End-user approval is explicit</strong>An environment connection can be connected while the agent still needs consent. Select an existing authorized connection rather than falling back to a maker identity.</figcaption></figure>
+      </div>
+    </section>
+
+    <section id="evidence">
+      <div class="section-title"><div><span class="eyebrow">04 / What is proven</span><h2>Evidence without overclaiming.</h2></div><a href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/docs/verification.md">Read the verification notes</a></div>
+      <div class="evidence-grid">
+        <div class="panel">
+          <h3>Observed and separately verified</h3>
+          <div class="check-row"><span class="status">DIRECT TEST</span><span>A constant-only DAX query executed successfully against the model.</span></div>
+          <div class="check-row"><span class="status">DIRECT TEST</span><span>Counts and a 100-row ranking executed using the audited Interactions metric.</span></div>
+          <div class="check-row"><span class="status">USER REPORT</span><span>The user confirmed they liked the top-100 output.</span></div>
+          <div class="check-row"><span class="status">SCREENSHOT</span><span>Callable tools and a per-agent connection approval card are visible.</span></div>
+          <div class="check-row"><span class="status">OFFLINE</span><span>The sanitized packaged source passes 12 tests.</span></div>
+          <div class="check-row"><span class="status">DIRECT TEST</span><span>Seven reusable compiled-query cases passed in the development model.</span></div>
+          <p class="footnote">The enhancement is published, but automated full chat-to-answer and live DAX-advice output remain unverified because the evaluation channel required separate approval. Direct API success is not full agent validation.</p>
+        </div>
+        <div class="panel">
+          <h3>Production questions still matter</h3>
+          <details open><summary>Does RLS automatically make this safe?</summary><p>RLS follows the actual execution identity and workspace role. Verify restricted users, Build permission, and the model's sensitive fields. Agent instructions do not enforce authorization.</p></details>
+          <details><summary>Can it answer any question?</summary><p>No guarantee. The model contract, tool input surface, and query-building logic determine what is supported. Generated DAX and business interpretation need evaluation.</p></details>
+          <details><summary>Is Fabric capacity or MCP required?</summary><p>A Fabric data agent is not required for the connector/REST route. Power BI licensing still applies. Hosted Power BI MCP is a separate optional integration; its query-generation tool has Copilot entitlement requirements.</p></details>
+          <details><summary>Are these real business results?</summary><p>The UI screenshots are real. Public example names and numbers are synthetic. No customer result rows or private conversation transcripts are published here.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section id="resources">
+      <div class="section-title"><div><span class="eyebrow">05 / Build on it</span><h2>Source, setup, and the fine print.</h2></div></div>
+      <div class="three-grid">
+        <article class="panel feature"><h3>Adapt the agent</h3><p>Start with the sanitized source, your own provisioned agent, and an approved model contract. Bind your own connection.</p><p><a href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/docs/setup.md">Setup guide</a></p></article>
+        <article class="panel feature"><h3>Understand the API</h3><p>Read the licensing, Read/Build, tenant-setting, result-limit, and response-error requirements before deployment.</p><p><a href="https://learn.microsoft.com/en-us/rest/api/power-bi/datasets/execute-queries">Microsoft Execute Queries reference</a></p></article>
+        <article class="panel feature"><h3>Inspect the connector</h3><p>The connector runs DAX. Model discovery, interpretation, validation, and answer quality are separate responsibilities.</p><p><a href="https://learn.microsoft.com/en-us/connectors/powerbi/#run-a-query-against-a-dataset">Microsoft connector reference</a></p></article>
+      </div>
+    </section>
+    <div class="release">
+      <div><h3>Prepared for public review, not publicly deployed.</h3><p>The repository starts private. Credentials, tenant-bound exports, live identifiers, and customer records are excluded. Review the source, screenshots, licensing, and evidence before changing visibility.</p></div>
+      <a class="button secondary" href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/docs/public-release.md">Release checklist</a>
+    </div>
+  </main>
+  <footer class="wrap"><span>Copilot Studio + Power BI &middot; A practical proof of concept</span><span>No external analytics &middot; No external fonts &middot; Light and dark themes</span></footer>
+  <script>
+    const themeToggle = document.getElementById("theme-toggle");
+    themeToggle.addEventListener("click", () => {
+      const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+      document.documentElement.dataset.theme = next;
+      themeToggle.textContent = next === "dark" ? "Light theme" : "Dark theme";
+    });
+    const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+    function selectTab(tab, moveFocus) {
+      tabs.forEach(item => {
+        const selected = item === tab;
+        item.setAttribute("aria-selected", String(selected));
+        item.tabIndex = selected ? 0 : -1;
+        document.getElementById(item.getAttribute("aria-controls")).hidden = !selected;
+      });
+      if (moveFocus) tab.focus();
+    }
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => selectTab(tab, false));
+      tab.addEventListener("keydown", event => {
+        let next;
+        if (event.key === "ArrowDown" || event.key === "ArrowRight") next = (index + 1) % tabs.length;
+        if (event.key === "ArrowUp" || event.key === "ArrowLeft") next = (index - 1 + tabs.length) % tabs.length;
+        if (event.key === "Home") next = 0;
+        if (event.key === "End") next = tabs.length - 1;
+        if (next !== undefined) { event.preventDefault(); selectTab(tabs[next], true); }
+      });
+    });
+    document.querySelectorAll("[data-copy]").forEach(button => {
+      button.addEventListener("click", async () => {
+        const text = document.getElementById(button.dataset.copy).textContent;
+        const status = document.getElementById("copy-status");
+        try {
+          if (!navigator.clipboard) throw new Error("Clipboard is unavailable in this browser context.");
+          await navigator.clipboard.writeText(text);
+          status.textContent = "Prompt copied.";
+        } catch (error) {
+          status.textContent = "Copy is unavailable here. Select and copy the prompt text manually.";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "tenantId": "__TENANT_ID__",
+  "environmentId": "__ENVIRONMENT_ID__",
+  "dataverseUrl": "https://__DATAVERSE_HOST__",
+  "solutionName": "__SOLUTION_NAME__",
+  "agentId": "__AGENT_ID__",
+  "schemaName": "__AGENT_SCHEMA_NAME__",
+  "connectionReference": "__CONNECTION_REFERENCE__",
+  "connectorId": "/providers/Microsoft.PowerApps/apis/shared_powerbi",
+  "workspaceId": "__WORKSPACE_ID__",
+  "datasetId": "__DATASET_ID__",
+  "reportId": "__REPORT_ID__"
+}

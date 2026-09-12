@@ -1,0 +1,10 @@
+resources.json
+node_modules/
+__pycache__/
+*.zip
+.mcs/
+.reference/
+live-*.json
+verification*.json
+*transcript*
+*runtime-log*

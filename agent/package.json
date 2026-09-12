@@ -1,0 +1,12 @@
+{
+  "name": "copilot-studio-powerbi-poc",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "test": "python -m unittest discover -s tests",
+    "test:agent": "node test-agent.cjs"
+  },
+  "dependencies": {
+    "@microsoft/agents-copilotstudio-client": "1.8.1"
+  }
+}

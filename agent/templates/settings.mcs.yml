@@ -1,0 +1,16 @@
+displayName: Power BI Query PoC
+schemaName: __AGENT_SCHEMA_NAME__
+accessControlPolicy: GroupMembership
+authenticationMode: Integrated
+authenticationTrigger: Always
+language: 1033
+configuration:
+  settings:
+    GenerativeActionsEnabled: true
+  recognizer:
+    kind: GenerativeAIRecognizer
+  gPTSettings:
+    defaultSchemaName: __AGENT_SCHEMA_NAME__.gpt.default
+  aISettings:
+    useModelKnowledge: false
+    isFileAnalysisEnabled: false

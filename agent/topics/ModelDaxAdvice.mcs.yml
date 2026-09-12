@@ -1,0 +1,298 @@
+kind: AdaptiveDialog
+modelDisplayName: Model DAX advice
+modelDescription: Write, recommend or explain DAX grounded in this Power BI model. Advice only; no data access, no connector
+  is called by this topic. The channel still uses its normal authentication. Reuses the same validated metric, grouping, exact
+  filter, audit dates, topN and sorting compiler as model analytics. Choose metric sessions and groupBy month for sessions
+  by month, interactions/platform for platform usage, etc. Returns clearly labelled UNEXECUTED DAX plus relationship/filter
+  explanation. Use for questions containing DAX, write a query, explain the formula, or help author model queries.
+inputs:
+- kind: AutomaticTaskInput
+  propertyName: metric
+  description: 'Metric: interactions (audited turns), sessions (distinct threads), users (distinct user count, never identities),
+    agents (inventory row count), environments (distinct environments represented in inventory).'
+  entity: StringPrebuiltEntity
+  shouldPromptUser: true
+- kind: AutomaticTaskInput
+  propertyName: groupBy
+  description: 'One grouping: total, platform, environment, environmentType, region, risk, activity, agent, month, day, or
+    host. Inventory metrics cannot use month/day/host.'
+  entity: StringPrebuiltEntity
+  shouldPromptUser: false
+  defaultValue: total
+- kind: AutomaticTaskInput
+  propertyName: filterBy
+  description: 'Optional single exact-equality filter: none, platform, environment (display name), environmentType, region,
+    risk, activity, agent (AgentKey), agentName (exact name, combines duplicate names), host. Use none if not requested.'
+  entity: StringPrebuiltEntity
+  shouldPromptUser: false
+  defaultValue: none
+- kind: AutomaticTaskInput
+  propertyName: filterValue
+  description: Exact text value of the requested filter, at most 128 characters. Leave blank with filterBy=none. Never use
+    DAX here.
+  entity: StringPrebuiltEntity
+  shouldPromptUser: false
+  defaultValue: ''
+- kind: AutomaticTaskInput
+  propertyName: startDate
+  description: Inclusive audit start date YYYY-MM-DD, or blank for all available audit data. Both dates required together.
+    Not supported for inventory metrics.
+  entity: StringPrebuiltEntity
+  shouldPromptUser: false
+  defaultValue: ''
+- kind: AutomaticTaskInput
+  propertyName: endDate
+  description: Inclusive audit end date YYYY-MM-DD, or blank. Range must be no more than 366 inclusive days. Do not invent
+    requested dates.
+  entity: StringPrebuiltEntity
+  shouldPromptUser: false
+  defaultValue: ''
+- kind: AutomaticTaskInput
+  propertyName: topN
+  description: Maximum aggregate groups, integer 1 through 100. Default 20. Result explicitly reports TotalGroups and HasMore.
+  entity: NumberPrebuiltEntity
+  shouldPromptUser: false
+  defaultValue: 20
+- kind: AutomaticTaskInput
+  propertyName: sortBy
+  description: value for highest metric first; group for ascending category/date order (use for time trends).
+  entity: StringPrebuiltEntity
+  shouldPromptUser: false
+  defaultValue: value
+inputType:
+  properties:
+    metric:
+      type: String
+      description: 'Metric: interactions (audited turns), sessions (distinct threads), users (distinct user count, never identities),
+        agents (inventory row count), environments (distinct environments represented in inventory).'
+      enumValues:
+      - interactions
+      - sessions
+      - users
+      - agents
+      - environments
+      isRequired: true
+    groupBy:
+      type: String
+      description: 'One grouping: total, platform, environment, environmentType, region, risk, activity, agent, month, day,
+        or host. Inventory metrics cannot use month/day/host.'
+      enumValues:
+      - total
+      - platform
+      - environment
+      - region
+      - environmentType
+      - risk
+      - activity
+      - agent
+      - month
+      - day
+      - host
+    filterBy:
+      type: String
+      description: 'Optional single exact-equality filter: none, platform, environment (display name), environmentType, region,
+        risk, activity, agent (AgentKey), agentName (exact name, combines duplicate names), host. Use none if not requested.'
+      enumValues:
+      - none
+      - platform
+      - environment
+      - environmentType
+      - region
+      - risk
+      - activity
+      - agent
+      - agentName
+      - host
+    filterValue:
+      type: String
+      description: Exact text value of the requested filter, at most 128 characters. Leave blank with filterBy=none. Never
+        use DAX here.
+    startDate:
+      type: String
+      description: Inclusive audit start date YYYY-MM-DD, or blank for all available audit data. Both dates required together.
+        Not supported for inventory metrics.
+    endDate:
+      type: String
+      description: Inclusive audit end date YYYY-MM-DD, or blank. Range must be no more than 366 inclusive days. Do not invent
+        requested dates.
+    topN:
+      type: Number
+      description: Maximum aggregate groups, integer 1 through 100. Default 20. Result explicitly reports TotalGroups and
+        HasMore.
+    sortBy:
+      type: String
+      description: value for highest metric first; group for ascending category/date order (use for time trends).
+      enumValues:
+      - value
+      - group
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent:
+    displayName: Model DAX advice
+    includeInOnSelectIntent: true
+    triggerQueries:
+    - Help me write DAX for this model
+    - Write DAX for sessions by month
+    - Recommend a DAX query
+    - Explain DAX filters and relationships
+    - How do I write a query against this semantic model?
+  actions:
+  - kind: SetVariable
+    id: setmode
+    variable: Topic.mode
+    value: dax
+  - kind: ConditionGroup
+    id: ValidateParameters
+    conditions:
+    - id: ValidateParametersInvalid
+      condition: =!(Topic.metric in ["interactions", "sessions", "users", "agents", "environments"]) || !(Topic.groupBy in
+        ["total", "platform", "environment", "region", "environmentType", "risk", "activity", "agent", "month", "day", "host"])
+        || !(Topic.filterBy in ["none", "platform", "environment", "environmentType", "region", "risk", "activity", "agent",
+        "agentName", "host"]) || !(Topic.mode in ["execute", "dax"]) || !(Topic.sortBy in ["value", "group"]) || Topic.topN
+        < 1 || Topic.topN > 100 || Topic.topN <> RoundDown(Topic.topN, 0) || Len(Topic.filterValue) > 128 || (Topic.filterBy
+        = "none" && !IsBlank(Topic.filterValue)) || (Topic.filterBy <> "none" && IsBlank(Topic.filterValue)) || IsBlank(Topic.startDate)
+        <> IsBlank(Topic.endDate)
+      actions:
+      - kind: SendActivity
+        id: ValidateParametersMessage
+        activity: I can analyze interactions, sessions, distinct-user counts, agent inventory, or inventory-environment counts.
+          Choose one supported grouping/filter (platform, environment, environmentType, region, risk, activity, agent, audit
+          month/day, or host), an integer limit 1–100, and optional paired ISO dates. I cannot execute arbitrary DAX, unknown
+          fields, owner identities, or transcripts. Please clarify the unsupported parameter.
+      - kind: EndDialog
+        id: ValidateParametersStop
+  - kind: ConditionGroup
+    id: ValidateInventoryContext
+    conditions:
+    - id: ValidateInventoryContextInvalid
+      condition: =Topic.metric in ["agents", "environments"] && (Topic.groupBy in ["month", "day", "host"] || Topic.filterBy
+        = "host" || !IsBlank(Topic.startDate))
+      actions:
+      - kind: SendActivity
+        id: ValidateInventoryContextMessage
+        activity: Inventory counts are a current snapshot. Audit dates and client hosts apply only to interaction/session/user
+          metrics. The Agent creation-date relationship is inactive, so I will not mislabel inventory counts as historical
+          usage. Choose an audit metric or remove those dimensions/dates.
+      - kind: EndDialog
+        id: ValidateInventoryContextStop
+  - kind: ConditionGroup
+    id: ValidateDates
+    conditions:
+    - id: ValidateDatesInvalid
+      condition: =!IsBlank(Topic.startDate) && (!IsMatch(Topic.startDate, "\d{4}-\d{2}-\d{2}") || !IsMatch(Topic.endDate,
+        "\d{4}-\d{2}-\d{2}") || IfError(IsBlank(DateValue(Topic.startDate, "en-US")) || IsBlank(DateValue(Topic.endDate, "en-US"))
+        || Year(DateValue(Topic.startDate, "en-US")) < 1900 || Text(DateValue(Topic.startDate, "en-US"), "yyyy-mm-dd", "en-US")
+        <> Topic.startDate || Text(DateValue(Topic.endDate, "en-US"), "yyyy-mm-dd", "en-US") <> Topic.endDate || DateValue(Topic.startDate,
+        "en-US") > DateValue(Topic.endDate, "en-US") || DateDiff(DateValue(Topic.startDate, "en-US"), DateValue(Topic.endDate,
+        "en-US")) > 365, true))
+      actions:
+      - kind: SendActivity
+        id: ValidateDatesMessage
+        activity: Please supply valid start and end dates as YYYY-MM-DD, in order, spanning at most 366 inclusive days. No
+          query has been run.
+      - kind: EndDialog
+        id: ValidateDatesStop
+  - kind: SetVariable
+    id: setMetricDax
+    variable: Topic.MetricDax
+    value: =Switch(Topic.metric, "interactions", "[Interactions]", "sessions", "[Interaction Sessions]", "users", "[Interaction
+      Users]", "agents", "COUNTROWS('Agent')", "environments", "DISTINCTCOUNT('Agent'[EnvironmentId])", "")
+  - kind: SetVariable
+    id: setGroupColumns
+    variable: Topic.GroupColumns
+    value: =Switch(Topic.groupBy, "total", "", "platform", "'Agent'[Platform]", "environment", "'Agent'[EnvironmentId], 'Agent'[EnvironmentName]",
+      "region", "'Agent'[Region]", "environmentType", "'Agent'[EnvironmentType]", "risk", "'Agent'[RiskBand]", "activity",
+      "'Agent'[ActivityStatus]", "agent", "'Agent'[AgentKey], 'Agent'[AgentName]", "month", "'Date'[YearMonth]", "day", "'Date'[Date]",
+      "host", "'Interaction'[AppHost]", "")
+  - kind: SetVariable
+    id: setGroupLabel
+    variable: Topic.GroupLabel
+    value: =Switch(Topic.groupBy, "total", """Total""", "platform", "'Agent'[Platform]", "environment", "'Agent'[EnvironmentName]",
+      "region", "'Agent'[Region]", "environmentType", "'Agent'[EnvironmentType]", "risk", "'Agent'[RiskBand]", "activity",
+      "'Agent'[ActivityStatus]", "agent", "'Agent'[AgentName]", "month", "'Date'[YearMonth]", "day", "FORMAT('Date'[Date],
+      ""yyyy-MM-dd"")", "host", "'Interaction'[AppHost]", "")
+  - kind: SetVariable
+    id: setGroupKey
+    variable: Topic.GroupKey
+    value: =Switch(Topic.groupBy, "total", """Total""", "platform", "'Agent'[Platform]", "environment", "'Agent'[EnvironmentId]",
+      "region", "'Agent'[Region]", "environmentType", "'Agent'[EnvironmentType]", "risk", "'Agent'[RiskBand]", "activity",
+      "'Agent'[ActivityStatus]", "agent", "'Agent'[AgentKey]", "month", "'Date'[YearMonth]", "day", "FORMAT('Date'[Date],
+      ""yyyy-MM-dd"")", "host", "'Interaction'[AppHost]", "")
+  - kind: SetVariable
+    id: setFilterColumn
+    variable: Topic.FilterColumn
+    value: =Switch(Topic.filterBy, "none", "", "platform", "'Agent'[Platform]", "environment", "'Agent'[EnvironmentName]",
+      "environmentType", "'Agent'[EnvironmentType]", "region", "'Agent'[Region]", "risk", "'Agent'[RiskBand]", "activity",
+      "'Agent'[ActivityStatus]", "agent", "'Agent'[AgentKey]", "agentName", "'Agent'[AgentName]", "host", "'Interaction'[AppHost]",
+      "")
+  - kind: SetVariable
+    id: setFilterDax
+    variable: Topic.FilterDax
+    value: =If(Topic.filterBy = "none", "", ", TREATAS({" & Char(34) & Substitute(Topic.filterValue, Char(34), Char(34) &
+      Char(34)) & Char(34) & "}, " & Topic.FilterColumn & ")") & If(IsBlank(Topic.startDate), "", ", DATESBETWEEN('Date'[Date],
+      DATE(" & Text(Year(DateValue(Topic.startDate, "en-US")), "0", "en-US") & "," & Text(Month(DateValue(Topic.startDate,
+      "en-US")), "0", "en-US") & "," & Text(Day(DateValue(Topic.startDate, "en-US")), "0", "en-US") & "), DATE(" & Text(Year(DateValue(Topic.endDate,
+      "en-US")), "0", "en-US") & "," & Text(Month(DateValue(Topic.endDate, "en-US")), "0", "en-US") & "," & Text(Day(DateValue(Topic.endDate,
+      "en-US")), "0", "en-US") & "))")
+  - kind: SetVariable
+    id: setBaseDax
+    variable: Topic.BaseDax
+    value: = "SELECTCOLUMNS(" & If(Topic.groupBy = "total", "ROW(""Value"", " & Topic.MetricDax & ")", "SUMMARIZECOLUMNS("
+      & Topic.GroupColumns & ", ""Value"", " & Topic.MetricDax & ")") & ", ""Group"", COALESCE(" & Topic.GroupLabel & ", ""(blank)""),
+      ""GroupKey"", COALESCE(" & Topic.GroupKey & ", ""(blank)""), ""Value"", [Value])"
+  - kind: SetVariable
+    id: setStartDax
+    variable: Topic.StartDax
+    value: =If(Topic.metric in ["agents", "environments"], "BLANK()", "CALCULATE([First Interaction]" & Topic.FilterDax &
+      ")")
+  - kind: SetVariable
+    id: setEndDax
+    variable: Topic.EndDax
+    value: =If(Topic.metric in ["agents", "environments"], "BLANK()", "CALCULATE([Last Interaction]" & Topic.FilterDax & ")")
+  - kind: SetVariable
+    id: setSortDax
+    variable: Topic.SortDax
+    value: =If(Topic.sortBy = "value", "[Value], DESC, [GroupKey], ASC", "[GroupKey], ASC")
+  - kind: SetVariable
+    id: setOrderDax
+    variable: Topic.OrderDax
+    value: =Substitute(Substitute(Topic.SortDax, ", DESC", " DESC"), ", ASC", " ASC")
+  - kind: SetVariable
+    id: setLimitText
+    variable: Topic.LimitText
+    value: =Text(Topic.topN, "0", "en-US")
+  - kind: SetVariable
+    id: setMetadataDax
+    variable: Topic.MetadataDax
+    value: ="""Metric"", """ & Topic.metric & """, ""GroupBy"", """ & Topic.groupBy & """, ""TotalGroups"", __Count, ""ReturnedGroups"",
+      MIN(__Count, " & Topic.LimitText & "), ""HasMore"", __Count > " & Topic.LimitText & ", ""WindowStart"", __Start, ""WindowEnd"",
+      __End"
+  - kind: SetVariable
+    id: setDax
+    variable: Topic.Dax
+    value: ="DEFINE VAR __Summary = FILTER(CALCULATETABLE(" & Topic.BaseDax & Topic.FilterDax & "), NOT ISBLANK([Value]) &&
+      [Value] > 0" & If(Topic.groupBy = "agent", " && [GroupKey] <> ""(blank)""", "") & ") VAR __Count = COALESCE(COUNTROWS(__Summary),
+      0) VAR __Start = " & Topic.StartDax & " VAR __End = " & Topic.EndDax & " VAR __Rows = TOPN(" & Topic.LimitText & ",
+      __Summary, " & Topic.SortDax & ") EVALUATE UNION(ROW(""RowType"", ""Summary"", ""Group"", """", ""GroupKey"", """",
+      ""Value"", BLANK(), " & Topic.MetadataDax & "), SELECTCOLUMNS(__Rows, ""RowType"", ""Data"", ""Group"", [Group], ""GroupKey"",
+      [GroupKey], ""Value"", [Value], " & Topic.MetadataDax & ")) ORDER BY [RowType] DESC, " & Topic.OrderDax
+  - kind: ConditionGroup
+    id: AdviceOnly
+    conditions:
+    - id: ReturnUnexecutedDax
+      condition: =Topic.mode = "dax"
+      actions:
+      - kind: SendActivity
+        id: ExplainDax
+        activity: 'Model-grounded DAX suggestion — NOT EXECUTED. This compiles your allowed metric/grouping/filter/date inputs.
+          Summary rows disclose result limits and the available audit window; Data rows are aggregates. Date filters use the
+          active Date-to-Interaction relationship, not the inactive Agent creation-date relationship.
+
+          ```dax
+
+          {Topic.Dax}
+
+          ```'
+      - kind: EndDialog
+        id: EndAdvice

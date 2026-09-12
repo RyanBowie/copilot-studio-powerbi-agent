@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="680" viewBox="0 0 1440 680" role="img" aria-labelledby="title desc">
+<title id="title">Copilot Studio and Power BI architecture</title>
+<desc id="desc">A user asks a question. Copilot Studio uses curated model context and a reusable analytics capability. The Power BI connector queries the model as the user. Advice-only DAX returns without execution. The custom Agent365 example is not Microsoft Agent 365.</desc>
+<style>svg{--cp-bg:#f7f4ef;--cp-surface:#ffffff;--cp-border:#dedede;--cp-text:#242424;--cp-text-muted:#5c5c5c;--cp-accent:#b11f4b;--cp-accent-soft:rgba(177,31,75,0.08);font-family:"Segoe UI",Aptos,Calibri,sans-serif}text{fill:var(--cp-text)}.box{fill:var(--cp-surface);stroke:var(--cp-border)}.branch{fill:var(--cp-accent-soft);stroke:var(--cp-accent)}.line{fill:none;stroke:var(--cp-accent);stroke-width:2}</style>
+<defs><marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" style="fill:var(--cp-accent)"/></marker></defs>
+<rect width="1440" height="680" style="fill:var(--cp-bg)"/>
+<text x="40" y="54.0" font-size="30">Copilot Studio + Power BI</text>
+<text x="40" y="97.0" font-size="17">A reusable pattern for compatible semantic models. No Fabric data agent required.</text>
+<rect x="40" y="160" width="240" height="170" rx="12" class="box"/>
+<text x="56" y="194.0" font-size="18">Business question</text>
+<text x="56" y="232.0" font-size="14">Authenticated user</text>
+<text x="56" y="253.7" font-size="14">Natural-language request</text>
+<path class="line" marker-end="url(#arrowhead)" d="M284 245 L312 245"/>
+<rect x="320" y="160" width="240" height="170" rx="12" class="box"/>
+<text x="336" y="194.0" font-size="18">Copilot Studio</text>
+<text x="336" y="232.0" font-size="14">Standard orchestrator</text>
+<text x="336" y="253.7" font-size="14">Curated model grounding</text>
+<path class="line" marker-end="url(#arrowhead)" d="M564 245 L592 245"/>
+<rect x="600" y="160" width="240" height="170" rx="12" class="box"/>
+<text x="616" y="194.0" font-size="18">Analytics topic</text>
+<text x="616" y="232.0" font-size="14">Power Fx validation</text>
+<text x="616" y="253.7" font-size="14">Model-scoped query logic</text>
+<path class="line" marker-end="url(#arrowhead)" d="M844 245 L872 245"/>
+<rect x="880" y="160" width="240" height="170" rx="12" class="box"/>
+<text x="896" y="194.0" font-size="18">Power BI connector</text>
+<text x="896" y="232.0" font-size="14">Execute DAX</text>
+<text x="896" y="253.7" font-size="14">End-user / Invoker</text>
+<path class="line" marker-end="url(#arrowhead)" d="M1124 245 L1152 245"/>
+<rect x="1160" y="160" width="240" height="170" rx="12" class="box"/>
+<text x="1176" y="194.0" font-size="18">Semantic model</text>
+<text x="1176" y="232.0" font-size="14">Approved measures</text>
+<text x="1176" y="253.7" font-size="14">Permitted result data</text>
+<rect x="320" y="400" width="430" height="150" rx="12" class="branch"/>
+<text x="336" y="434.0" font-size="18">Model contract</text>
+<text x="336" y="472.0" font-size="14">Schema, relationships, business definitions,</text>
+<text x="336" y="493.7" font-size="14">time grain and supported metrics.</text>
+<rect x="800" y="400" width="560" height="150" rx="12" class="branch"/>
+<text x="816" y="434.0" font-size="18">DAX guidance: no execution required</text>
+<text x="816" y="472.0" font-size="14">Explain model-specific DAX. Mark suggestions unexecuted.</text>
+<text x="816" y="493.7" font-size="14">Do not claim to create or save measures.</text>
+<path class="line" marker-end="url(#arrowhead)" d="M435 395 L435 340"/>
+<path class="line" marker-end="url(#arrowhead)" d="M560 335 L870 395"/>
+<text x="40" y="596.0" font-size="16">Power BI permissions and RLS follow the execution identity. Agent instructions are not an authorization boundary.</text>
+<text x="40" y="641.0" font-size="16">Example: Agent365 is a custom model/report name, not the Microsoft Agent 365 product.</text>
+</svg>

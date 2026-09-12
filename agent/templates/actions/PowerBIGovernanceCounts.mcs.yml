@@ -1,0 +1,25 @@
+kind: TaskDialog
+modelDisplayName: Power BI governance counts
+modelDescription: Get counts of agent inventory rows and environment rows visible to the requesting user. No inputs required. This is not usage or popularity; for top agents by usage, use Power BI top 100 agents by usage instead.
+inputs:
+  - kind: ManualTaskInput
+    propertyName: groupid
+    value: __WORKSPACE_ID__
+  - kind: ManualTaskInput
+    propertyName: datasetid
+    value: __DATASET_ID__
+  - kind: ManualTaskInput
+    propertyName: query
+    value: EVALUATE ROW("AgentCount", COUNTROWS('Agent'), "EnvironmentCount", COUNTROWS('Environment'))
+  - kind: ManualTaskInput
+    propertyName: impersonatedUserName
+    value: =Blank()
+outputs:
+  - propertyName: Response
+action:
+  kind: InvokeConnectorTaskAction
+  connectionReference: __CONNECTION_REFERENCE__
+  connectionProperties:
+    mode: Invoker
+  operationId: ExecuteDatasetQuery
+outputMode: All

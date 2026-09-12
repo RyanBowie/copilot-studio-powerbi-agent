@@ -1,0 +1,38 @@
+{
+  "screenshots": {
+    "available": false,
+    "reason": "Shared browser was in use; no successful output screenshot was captured."
+  },
+  "examples": [
+    {
+      "prompt": "Run the Power BI smoke test.",
+      "kind": "verified_direct_query_only",
+      "query": "EVALUATE ROW(\"SmokeTest\", 1)",
+      "output": [
+        {
+          "[SmokeTest]": 1
+        }
+      ],
+      "caveat": "Verified directly against Power BI. Not a successful chat-to-query-to-answer transcript."
+    },
+    {
+      "prompt": "Show interactions by platform for August 2026.",
+      "kind": "verified_chat_blocked",
+      "output": "Let's get you connected first ... Open connection manager ... verify your credentials. Once the connection is ready, retry your request.",
+      "sanitization": "Connection URL, conversation identifiers, account and tenant information omitted.",
+      "caveat": "This is a connection-manager card, not an analytics answer."
+    },
+    {
+      "prompt": "Write DAX for sessions by month",
+      "kind": "illustrative_unexecuted_advice",
+      "output": "EVALUATE SUMMARIZECOLUMNS('Date'[YearMonth], \"Sessions\", [Interaction Sessions])",
+      "caveat": "Model-grounded illustration; not captured from a successful user-facing response and not executed as shown."
+    },
+    {
+      "prompt": "Give me the top 100 agents by usage.",
+      "kind": "user_reported_success_without_publishable_capture",
+      "output": null,
+      "caveat": "User reported liking the original output. No agent names, usage values or invented screenshot are included."
+    }
+  ]
+}

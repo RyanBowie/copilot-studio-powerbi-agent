@@ -1,0 +1,13 @@
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnUnknownIntent
+  id: main
+  actions:
+  - kind: SendActivity
+    id: ExplainModelScope
+    activity: I could not map that request to the approved analytical schema. This model supports audited interaction turns,
+      distinct session counts, distinct-user counts (not identities), current agent inventory and inventory-environment counts.
+      You can group/filter by platform, environment, region, risk, activity or agent; audit metrics also support month/day
+      and client host. Optional paired audit dates span up to 366 days. Revenue, financial cost and product-category metrics
+      are not in the approved schema, so I cannot invent them. Which supported metric and grouping did you mean? You can also
+      ask 'Write DAX for sessions by month' for model-specific, unexecuted guidance.
