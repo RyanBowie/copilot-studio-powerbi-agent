@@ -258,7 +258,7 @@
         <article class="panel feature"><span class="step-no">GENERALIZE</span><h3>Tools by capability</h3><p>Reuse analytics inputs across supported questions. The implemented model and input contract determine the boundaries, not a promise to answer anything.</p></article>
         <article class="panel feature"><span class="step-no">EXPLAIN</span><h3>DAX with context</h3><p>Use real model names, explain filter context and time scope, and distinguish a query from a measure. Suggested code is not verified code.</p></article>
       </div>
-      <div class="note"><strong>Implemented scope:</strong> five metrics; one grouping; one exact categorical filter; optional paired audit dates up to 366 days; sorting; and 1-100 aggregate groups plus a Summary row. The original three tools remain alongside reusable analytics and advice topics. The local Python compiler generates source and tests; it is not a hosted runtime service.</div>
+      <div class="note"><strong>Implemented scope:</strong> five metrics; one grouping; one exact categorical filter; paired dates up to 366 days or a runtime last-30-days UTC-calendar resolver; sorting; and 1-100 aggregate groups plus a Summary row. Dated rankings use reusable analytics, not the fixed all-history tool. The local Python compiler generates source and tests; it is not a hosted runtime service.</div>
     </section>
 
     <section id="examples">
@@ -280,10 +280,10 @@
         </div>
         <div class="panel example-panel" id="panel-analyze" role="tabpanel" aria-labelledby="tab-analyze" tabindex="0" hidden>
           <span class="eyebrow">Question -> supported aggregation</span><h3>Reuse a capability, not a canned answer</h3>
-          <div class="prompt-box"><p id="prompt-analyze">Show usage by environment for the last complete month available in the data.</p><button class="copy" data-copy="prompt-analyze" type="button">Copy</button></div>
-          <p><strong>Expected answer contract:</strong> identify the usage metric, actual date window, supported environment grouping, ordering, and data freshness. Execute the query rather than guessing numbers.</p>
+          <div class="prompt-box"><p id="prompt-analyze">Give me the top agents and their usage over the last 30 days.</p><button class="copy" data-copy="prompt-analyze" type="button">Copy</button></div>
+          <p><strong>Expected answer contract:</strong> use reusable analytics, resolve 30 inclusive UTC calendar dates from the runtime clock, and show the requested interval separately from observed matching-event bounds. Do not substitute an all-history ranking.</p>
           <p>Supported groupings include platform, environment, region, risk, activity, agent, month, day, and client host, with metric-specific restrictions. Follow with <em>"Now show the top ten agents for that same period."</em> The agent should make a new query using the same relevant date context.</p>
-          <div class="note">Evaluation scenario, not a recorded transcript. If a requested grouping or comparison is not implemented, the answer must say so.</div>
+          <div class="note">Evaluation scenario, not a recorded successful chat. With a 12 September 2026 test clock, the requested window is 14 August-12 September inclusive. Production dates are dynamic. Observed event bounds are not refresh timestamps or proof of continuous coverage.</div>
         </div>
         <div class="panel example-panel" id="panel-dax" role="tabpanel" aria-labelledby="tab-dax" tabindex="0" hidden>
           <span class="eyebrow">Question -> model-grounded explanation</span><h3>Teach the query, not just its result</h3>
@@ -350,9 +350,10 @@ ORDER BY 'Date'[YearMonth]</code></pre>
           <div class="check-row"><span class="status">DIRECT TEST</span><span>Counts and a 100-row ranking executed using the audited Interactions metric.</span></div>
           <div class="check-row"><span class="status">USER REPORT</span><span>The user confirmed they liked the top-100 output.</span></div>
           <div class="check-row"><span class="status">SCREENSHOT</span><span>Callable tools and a per-agent connection approval card are visible.</span></div>
-          <div class="check-row"><span class="status">OFFLINE</span><span>The sanitized packaged source passes 17 tests, including scope-explanation regressions.</span></div>
+          <div class="check-row"><span class="status">OFFLINE</span><span>The sanitized packaged source passes 25 tests, including scope and relative-date regressions.</span></div>
           <div class="check-row"><span class="status">DIRECT TEST</span><span>Seven reusable compiled-query cases passed in the development model.</span></div>
-          <p class="footnote">The enhancement is published, but automated full chat-to-answer and live DAX-advice output remain unverified because the evaluation channel required separate approval. Direct API success is not full agent validation.</p>
+          <div class="check-row"><span class="status">DIRECT TEST</span><span>Five date-specific query checks passed; the fixed all-history DAX was preserved.</span></div>
+          <p class="footnote">The corrections are published, but complete chat-to-answer and live DAX-advice output remain unverified. The latest probes did not reveal an invocation trace; this is not proof of a new authentication failure. Direct API success is not full agent validation.</p>
         </div>
         <div class="panel">
           <h3>Production questions still matter</h3>

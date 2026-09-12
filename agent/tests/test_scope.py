@@ -9,13 +9,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class ScopeTests(unittest.TestCase):
-    def test_custom_demo_is_not_an_official_product_schema(self):
+    def test_runtime_omits_product_disambiguation_but_retains_scope(self):
         agent = yaml.safe_load((ROOT / "agent.mcs.yml").read_text(encoding="utf-8"))
         context = json.loads((ROOT / "model-context.json").read_text(encoding="utf-8"))
-        self.assertIn("not Microsoft Agent 365", agent["instructions"])
+        self.assertNotIn("Microsoft Agent 365", agent["instructions"])
+        self.assertNotIn("official product schema", agent["instructions"])
+        self.assertNotIn("productDisclaimer", context)
         self.assertEqual(context["exampleModelName"], "Agent365")
-        self.assertIn("NOT the Microsoft Agent 365 product", context["productDisclaimer"])
         self.assertIn("do not work unchanged", context["reuseRequirement"])
+        self.assertIn("Reuse with other models requires adapting schema, DAX, permissions and configuration", agent["instructions"])
 
     def test_authentication_and_orchestration(self):
         settings = yaml.safe_load((ROOT / "settings.mcs.yml").read_text())

@@ -28,11 +28,11 @@ Any image captioned "synthetic" or "illustrative" is a documentation illustratio
 
 ## Generalized enhancement
 
-The same agent was updated and published with reusable analytics, DAX advice, model clarification, and the explicit custom-`Agent365` disclaimer. The original top-100 tool and existing connection were preserved.
+The same agent was updated and published with reusable analytics, DAX advice, and model clarification. The original top-100 tool and existing connection were preserved. The custom-`Agent365` naming distinction now belongs to the README/public documentation, not runtime instructions.
 
 | Check | Recorded result |
 |---|---|
-| Offline validation of packaged sanitized source | **17 tests passed**, rerun from this repository's `agent` folder |
+| Offline validation of packaged sanitized source | **25 tests passed**, rerun from this repository's `agent` folder |
 | Reusable analytics direct-query cases | **Seven passed** in the development model, as recorded by the implementation handoff |
 | Original smoke/count/ranking regressions | Passed directly; original top-100 source preserved |
 | Publication and private solution-export consistency | Confirmed by implementation handoff; private export deliberately not included |
@@ -60,6 +60,20 @@ Owner/creator details remain outside the demonstration's tools, without assertin
 The implementation handoff verified the user's selected cloud reasoning model and authentication/Invoker connection state before and after deployment; they were unchanged. Protected specialized queries and top-100 wording were preserved.
 
 The 17 offline tests include explanation/guardrail assertions and generated-source parity; they are not live conversation evidence. Three fixed and seven reusable direct-query regressions passed. Previously blocked chat channels were not repeatedly retried, and no new full-chat pass is claimed.
+
+## Date-routing correction and documentation-only naming note
+
+Published and synchronized on 12 September 2026. The fixed ranking's broad description conflicted with the reusable date route, and relative dates had depended on supplied ISO strings rather than a deterministic resolver.
+
+The corrected runtime routes dated/filtered rankings to ModelAnalytics, resolves `last30Days` using a captured UTC calendar clock, rejects unresolved/conflicting dates, and reports requested bounds separately from observed event bounds. The original fixed ranking DAX is unchanged.
+
+The latest suite passes 25 tests in the packaged source. Three fixed, seven reusable, and five date-specific direct queries passed. These do not prove successful live topic selection or final-answer behavior.
+
+The exact capability selected in the user's failed screenshot remains unproven. An attempted advice probe returned no activities, a conversation read returned 404, and the shared authenticated browser was unavailable. No new authentication-failure diagnosis or chat E2E success is inferred.
+
+The user's selected cloud reasoning model and Invoker configuration were preserved. Product-disambiguation prose was removed from runtime instructions and the runtime grounding disclaimer field; actual schema and business definitions remain. The README/site retain the explanation.
+
+See [date filtering](date-filtering.md) for supported inputs, calendar conventions, example boundaries, and evidence limits.
 
 ## Limits of the evidence
 

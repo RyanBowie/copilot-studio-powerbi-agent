@@ -33,6 +33,16 @@ inventory environments. One grouping, one exact categorical filter, optional pai
 dates (maximum 366 days), and 1-100 returned aggregate groups are supported. The query includes an
 additional Summary row with TotalGroups, ReturnedGroups, HasMore and time-window bounds.
 
+`relativePeriod=last30Days` resolves 30 inclusive UTC calendar dates from the runtime clock,
+including today; do not combine it with explicit dates. RequestedStartDate/RequestedEndDate are
+separate from observed WindowStart/WindowEnd. The source event timezone is unverified; UTC is
+the declared date-anchor convention. Unknown or unresolved periods stop for clarification rather
+than widening to all history. See `..\docs\date-filtering.md`.
+
+Any date/filter/alternative-limit ranking uses ModelAnalytics. The fixed top-100 tool is reserved
+for the unfiltered all-history scenario; its original DAX is unchanged. The Agent365 product-naming
+clarification remains in this README and public documentation, not in runtime instructions.
+
 No arbitrary DAX execution, mutable model IDs, owner/user identities, transcripts, raw session IDs,
 anonymous endpoint, or maker-credential fallback is exposed. Inventory counts are current snapshots,
 not historical inventory. Distinct counts across groups are not necessarily additive.
@@ -69,8 +79,8 @@ deployment; protected specialized tools are not silently overwritten.
 
 ## Validation status and limitations
 
-The sanitized source passes **17 offline tests**, including scope-explanation regressions. Seven compiled analytics scenarios and the
-original regressions passed directly in the development model. These are not full runtime
+The sanitized source passes **25 offline tests**, including scope and date regressions. Three fixed,
+seven reusable, and five date-specific queries passed directly in the development model. These are not full runtime
 conversation tests.
 
 The implementation's unit tests and direct compiled-query cases passed in its original environment.
@@ -80,6 +90,10 @@ will work without configuration, model validation and consent.
 Automated chat-to-query-to-answer and live DAX-advice output were not fully verified. The evaluation
 channel requested per-agent connection approval; a separate published invocation route lacked its
 required first-party preauthorization. No permission bypass or maker fallback was used.
+
+For the latest date correction, the shared authenticated browser was unavailable, a connector-free
+advice probe returned no activities, and an existing-conversation read returned 404. Those observations
+do not prove an authentication failure, tool invocation, or a full chat pass.
 
 The latest scope correction distinguishes approved-tool restrictions, unknown full-model metadata,
 verified absence, and actual access errors. Owner/creator requests receive a scope explanation,

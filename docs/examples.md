@@ -50,6 +50,7 @@ The deployed reusable topic supports five metrics, one grouping, one exact categ
   "groupBy": "platform",
   "filterBy": "none",
   "filterValue": "",
+  "relativePeriod": "none",
   "startDate": "2026-08-01",
   "endDate": "2026-08-31",
   "topN": 20,
@@ -59,6 +60,17 @@ The deployed reusable topic supports five metrics, one grouping, one exact categ
 ```
 
 The answer should use the Summary row to state the actual audit window and whether more groups exist, rather than inferring completeness from the displayed row count.
+
+### Last-30-days ranking
+
+> Give me the top agents and their usage over the last 30 days.
+
+Use the reusable analytics route, not the fixed all-history ranking. Resolve the 30 inclusive UTC
+calendar dates from the invocation clock, and display the requested period separately from observed
+event bounds. On the test date of 12 September 2026, the requested window is 14 August through
+12 September inclusive. This is a test fixture, not a fixed production interval.
+
+No complete successful chat transcript is claimed for this scenario; see [date filtering and verification](date-filtering.md).
 
 ## Model-grounded DAX help
 

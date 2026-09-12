@@ -17,7 +17,7 @@ This is a proof of **bounded model-grounded analytics**, not yet a benchmark of 
 | Execute DAX without a Fabric data agent | Yes, through the Power BI connector/API | Direct query execution demonstrated |
 | Preserve the initial top-100 experience | Yes, a dedicated approved tool remains | Direct ranking test and user-reported successful output |
 | Answer different questions using the same capability | Yes, through structured analytics inputs | Five metrics, one grouping, one exact categorical filter |
-| Use audit-date ranges | Yes, paired inclusive dates up to 366 days | Applies to usage metrics, not historical inventory |
+| Use audit-date ranges | Yes, paired inclusive dates up to 366 days; `last30Days` has a runtime UTC-calendar resolver | Applies to usage metrics, not historical inventory; unresolved periods never fall back to all history |
 | Bound and describe results | Yes, up to 100 aggregate groups plus a Summary row | Total groups, returned groups, `HasMore`, and actual audit bounds |
 | Help write DAX for this model | Yes, a connector-free topic uses the approved compiler | Advice is marked unexecuted; live answer quality is not fully verified |
 | Execute arbitrary DAX supplied by an LLM or user | No | Deliberately not exposed |
@@ -135,12 +135,16 @@ For cross-model comparisons, run separate queries and align time windows, units,
 | 120 requests per minute per user | Power BI API | Not an agent-throughput benchmark |
 | 100 connector calls per connection per 60 seconds | Power BI connector reference | Additional connector constraint; check current documentation |
 | Five metrics, one grouping, one exact categorical filter | This PoC | Could be extended, but is not a Power BI limitation |
-| Up to 100 aggregate groups plus Summary | This PoC | A bounded output contract, not the API's maximum |
+| Up to 100 aggregate groups plus Summary | This PoC | A bounded output contract with requested versus observed dates, not the API's maximum |
 | Paired audit-date range up to 366 days | This PoC | Applies when dates are supplied; omitted dates use available audit data |
 | Excluded identity/transcript fields | This PoC | Does not imply those fields are absent from a model |
 | One configured model | This PoC | No multi-model routing implemented yet |
 
 These limits do not predict total response latency or safe concurrency. Model size, measure complexity, capacity, caching, metadata size, retries, identity, and orchestration all affect performance.
+
+Relative dates currently have one explicit automated period: 30 inclusive UTC calendar dates including
+the invocation day. Other unresolved periods/timezone conventions must clarify rather than silently
+run all history. The source-event timezone remains unverified. See [date-filter behavior](date-filtering.md).
 
 ## How to measure scalability honestly
 

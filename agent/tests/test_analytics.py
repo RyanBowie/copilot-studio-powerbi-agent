@@ -86,10 +86,10 @@ class AnalyticsTests(unittest.TestCase):
         actions = generated["beginDialog"]["actions"]
         ids = [a["id"] for a in actions]
         query_index = ids.index("ExecuteStructuredQuery")
-        for guard in ("ValidateParameters", "ValidateInventoryContext", "ValidateDates", "AdviceOnly"):
+        for guard in ("ValidateRelativePeriod", "ValidateRelativeCalendar", "RequireRequestedDates", "ValidateParameters", "ValidateInventoryContext", "ValidateDates", "AdviceOnly"):
             self.assertLess(ids.index(guard), query_index)
         self.assertEqual(actions[0]["value"], "execute")
-        for guard in actions[1:4]:
+        for guard in (a for a in actions[:query_index] if a["id"].startswith("Validate") or a["id"] == "RequireRequestedDates"):
             kinds = [a["kind"] for a in guard["conditions"][0]["actions"]]
             self.assertEqual(kinds[-1], "EndDialog")
         call = actions[query_index]

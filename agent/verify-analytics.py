@@ -34,6 +34,7 @@ def main():
         assert all(set(row) <= {
             "[RowType]", "[Group]", "[GroupKey]", "[Value]", "[Metric]", "[GroupBy]",
             "[TotalGroups]", "[ReturnedGroups]", "[HasMore]", "[WindowStart]", "[WindowEnd]",
+            "[RequestedStartDate]", "[RequestedEndDate]", "[RelativePeriod]", "[DateConvention]",
         } for row in rows)
         if "nonexistent" in parameters.get("filterValue", ""):
             assert not data, "Escaped injection-like value must not become executable DAX."

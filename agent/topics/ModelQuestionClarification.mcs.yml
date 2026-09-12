@@ -19,12 +19,13 @@ beginDialog:
         id: EndIdentityScope
   - kind: SendActivity
     id: ExplainModelScope
-    activity: I could not map that request to this PoC's approved tool contract. These tools support audited interaction turns,
-      distinct session counts, distinct-user counts (not identities), current agent inventory and inventory-environment counts.
-      You can group/filter by platform, environment, region, risk, activity or agent; audit metrics also support month/day
-      and client host. Optional paired audit dates span up to 366 days. Revenue, financial cost and product-category metrics
-      are outside this approved subset. Unavailable through this PoC's approved tools does not establish whether a field exists
-      in the underlying custom semantic model. Only authoritative full current-version metadata with sufficient visibility
-      can prove absence; this subset, errors and empty results cannot. Actual permission errors are access issues, not model
-      absence. If you want an approved aggregate, specify its metric and grouping. You can also ask 'Write DAX for sessions
-      by month' for approved, unexecuted guidance.
+    activity: 'I could not map that request to this PoC''s approved tool contract. These tools support audited interaction
+      turns, distinct session counts, distinct-user counts (not identities), current agent inventory and inventory-environment
+      counts. You can group/filter by platform, environment, region, risk, activity or agent; audit metrics also support month/day
+      and client host. Dated agent rankings are available now: paired inclusive dates (maximum 366 days), or last 30 days
+      ending today using the UTC calendar. No all-history substitute is used for an unresolved date window. Revenue, financial
+      cost and product-category metrics are outside this approved subset. Unavailable through this PoC''s approved tools does
+      not establish whether a field exists in the underlying custom semantic model. Only authoritative full current-version
+      metadata with sufficient visibility can prove absence; this subset, errors and empty results cannot. Actual permission
+      errors are access issues, not model absence. If you want an approved aggregate, specify its metric and grouping. You
+      can also ask ''Write DAX for sessions by month'' for approved, unexecuted guidance.'

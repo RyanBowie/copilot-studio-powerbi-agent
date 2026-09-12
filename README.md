@@ -36,13 +36,15 @@ The implementation preserves the smoke-test, governance-count, and top-100-agent
 | Metric | Audited interaction turns, distinct sessions, distinct-user counts, inventory agent rows, distinct inventory environments |
 | Grouping | One of total, platform, environment, environment type, region, risk, activity, agent, month, day, or client host |
 | Filter | One exact categorical filter using an approved field; filter text is escaped |
-| Dates | Paired inclusive audit dates, up to 366 days; omit both for all available audit data |
-| Results | 1-100 aggregate groups plus a Summary row with total groups, returned groups, truncation indicator, and actual audit bounds |
+| Dates | Paired inclusive dates up to 366 days, or `last30Days` resolved from the runtime UTC calendar date; unresolved date requests never fall back to all history |
+| Results | 1-100 aggregate groups plus a Summary row with counts, truncation, requested dates, and separate observed-event bounds |
 | DAX advice | The same model-specific compiler returns suggested DAX without calling Power BI |
 
 Inventory metrics are current snapshots, not historical inventory. Inventory does not support audit-date or client-host slicing. Zero/blank metric groups are excluded. Multiple simultaneous categorical filters, arbitrary calculations, and automatic schema discovery are not implemented.
 
-**Verification:** the sanitized source passes 17 offline tests, including scope-explanation regressions. Seven compiled analytics cases and the original query regressions passed directly in the development model. Automated full chat-to-answer and live DAX-advice responses remain unverified because the evaluation channel requested separate connection approval. The user's successful top-100 observation is recorded separately.
+**Verification:** the sanitized source passes 25 offline tests, including scope explanations and relative-date boundaries. Three fixed, seven reusable, and five date-specific queries passed directly in the development model. Full chat-to-answer and live DAX-advice responses remain unverified; the latest probes did not expose an execution trace. The user's successful unfiltered top-100 observation is recorded separately.
+
+Filtered rankings use the reusable analytics topic. The fixed top-100 tool is reserved for the original unfiltered all-history request. See [date-filter behavior and evidence](docs/date-filtering.md) for the last-30-days convention and its limits.
 
 ## Repository layout
 

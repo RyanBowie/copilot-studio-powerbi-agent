@@ -1,13 +1,14 @@
 kind: AdaptiveDialog
 modelDisplayName: Model analytics
-modelDescription: 'Execute reusable aggregate analytics over the approved analytical subset, not the full model schema: totals,
-  rankings, categorical breakdowns, filtered and date-windowed interaction/session/user aggregates, current agent/environment
-  inventory breakdowns and time trends. Use this SAME capability for materially different data questions by setting structured
-  inputs, never raw DAX. Supports one grouping, one exact categorical filter, one inclusive audit date range, topN 1–100.
-  This is a DATA EXECUTION capability, not a DAX-writing capability. For approved DAX advice without execution, select Model
-  DAX advice instead. Unknown metrics/columns and unsafe inputs are rejected in executable validation. For owner/creator identities
-  or questions about field existence, explain approved-tool scope without calling this topic or requesting grouping parameters.
-  Tool exclusions do not establish model absence. Preserve the specialized top-100 tool for the unfiltered top-100-agent request.'
+modelDescription: 'Run approved analytics NOW, including TOP AGENTS FOR THE LAST 30 DAYS, explicit-date rankings, categorical
+  filters, alternative metrics and limits 1–100. For usage ranking: metric=interactions, groupBy=agent, sortBy=value, topN=20
+  unless specified (100 for dated top100). For last 30 days set relativePeriod=last30Days, startDate/endDate blank: executable
+  UTC-clock resolver supplies the inclusive dates. Never substitute all history or claim this capability is future work. The
+  fixed top100 tool is ONLY for the exact undated/unfiltered all-history top100 experience. This reusable DATA EXECUTION capability
+  compiles validated inputs over an approved subset, not full model schema. It supports one grouping, one exact categorical
+  filter, explicit audit dates or the controlled relative period. For advice only use Model DAX advice. For owner/creator
+  identities or field-existence questions explain scope without querying or asking grouping parameters. Tool exclusions do
+  not establish model absence.'
 inputs:
 - kind: AutomaticTaskInput
   propertyName: metric
@@ -38,8 +39,8 @@ inputs:
   defaultValue: ''
 - kind: AutomaticTaskInput
   propertyName: startDate
-  description: Inclusive audit start date YYYY-MM-DD, or blank for all available audit data. Both dates required together.
-    Not supported for inventory metrics.
+  description: Explicit inclusive audit start date YYYY-MM-DD, paired with endDate. Leave BOTH blank for relativePeriod=last30Days;
+    runtime resolves dates. Never invent absolute dates for a relative request.
   entity: StringPrebuiltEntity
   shouldPromptUser: false
   defaultValue: ''
@@ -50,6 +51,14 @@ inputs:
   entity: StringPrebuiltEntity
   shouldPromptUser: false
   defaultValue: ''
+- kind: AutomaticTaskInput
+  propertyName: relativePeriod
+  description: 'none for explicit dates or a truly undated request; last30Days for last/past/trailing 30 calendar days INCLUDING
+    today, resolved from the trusted UTC runtime clock, never the latest event. Leave startDate/endDate blank with last30Days.
+    clarify for unsupported/ambiguous relative periods: validation stops rather than querying all history.'
+  entity: StringPrebuiltEntity
+  shouldPromptUser: false
+  defaultValue: none
 - kind: AutomaticTaskInput
   propertyName: topN
   description: Maximum aggregate groups, integer 1 through 100. Default 20. Result explicitly reports TotalGroups and HasMore.
@@ -112,12 +121,21 @@ inputType:
         use DAX here.
     startDate:
       type: String
-      description: Inclusive audit start date YYYY-MM-DD, or blank for all available audit data. Both dates required together.
-        Not supported for inventory metrics.
+      description: Explicit inclusive audit start date YYYY-MM-DD, paired with endDate. Leave BOTH blank for relativePeriod=last30Days;
+        runtime resolves dates. Never invent absolute dates for a relative request.
     endDate:
       type: String
       description: Inclusive audit end date YYYY-MM-DD, or blank. Range must be no more than 366 inclusive days. Do not invent
         requested dates.
+    relativePeriod:
+      type: String
+      description: 'none for explicit dates or a truly undated request; last30Days for last/past/trailing 30 calendar days
+        INCLUDING today, resolved from the trusted UTC runtime clock, never the latest event. Leave startDate/endDate blank
+        with last30Days. clarify for unsupported/ambiguous relative periods: validation stops rather than querying all history.'
+      enumValues:
+      - none
+      - last30Days
+      - clarify
     topN:
       type: Number
       description: Maximum aggregate groups, integer 1 through 100. Default 20. Result explicitly reports TotalGroups and
@@ -132,8 +150,9 @@ outputType:
   properties:
     result:
       type: Any
-      description: 'Actual connector aggregate rows: one Summary and up to 100 Data rows. Present a readable table; disclose
-        HasMore and audit window.'
+      description: 'One Summary and up to 100 Data rows. Agent rankings: numbered table in returned order, all requested available
+        rows up to topN. Disclose requested dates separately from observed-event bounds, HasMore and DateConvention. Empty
+        audit window means no matching recorded events, never no activity or permission to widen dates.'
     generatedDax:
       type: String
       description: Exact validated DAX sent to the connector. Only describe as executed if actual result rows were returned.
@@ -152,11 +171,82 @@ beginDialog:
     - Count agents by risk band
     - Analyze usage for a date range
     - Show distinct user counts by client host
+    - Give me the top agents and their usage over the last 30 days
+    - Show top 100 agents between 2026-08-14 and 2026-09-12
+    - Show the top 10 agents by sessions filtered to a platform
   actions:
   - kind: SetVariable
     id: setmode
     variable: Topic.mode
     value: execute
+  - kind: SetVariable
+    id: setClockUtc
+    variable: Topic.ClockUtc
+    value: =Now()
+  - kind: SetVariable
+    id: setRequestText
+    variable: Topic.RequestText
+    value: =Lower(Coalesce(System.Activity.Text, ""))
+  - kind: SetVariable
+    id: setrelativePeriod
+    variable: Topic.relativePeriod
+    value: =If(Topic.relativePeriod = "none" && IsMatch(Topic.RequestText, "\b(last|past|trailing)[ -]+(30|thirty)[ -]+(calendar[
+      -]+)?days?\b", MatchOptions.Contains), "last30Days", Topic.relativePeriod)
+  - kind: ConditionGroup
+    id: ValidateRelativePeriod
+    conditions:
+    - id: ValidateRelativePeriodInvalid
+      condition: =!(Topic.relativePeriod in ["none", "last30Days"]) || (Topic.relativePeriod = "last30Days" && (!IsBlank(Topic.startDate)
+        || !IsBlank(Topic.endDate)))
+      actions:
+      - kind: SendActivity
+        id: ValidateRelativePeriodMessage
+        activity: Choose explicit paired dates OR last30Days, not both. Last 30 days uses 30 inclusive UTC calendar dates
+          ending today, not the latest recorded event. Other relative periods need clarification/explicit dates. No query
+          or all-history substitute is run.
+      - kind: EndDialog
+        id: ValidateRelativePeriodStop
+  - kind: ConditionGroup
+    id: ValidateRelativeCalendar
+    conditions:
+    - id: ValidateRelativeCalendarInvalid
+      condition: =Topic.relativePeriod = "last30Days" && IsMatch(Topic.RequestText, "\b(local|bst|london|pacific|eastern|cet|cest|est|edt|pst|pdt)\b|\blatest\s+available\b",
+        MatchOptions.Contains)
+      actions:
+      - kind: SendActivity
+        id: ValidateRelativeCalendarMessage
+        activity: The relative resolver uses today's UTC calendar, not local time or the latest available event. Please confirm
+          explicit start/end dates for a different calendar or anchor. No query has run.
+      - kind: EndDialog
+        id: ValidateRelativeCalendarStop
+  - kind: ConditionGroup
+    id: RequireRequestedDates
+    conditions:
+    - id: RequireRequestedDatesInvalid
+      condition: =Topic.relativePeriod = "none" && IsBlank(Topic.startDate) && IsBlank(Topic.endDate) && IsMatch(Topic.RequestText,
+        "\b(last|past|trailing|previous|today|yesterday|this month|this year|latest available)\b|\b(since|between|from)\s+\d|\b\d{4}-\d{2}-\d{2}\b|\b(in|during|for)\s+(january|february|march|april|may|june|july|august|september|october|november|december)\b",
+        MatchOptions.Contains)
+      actions:
+      - kind: SendActivity
+        id: RequireRequestedDatesMessage
+        activity: 'Your question requests a date window, but no supported interval was resolved. I can run dated rankings
+          now: specify paired YYYY-MM-DD dates, or last 30 days using the UTC calendar. I will not substitute all-history
+          results.'
+      - kind: EndDialog
+        id: RequireRequestedDatesStop
+  - kind: SetVariable
+    id: setAnchorUtcDate
+    variable: Topic.AnchorUtcDate
+    value: =Date(Year(Topic.ClockUtc), Month(Topic.ClockUtc), Day(Topic.ClockUtc))
+  - kind: SetVariable
+    id: setstartDate
+    variable: Topic.startDate
+    value: =If(Topic.relativePeriod = "last30Days", Text(DateAdd(Topic.AnchorUtcDate, -29, TimeUnit.Days), "yyyy-mm-dd", "en-US"),
+      Topic.startDate)
+  - kind: SetVariable
+    id: setendDate
+    variable: Topic.endDate
+    value: =If(Topic.relativePeriod = "last30Days", Text(Topic.AnchorUtcDate, "yyyy-mm-dd", "en-US"), Topic.endDate)
   - kind: ConditionGroup
     id: ValidateParameters
     conditions:
@@ -283,7 +373,9 @@ beginDialog:
     variable: Topic.MetadataDax
     value: ="""Metric"", """ & Topic.metric & """, ""GroupBy"", """ & Topic.groupBy & """, ""TotalGroups"", __Count, ""ReturnedGroups"",
       MIN(__Count, " & Topic.LimitText & "), ""HasMore"", __Count > " & Topic.LimitText & ", ""WindowStart"", __Start, ""WindowEnd"",
-      __End"
+      __End, ""RequestedStartDate"", """ & Topic.startDate & """, ""RequestedEndDate"", """ & Topic.endDate & """, ""RelativePeriod"",
+      """ & Topic.relativePeriod & """, ""DateConvention"", ""UTC calendar anchor; model Date.Date as stored; source timezone
+      unverified"""
   - kind: SetVariable
     id: setDax
     variable: Topic.Dax
@@ -301,9 +393,10 @@ beginDialog:
       actions:
       - kind: SendActivity
         id: ExplainDax
-        activity: 'Model-grounded DAX suggestion — NOT EXECUTED. This compiles your allowed metric/grouping/filter/date inputs.
-          Summary rows disclose result limits and the available audit window; Data rows are aggregates. Date filters use the
-          active Date-to-Interaction relationship, not the inactive Agent creation-date relationship.
+        activity: 'Model-grounded DAX suggestion — NOT EXECUTED. Requested dates: {Topic.startDate} through {Topic.endDate},
+          inclusive (blank means no date restriction). Relative mode: {Topic.relativePeriod}. UTC calendar anchor; model dates
+          are compared as stored, source timezone unverified. WindowStart/WindowEnd would be matching recorded-event bounds,
+          not refresh timestamps or proof of continuous coverage. Date filters use the active Date-to-Interaction relationship.
 
           ```dax
 
@@ -352,7 +445,9 @@ beginDialog:
   - kind: SetVariable
     id: setqueryContext
     variable: Topic.queryContext
-    value: ="Metric=" & Topic.metric & "; grouping=" & Topic.groupBy & "; exact filter=" & Topic.filterBy & ":" & Topic.filterValue
-      & "; requested inclusive audit dates=" & Topic.startDate & ".." & Topic.endDate & ". Blank dates mean all available
-      data; inventory has no audit window. Use Summary.TotalGroups/ReturnedGroups/HasMore and actual WindowStart/WindowEnd.
-      No Data rows means no positive matched groups, not proof about uncaptured telemetry."
+    value: '="Metric=" & Topic.metric & "; grouping=" & Topic.groupBy & "; exact filter=" & Topic.filterBy & ":" & Topic.filterValue
+      & "; requested inclusive dates=" & Topic.startDate & ".." & Topic.endDate & "; relativePeriod=" & Topic.relativePeriod
+      & ". UTC calendar anchor; source timezone unverified; model dates compared as stored. Show RequestedStartDate/RequestedEndDate
+      separately from observed WindowStart/WindowEnd, not refresh timestamps or continuous coverage. Disclose TotalGroups/ReturnedGroups/HasMore.
+      No Data rows means no matching recorded events for audit metrics, not no activity: never widen the interval. Inventory
+      has no audit window."'

@@ -1,6 +1,7 @@
 """Allowlisted aggregate query compiler and its equivalent executable Power Fx topic."""
 import datetime as dt
 import json
+import re
 from pathlib import Path
 
 import yaml
@@ -45,8 +46,13 @@ FILTERS = {
 }
 DEFAULTS = {
     "metric": "interactions", "groupBy": "total", "filterBy": "none", "filterValue": "",
-    "startDate": "", "endDate": "", "topN": 20, "sortBy": "value", "mode": "execute",
+    "startDate": "", "endDate": "", "relativePeriod": "none",
+    "topN": 20, "sortBy": "value", "mode": "execute",
 }
+LAST_30_PATTERN = r"\b(last|past|trailing)[ -]+(30|thirty)[ -]+(calendar[ -]+)?days?\b"
+DATE_REQUEST_PATTERN = r"\b(last|past|trailing|previous|today|yesterday|this month|this year|latest available)\b|\b(since|between|from)\s+\d|\b\d{4}-\d{2}-\d{2}\b|\b(in|during|for)\s+(january|february|march|april|may|june|july|august|september|october|november|december)\b"
+OTHER_CALENDAR_PATTERN = r"\b(local|bst|london|pacific|eastern|cet|cest|est|edt|pst|pdt)\b|\blatest\s+available\b"
+DATE_CONVENTION = "UTC calendar anchor; model Date.Date as stored; source timezone unverified"
 SCOPE_LIMIT = "Unavailable through this PoC's approved tools does not establish whether a field exists in the underlying custom semantic model."
 IDENTITY_SCOPE = (
     "Owner and creator identities are outside this PoC's approved analytics scope, so the current tools cannot return that table. "
@@ -59,10 +65,33 @@ def literal(value):
     return '"' + value.replace('"', '""') + '"'
 
 
-def validate_request(request):
+def resolve_dates(parameters, *, now=None, utterance=""):
+    p = dict(parameters)
+    text = utterance.lower()
+    if p["relativePeriod"] == "none" and re.search(LAST_30_PATTERN, text):
+        p["relativePeriod"] = "last30Days"
+    if p["relativePeriod"] not in ("none", "last30Days"):
+        raise ValueError("Unrecognized or unresolved relative period; supply explicit paired dates or last30Days. No all-history fallback.")
+    if p["relativePeriod"] == "last30Days":
+        if p["startDate"] or p["endDate"]:
+            raise ValueError("Relative and explicit dates conflict; choose one date mode.")
+        if re.search(OTHER_CALENDAR_PATTERN, text):
+            raise ValueError("Relative dates use today's UTC calendar, not a local timezone or latest-event anchor. Clarify with explicit dates.")
+        clock = now if now is not None else dt.datetime.now(dt.timezone.utc)
+        if not isinstance(clock, dt.datetime) or clock.tzinfo is None:
+            raise ValueError("An aware runtime clock is required; no all-history fallback.")
+        end = clock.astimezone(dt.timezone.utc).date()
+        p["startDate"] = (end - dt.timedelta(days=29)).isoformat()
+        p["endDate"] = end.isoformat()
+    elif not p["startDate"] and not p["endDate"] and re.search(DATE_REQUEST_PATTERN, text):
+        raise ValueError("A date-scoped request has no resolved dates; clarify the interval, never substitute all history.")
+    return p
+
+
+def validate_request(request, *, now=None, utterance=""):
     if set(request) - set(DEFAULTS):
         raise ValueError("Unknown approved-tool parameter; raw DAX and model identifiers are not accepted. " + SCOPE_LIMIT)
-    p = {**DEFAULTS, **request}
+    p = resolve_dates({**DEFAULTS, **request}, now=now, utterance=utterance)
     if p["metric"] not in METRICS or p["groupBy"] not in GROUPS or p["filterBy"] not in FILTERS:
         raise ValueError("Metric, grouping, or filter is outside the approved analytics contract. " + SCOPE_LIMIT)
     if p["mode"] not in ("execute", "dax") or p["sortBy"] not in ("value", "group"):
@@ -90,8 +119,8 @@ def date_literal(value):
     return f"DATE({date.year},{date.month},{date.day})"
 
 
-def build_query(request):
-    p = validate_request(request)
+def build_query(request, *, now=None, utterance=""):
+    p = validate_request(request, now=now, utterance=utterance)
     columns, label, key = GROUPS[p["groupBy"]]
     metric = METRICS[p["metric"]]
     source = (f'SUMMARIZECOLUMNS({columns}, "Value", {metric})'
@@ -110,7 +139,9 @@ def build_query(request):
     metadata = (
         f'"Metric", "{p["metric"]}", "GroupBy", "{p["groupBy"]}", '
         f'"TotalGroups", __Count, "ReturnedGroups", MIN(__Count, {p["topN"]}), '
-        f'"HasMore", __Count > {p["topN"]}, "WindowStart", __Start, "WindowEnd", __End'
+        f'"HasMore", __Count > {p["topN"]}, "WindowStart", __Start, "WindowEnd", __End, '
+        f'"RequestedStartDate", {literal(p["startDate"])}, "RequestedEndDate", {literal(p["endDate"])}, '
+        f'"RelativePeriod", {literal(p["relativePeriod"])}, "DateConvention", {literal(DATE_CONVENTION)}'
     )
     return (
         f"DEFINE VAR __Summary = FILTER(CALCULATETABLE({base}{filters}), NOT ISBLANK([Value]) && [Value] > 0{excluded}) "
@@ -153,8 +184,9 @@ def _build_base_topic():
         "groupBy": "One grouping: total, platform, environment, environmentType, region, risk, activity, agent, month, day, or host. Inventory metrics cannot use month/day/host.",
         "filterBy": "Optional single exact-equality filter: none, platform, environment (display name), environmentType, region, risk, activity, agent (AgentKey), agentName (exact name, combines duplicate names), host. Use none if not requested.",
         "filterValue": "Exact text value of the requested filter, at most 128 characters. Leave blank with filterBy=none. Never use DAX here.",
-        "startDate": "Inclusive audit start date YYYY-MM-DD, or blank for all available audit data. Both dates required together. Not supported for inventory metrics.",
+        "startDate": "Explicit inclusive audit start date YYYY-MM-DD, paired with endDate. Leave BOTH blank for relativePeriod=last30Days; runtime resolves dates. Never invent absolute dates for a relative request.",
         "endDate": "Inclusive audit end date YYYY-MM-DD, or blank. Range must be no more than 366 inclusive days. Do not invent requested dates.",
+        "relativePeriod": "none for explicit dates or a truly undated request; last30Days for last/past/trailing 30 calendar days INCLUDING today, resolved from the trusted UTC runtime clock, never the latest event. Leave startDate/endDate blank with last30Days. clarify for unsupported/ambiguous relative periods: validation stops rather than querying all history.",
         "topN": "Maximum aggregate groups, integer 1 through 100. Default 20. Result explicitly reports TotalGroups and HasMore.",
         "sortBy": "value for highest metric first; group for ascending category/date order (use for time trends).",
         "mode": "execute for a data question, dax for advice-only DAX writing/explanation. dax returns compiled model-specific DAX without executing it.",
@@ -166,7 +198,7 @@ def _build_base_topic():
         for name, default in DEFAULTS.items()
     ]
     properties = {name: {"type": "Number" if name == "topN" else "String", "description": descriptions[name]} for name in DEFAULTS}
-    for name, values in {"metric": list(METRICS), "groupBy": list(GROUPS), "filterBy": list(FILTERS), "sortBy": ["value", "group"]}.items():
+    for name, values in {"metric": list(METRICS), "groupBy": list(GROUPS), "filterBy": list(FILTERS), "sortBy": ["value", "group"], "relativePeriod": ["none", "last30Days", "clarify"]}.items():
         properties[name]["enumValues"] = values
     properties["metric"]["isRequired"] = True
     metric_input = next(item for item in inputs if item["propertyName"] == "metric")
@@ -185,6 +217,21 @@ def _build_base_topic():
         "IsBlank(Topic.startDate) <> IsBlank(Topic.endDate)",
     ]
     actions = [
+        set_variable("ClockUtc", "=Now()"),
+        set_variable("RequestText", '=Lower(Coalesce(System.Activity.Text, ""))'),
+        set_variable("relativePeriod", '=If(Topic.relativePeriod = "none" && IsMatch(Topic.RequestText, ' + literal(LAST_30_PATTERN) + ', MatchOptions.Contains), "last30Days", Topic.relativePeriod)'),
+        rejection("ValidateRelativePeriod",
+                  '=!(Topic.relativePeriod in ["none", "last30Days"]) || (Topic.relativePeriod = "last30Days" && (!IsBlank(Topic.startDate) || !IsBlank(Topic.endDate)))',
+                  "Choose explicit paired dates OR last30Days, not both. Last 30 days uses 30 inclusive UTC calendar dates ending today, not the latest recorded event. Other relative periods need clarification/explicit dates. No query or all-history substitute is run."),
+        rejection("ValidateRelativeCalendar",
+                  '=Topic.relativePeriod = "last30Days" && IsMatch(Topic.RequestText, ' + literal(OTHER_CALENDAR_PATTERN) + ', MatchOptions.Contains)',
+                  "The relative resolver uses today's UTC calendar, not local time or the latest available event. Please confirm explicit start/end dates for a different calendar or anchor. No query has run."),
+        rejection("RequireRequestedDates",
+                  '=Topic.relativePeriod = "none" && IsBlank(Topic.startDate) && IsBlank(Topic.endDate) && IsMatch(Topic.RequestText, ' + literal(DATE_REQUEST_PATTERN) + ', MatchOptions.Contains)',
+                  "Your question requests a date window, but no supported interval was resolved. I can run dated rankings now: specify paired YYYY-MM-DD dates, or last 30 days using the UTC calendar. I will not substitute all-history results."),
+        set_variable("AnchorUtcDate", "=Date(Year(Topic.ClockUtc), Month(Topic.ClockUtc), Day(Topic.ClockUtc))"),
+        set_variable("startDate", '=If(Topic.relativePeriod = "last30Days", Text(DateAdd(Topic.AnchorUtcDate, -29, TimeUnit.Days), "yyyy-mm-dd", "en-US"), Topic.startDate)'),
+        set_variable("endDate", '=If(Topic.relativePeriod = "last30Days", Text(Topic.AnchorUtcDate, "yyyy-mm-dd", "en-US"), Topic.endDate)'),
         rejection("ValidateParameters", "=" + " || ".join(conditions),
                   "These inputs are outside the approved tool contract or its limits; no query is run or recommended. " + SCOPE_LIMIT + " Owner/creator identities and transcripts are excluded from this PoC, including DAX advice. Approved alternatives are interaction/session/distinct-user counts or current agent/inventory-environment counts, one approved grouping/filter, limit 1–100 and paired ISO audit dates."),
         rejection("ValidateInventoryContext",
@@ -208,7 +255,7 @@ def _build_base_topic():
         set_variable("OrderDax", '=Substitute(Substitute(Topic.SortDax, ", DESC", " DESC"), ", ASC", " ASC")'),
         set_variable("LimitText", '=Text(Topic.topN, "0", "en-US")'),
         set_variable("MetadataDax",
-                     '="""Metric"", """ & Topic.metric & """, ""GroupBy"", """ & Topic.groupBy & """, ""TotalGroups"", __Count, ""ReturnedGroups"", MIN(__Count, " & Topic.LimitText & "), ""HasMore"", __Count > " & Topic.LimitText & ", ""WindowStart"", __Start, ""WindowEnd"", __End"'),
+                     '="""Metric"", """ & Topic.metric & """, ""GroupBy"", """ & Topic.groupBy & """, ""TotalGroups"", __Count, ""ReturnedGroups"", MIN(__Count, " & Topic.LimitText & "), ""HasMore"", __Count > " & Topic.LimitText & ", ""WindowStart"", __Start, ""WindowEnd"", __End, ""RequestedStartDate"", """ & Topic.startDate & """, ""RequestedEndDate"", """ & Topic.endDate & """, ""RelativePeriod"", """ & Topic.relativePeriod & """, ""DateConvention"", ""' + DATE_CONVENTION + '"""'),
         set_variable("Dax",
                      '="DEFINE VAR __Summary = FILTER(CALCULATETABLE(" & Topic.BaseDax & Topic.FilterDax & "), NOT ISBLANK([Value]) && [Value] > 0" & If(Topic.groupBy = "agent", " && [GroupKey] <> ""(blank)""", "") & ") VAR __Count = COALESCE(COUNTROWS(__Summary), 0) VAR __Start = " & Topic.StartDax & " VAR __End = " & Topic.EndDax & " VAR __Rows = TOPN(" & Topic.LimitText & ", __Summary, " & Topic.SortDax & ") EVALUATE UNION(ROW(""RowType"", ""Summary"", ""Group"", """", ""GroupKey"", """", ""Value"", BLANK(), " & Topic.MetadataDax & "), SELECTCOLUMNS(__Rows, ""RowType"", ""Data"", ""Group"", [Group], ""GroupKey"", [GroupKey], ""Value"", [Value], " & Topic.MetadataDax & ")) ORDER BY [RowType] DESC, " & Topic.OrderDax'),
         {
@@ -216,7 +263,7 @@ def _build_base_topic():
             "conditions": [{
                 "id": "ReturnUnexecutedDax", "condition": '=Topic.mode = "dax"',
                 "actions": [
-                    {"kind": "SendActivity", "id": "ExplainDax", "activity": "Model-grounded DAX suggestion — NOT EXECUTED. This compiles your allowed metric/grouping/filter/date inputs. Summary rows disclose result limits and the available audit window; Data rows are aggregates. Date filters use the active Date-to-Interaction relationship, not the inactive Agent creation-date relationship.\n```dax\n{Topic.Dax}\n```"},
+                    {"kind": "SendActivity", "id": "ExplainDax", "activity": "Model-grounded DAX suggestion — NOT EXECUTED. Requested dates: {Topic.startDate} through {Topic.endDate}, inclusive (blank means no date restriction). Relative mode: {Topic.relativePeriod}. UTC calendar anchor; model dates are compared as stored, source timezone unverified. WindowStart/WindowEnd would be matching recorded-event bounds, not refresh timestamps or proof of continuous coverage. Date filters use the active Date-to-Interaction relationship.\n```dax\n{Topic.Dax}\n```"},
                     {"kind": "EndDialog", "id": "EndAdvice"},
                 ],
             }],
@@ -237,14 +284,14 @@ def _build_base_topic():
                   "The connector did not return the expected bounded response with a Summary row. This is an execution/response error, not evidence of zero usage or absent fields. Actual permission errors are access issues, not model absence. No successful analytics result is claimed."),
         set_variable("result", "=Topic.Rows"),
         set_variable("generatedDax", "=Topic.Dax"),
-        set_variable("queryContext", '="Metric=" & Topic.metric & "; grouping=" & Topic.groupBy & "; exact filter=" & Topic.filterBy & ":" & Topic.filterValue & "; requested inclusive audit dates=" & Topic.startDate & ".." & Topic.endDate & ". Blank dates mean all available data; inventory has no audit window. Use Summary.TotalGroups/ReturnedGroups/HasMore and actual WindowStart/WindowEnd. No Data rows means no positive matched groups, not proof about uncaptured telemetry."'),
+        set_variable("queryContext", '="Metric=" & Topic.metric & "; grouping=" & Topic.groupBy & "; exact filter=" & Topic.filterBy & ":" & Topic.filterValue & "; requested inclusive dates=" & Topic.startDate & ".." & Topic.endDate & "; relativePeriod=" & Topic.relativePeriod & ". UTC calendar anchor; source timezone unverified; model dates compared as stored. Show RequestedStartDate/RequestedEndDate separately from observed WindowStart/WindowEnd, not refresh timestamps or continuous coverage. Disclose TotalGroups/ReturnedGroups/HasMore. No Data rows means no matching recorded events for audit metrics, not no activity: never widen the interval. Inventory has no audit window."'),
     ]
     return {
         "kind": "AdaptiveDialog", "modelDisplayName": "Model analytics",
-        "modelDescription": "Execute reusable aggregate analytics over the approved analytical subset, not the full model schema: totals, rankings, categorical breakdowns, filtered and date-windowed interaction/session/user aggregates, current agent/environment inventory breakdowns and time trends. Use this SAME capability for materially different data questions by setting structured inputs, never raw DAX. Supports one grouping, one exact categorical filter, one inclusive audit date range, topN 1–100. This is a DATA EXECUTION capability, not a DAX-writing capability. For approved DAX advice without execution, select Model DAX advice instead. Unknown metrics/columns and unsafe inputs are rejected in executable validation. For owner/creator identities or questions about field existence, explain approved-tool scope without calling this topic or requesting grouping parameters. Tool exclusions do not establish model absence. Preserve the specialized top-100 tool for the unfiltered top-100-agent request.",
+        "modelDescription": "Run approved analytics NOW, including TOP AGENTS FOR THE LAST 30 DAYS, explicit-date rankings, categorical filters, alternative metrics and limits 1–100. For usage ranking: metric=interactions, groupBy=agent, sortBy=value, topN=20 unless specified (100 for dated top100). For last 30 days set relativePeriod=last30Days, startDate/endDate blank: executable UTC-clock resolver supplies the inclusive dates. Never substitute all history or claim this capability is future work. The fixed top100 tool is ONLY for the exact undated/unfiltered all-history top100 experience. This reusable DATA EXECUTION capability compiles validated inputs over an approved subset, not full model schema. It supports one grouping, one exact categorical filter, explicit audit dates or the controlled relative period. For advice only use Model DAX advice. For owner/creator identities or field-existence questions explain scope without querying or asking grouping parameters. Tool exclusions do not establish model absence.",
         "inputs": inputs, "inputType": {"properties": properties},
         "outputType": {"properties": {
-            "result": {"type": "Any", "description": "Actual connector aggregate rows: one Summary and up to 100 Data rows. Present a readable table; disclose HasMore and audit window."},
+            "result": {"type": "Any", "description": "One Summary and up to 100 Data rows. Agent rankings: numbered table in returned order, all requested available rows up to topN. Disclose requested dates separately from observed-event bounds, HasMore and DateConvention. Empty audit window means no matching recorded events, never no activity or permission to widen dates."},
             "generatedDax": {"type": "String", "description": "Exact validated DAX sent to the connector. Only describe as executed if actual result rows were returned."},
             "queryContext": {"type": "String", "description": "Applied structured parameters and interpretation caveats."},
         }},
@@ -254,6 +301,9 @@ def _build_base_topic():
                 "Analyze interactions by platform", "Show sessions by month",
                 "Count agents by risk band", "Analyze usage for a date range",
                 "Show distinct user counts by client host",
+                "Give me the top agents and their usage over the last 30 days",
+                "Show top 100 agents between 2026-08-14 and 2026-09-12",
+                "Show the top 10 agents by sessions filtered to a platform",
             ]},
             "actions": actions,
         },
@@ -277,6 +327,8 @@ def build_advice_topic():
         "exact filter, audit dates, topN and sorting compiler as model analytics. Choose metric sessions "
         "and groupBy month for sessions by month, interactions/platform for platform usage, etc. "
         "Returns clearly labelled UNEXECUTED DAX plus relationship/filter explanation. "
+        "Supports explicit dates or relativePeriod=last30Days with blank date inputs; the same executable UTC runtime resolver "
+        "supplies 30 inclusive calendar dates ending today, never the latest event. Unsupported periods/calendar anchors stop for clarification. "
         "Grounding is an approved subset, not full model metadata. Owner/creator identities are outside this PoC's scope; "
         "do not call this topic or ask grouping parameters for identity or field-existence questions. "
         "Explain that tool exclusions do not establish model absence; never recommend identity DAX. "
@@ -292,6 +344,7 @@ def build_advice_topic():
         "Help me write DAX for this model", "Write DAX for sessions by month",
         "Recommend a DAX query", "Explain DAX filters and relationships",
         "How do I write a query against this semantic model?",
+        "Write DAX for top agents over the last 30 days without executing it",
     ]
     topic["beginDialog"]["intent"]["displayName"] = "Model DAX advice"
     return topic
@@ -315,7 +368,7 @@ def build_clarification_topic():
                     }],
                 },
                 {"kind": "SendActivity", "id": "ExplainModelScope",
-                 "activity": "I could not map that request to this PoC's approved tool contract. These tools support audited interaction turns, distinct session counts, distinct-user counts (not identities), current agent inventory and inventory-environment counts. You can group/filter by platform, environment, region, risk, activity or agent; audit metrics also support month/day and client host. Optional paired audit dates span up to 366 days. Revenue, financial cost and product-category metrics are outside this approved subset. " + SCOPE_LIMIT + " Only authoritative full current-version metadata with sufficient visibility can prove absence; this subset, errors and empty results cannot. Actual permission errors are access issues, not model absence. If you want an approved aggregate, specify its metric and grouping. You can also ask 'Write DAX for sessions by month' for approved, unexecuted guidance."},
+                 "activity": "I could not map that request to this PoC's approved tool contract. These tools support audited interaction turns, distinct session counts, distinct-user counts (not identities), current agent inventory and inventory-environment counts. You can group/filter by platform, environment, region, risk, activity or agent; audit metrics also support month/day and client host. Dated agent rankings are available now: paired inclusive dates (maximum 366 days), or last 30 days ending today using the UTC calendar. No all-history substitute is used for an unresolved date window. Revenue, financial cost and product-category metrics are outside this approved subset. " + SCOPE_LIMIT + " Only authoritative full current-version metadata with sufficient visibility can prove absence; this subset, errors and empty results cannot. Actual permission errors are access issues, not model absence. If you want an approved aggregate, specify its metric and grouping. You can also ask 'Write DAX for sessions by month' for approved, unexecuted guidance."},
             ],
         },
     }

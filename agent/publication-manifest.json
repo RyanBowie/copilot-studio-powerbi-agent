@@ -38,11 +38,13 @@
     "templates\\settings.mcs.yml",
     "test-agent.cjs",
     "tests\\test_analytics.py",
+    "tests\\test_dates.py",
     "tests\\test_scope.py",
     "topics\\ModelAnalytics.mcs.yml",
     "topics\\ModelDaxAdvice.mcs.yml",
     "topics\\ModelQuestionClarification.mcs.yml",
     "verify-analytics.py",
+    "verify-dates.py",
     "verify-model.py"
   ],
   "githubActions": "None; repository creation, privacy, Pages and push are handled by the parent.",
@@ -70,5 +72,71 @@
       "publication-manifest.json"
     ],
     "preserveOtherPublicationFiles": true
+  },
+  "dateFilterCorrection": {
+    "publishedAtUtc": "2026-09-12T13:48:16Z",
+    "publishStatus": "Succeeded",
+    "synchronization": "Synchronized",
+    "publicModelNote": "Existing cloud reasoning-model selection, Invoker binding and access preserved; no second model or permissions added.",
+    "verifiedDefects": [
+      "Conflicting dated-ranking routing descriptions",
+      "No deterministic relative-date resolver"
+    ],
+    "screenshotRuntimePath": "Unproven; no matching recent exact-prompt trace found. Displayed row count does not identify the tool.",
+    "relativePeriod": "last30Days resolves 30 inclusive UTC calendar dates from the invocation clock, never a latest-event anchor.",
+    "testFixture": {
+      "utcToday": "2026-09-12",
+      "requestedStart": "2026-08-14",
+      "requestedEnd": "2026-09-12"
+    },
+    "sourceEventTimezone": "Unverified; model Date.Date compared as stored.",
+    "requestedVsObserved": "Requested bounds are separate from observed-event bounds; not refresh timestamps, continuous coverage or proof of no activity.",
+    "fixedToolChange": "Description only; original fixed DAX bytes unchanged. Dated/filter/alternative-limit rankings use reusable analytics.",
+    "localAndPublicationTestsPassed": 25,
+    "directFixedQueryCasesPassed": 3,
+    "directReusableQueryCasesPassed": 7,
+    "directDateQueriesPassed": 5,
+    "chatEndToEndPass": false,
+    "actualChatBoundary": "Shared authenticated browser locked. One connector-free date-advice probe returned waiting with no activities; existing-conversation read returned HTTP 404. No tool/date arguments observed; no claim of an authentication failure.",
+    "businessRowsOrScreenshotsIncluded": false,
+    "filesToCopy": [
+      "agent.mcs.yml",
+      "templates\\agent.mcs.yml",
+      "model-context.json",
+      "templates\\model-context.json",
+      "analytics.py",
+      "actions\\PowerBITopAgentsByUsage.mcs.yml",
+      "templates\\actions\\PowerBITopAgentsByUsage.mcs.yml",
+      "topics\\ModelAnalytics.mcs.yml",
+      "topics\\ModelDaxAdvice.mcs.yml",
+      "topics\\ModelQuestionClarification.mcs.yml",
+      "tests\\test_analytics.py",
+      "tests\\test_dates.py",
+      "verify-analytics.py",
+      "verify-dates.py",
+      "test-agent.cjs",
+      "publication-manifest.json",
+      "tests\\test_scope.py"
+    ],
+    "preserveOtherPublicationFiles": true,
+    "latestCoherentPublishAtUtc": "2026-09-12T14:00:27Z"
+  },
+  "runtimeDisclaimerRemoval": {
+    "publishedAtUtc": "2026-09-12T14:00:27Z",
+    "publishStatus": "Succeeded",
+    "synchronization": "Synchronized",
+    "productDisambiguationLocation": "README/public documentation only; removed from runtime instructions and the runtime context disclaimer field.",
+    "dateFixAndSchemaScopeUnchanged": true,
+    "cloudReasoningModelAndConnectionPreserved": true,
+    "testsPerCopy": 25,
+    "filesToCopy": [
+      "agent.mcs.yml",
+      "templates\\agent.mcs.yml",
+      "model-context.json",
+      "templates\\model-context.json",
+      "tests\\test_scope.py",
+      "publication-manifest.json"
+    ],
+    "preserveParentDocumentation": true
   }
 }

@@ -1,6 +1,6 @@
 kind: TaskDialog
 modelDisplayName: Power BI top 100 agents by usage
-modelDescription: Get the top 100 agents by actual audited interaction count (usage, popularity, most used, highest traffic). Fixed query, no inputs or DAX required. Uses the verified Interactions measure grouped by AgentKey and AgentName through the active inventory relationship, across the full available audit window. Returns at most 100 aggregate rows, count descending with AgentKey tie-breaking, plus actual window start and end. No individual users, sessions, transcripts, or messages are returned.
+modelDescription: ONLY for the exact unfiltered, undated top 100 agents by audited interactions across all available recorded history. NOT for last 30 days, explicit dates, categorical filters, other metrics or any other requested limit. Those requests are supported NOW by Model analytics; use metric interactions, groupBy agent, sortBy value, requested topN (default 20), and explicit dates or relativePeriod last30Days. Never call this fixed tool as an all-history substitute for a dated request. Fixed DAX and numbered top-100 result format are preserved. WindowStart/WindowEnd are observed-event bounds, not verified refresh timestamps or continuous coverage. No identities or transcripts are returned.
 inputs:
   - kind: ManualTaskInput
     propertyName: groupid

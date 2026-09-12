@@ -12,6 +12,21 @@ function cardText(value) {
   ];
 }
 
+function reportText(label, text) {
+  if (!process.argv.includes('--summary-only')) {
+    console.log(label, text.replace(/https?:\/\/\S+/g, '[URL omitted]'));
+    return;
+  }
+  console.log(label, JSON.stringify({
+    characters: text.length,
+    dates: [...new Set(text.match(/\b\d{4}-\d{2}-\d{2}\b/g) || [])],
+    unexecutedLabel: /NOT EXECUTED|UNEXECUTED/.test(text),
+    compiledSummaryShape: /RowType/.test(text) && /RequestedStartDate/.test(text),
+    daxDateLiterals: [...text.matchAll(/DATE\((\d{4}),\s*(\d{1,2}),\s*(\d{1,2})\)/g)].map(m => `${m[1]}-${m[2].padStart(2, '0')}-${m[3].padStart(2, '0')}`),
+    connectionRequired: /connection manager|verify your credentials|get you connected|ConnectionReferenceNotFound/i.test(text)
+  }));
+}
+
 async function main() {
   const token = execFileSync(process.env.ComSpec || 'cmd.exe', [
     '/d', '/s', '/c',
@@ -45,18 +60,23 @@ async function main() {
     let needsConnection = false;
     for (const activity of turn.activities || []) {
       if (activity.text) {
-        console.log('Agent:', activity.text.replace(/https?:\/\/\S+/g, '[URL omitted]'));
+        reportText('Agent:', activity.text);
         needsConnection ||= /ConnectionReferenceNotFound/.test(activity.text);
       }
       for (const attachment of activity.attachments || []) {
         console.log('Attachment type:', attachment.contentType);
         for (const text of cardText(attachment.content)) {
-          console.log('Card:', text.replace(/https?:\/\/\S+/g, '[URL omitted]'));
+          reportText('Card:', text);
           needsConnection ||= /connection manager|verify your credentials|get you connected/i.test(text);
         }
       }
     }
     console.log('Turn state:', turn.action);
+    if (!(turn.activities || []).length) {
+      console.log('INCONCLUSIVE: no agent activity returned. Neither tool execution nor a runtime date window was observed.');
+      process.exitCode = 3;
+      return;
+    }
     if (needsConnection) {
       console.log('BLOCKED: runtime requests per-agent connection-manager approval. An environment connection may already exist; select it rather than creating another.');
       process.exitCode = 2;

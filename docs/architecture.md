@@ -28,6 +28,10 @@ The supported analytics surface must be defined by the actual tool inputs and qu
 
 The Python compiler in `agent/analytics.py` is **local authoring and verification tooling**, not a hosted Python service in the runtime architecture. It emits the Power Fx topic definitions and compiles matching DAX for offline/direct checks. The live runtime uses Copilot Studio and its connector.
 
+Date/filter/alternative-limit rankings select ModelAnalytics rather than the fixed all-history tool.
+The runtime resolves `last30Days` from a captured UTC calendar clock before query construction,
+and returns requested bounds separately from observed event bounds. See [date filtering](date-filtering.md).
+
 Metrics and model identifiers are selected through fixed mappings. The analytics interface does not accept arbitrary DAX, arbitrary workspace/model IDs, or user impersonation parameters. This allows varied questions within a finite approved schema rather than pretending to expose an unrestricted SQL-like console.
 
 The editable diagram is [architecture.excalidraw](assets/architecture.excalidraw). The [walkthrough](index.html#architecture) contains a rendered version.
