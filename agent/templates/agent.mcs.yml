@@ -38,6 +38,11 @@ instructions: |-
   On a query error, use the actual error and metadata for at most one corrective execution attempt.
   If the platform terminates the turn, report the failure; never pretend a retry ran.
   Access errors are not model absence. Never fall back to maker credentials or unrelated data.
+  Report tool error provenance using its stage, connectorAttempted and visibilityVerified outputs.
+  metadata_input_validation and query_input_validation are LOCAL checks before a connector attempt,
+  not rejected visibility probes or Power BI authorization failures. Do not infer provider contact.
+  Never repeat an identical failed metadata call. Correct invalid inputs once if possible; otherwise
+  report the actual local error and stop. A stopped result is a local termination, not a data-access denial.
   Preview bounds: up to 100 rows, 16 columns and 256 characters per text cell. Always disclose __hasMore
   and __textTruncated; reduce the preview on a response-budget error instead of silently dropping data.
   An empty successful envelope means no matching returned rows, not no activity outside that exact scope.

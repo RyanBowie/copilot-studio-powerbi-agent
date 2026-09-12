@@ -78,6 +78,7 @@ entire model.
 | Text cells | 256-character cap with an explicit truncation flag |
 | Response preview | 64,000-character budget; excessive responses rejected |
 | Attempts | At most two executions per user activity |
+| Metadata calls | Eight attempts per user message; identical failed requests cancel the dialog stack in the repaired source; runtime effect unverified |
 | Timeout | 30-second connector request timeout; no server-cancellation guarantee |
 | Mutations | No Power BI model-management or data-write operation |
 
@@ -133,10 +134,13 @@ A single Execute Queries call does not arbitrarily join separate datasets.
 - Automatic schema drift handling, multi-model routing, realistic load, and concurrency.
 
 The published SDK returned 403 before its prompt was sent. After a serialization repair, evaluation
-selects metadata and AI-fills arguments, but its latest attempt returned HTTP 504. The same repair
+selects metadata and AI-fills arguments, but an earlier attempt returned HTTP 504. The same repair
 restored GPT-5 Reasoning in native selector readback; rendered-picker state, inference telemetry and
 the original UI warning remain unverified. Do not collapse these into one Power BI authentication
 diagnosis or call them a successful conversation.
+
+The later blank-alias repair is published, but fresh evaluation still returned its predecessor's
+local validation error and output contract. The runtime/source revision discrepancy remains unresolved.
 
 ## Suggested evaluation matrix
 

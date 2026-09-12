@@ -26,11 +26,16 @@ authored by the orchestrator, rather than mapping questions to a predefined metr
 **This is not yet a demonstrated end-to-end conversational agent.** A YAML serialization defect
 caused Studio to omit model settings and topic bodies. After repair, native authoring readback
 retains GPT-5 Reasoning and evaluation traces select the metadata topic and AI-fill its arguments.
-The latest metadata attempt nevertheless returned HTTP 504; no completed connector result was observed.
+An earlier metadata attempt returned HTTP 504; no completed connector result was observed.
 The separate published SDK client was denied with HTTP 403 before sending its prompt because its
 token lacked `CopilotStudio.Copilots.Invoke`. Neither failure proves a Power BI login problem.
 The three obsolete fixed tools have been deleted; generic capabilities appear under **Topics**.
 Rendered model-picker state, inference-model telemetry, and the original UI warning remain unverified.
+
+A subsequent Studio run exposed a blank model alias and repeated local validation failures, which
+the answer incorrectly blamed on Power BI. An explicit primary default, error-stage outputs, and
+metadata retry-stop guards are now published. Fresh evaluation still returned the previous error/output
+contract, so execution of that repair and successful metadata retrieval remain unconfirmed.
 
 ### Deployed design
 
@@ -52,7 +57,7 @@ implementations. Preparation/refresh uses an already-authorized owner with read/
 agent users receive no new permissions.
 
 Eight varied direct-query cases passed, including combinations outside the retired compiler and a
-top-100 membership/order regression. The current offline suite comprises **25 Python tests and
+top-100 membership/order regression. The current offline suite comprises **32 Python tests and
 5 client-harness tests**. These are not cloud-generated conversational-query evidence.
 
 The useful top-100 presentation remains a regression goal, not a runtime business-query dependency.

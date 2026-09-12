@@ -50,6 +50,32 @@ class NativeAuthoringTests(unittest.TestCase):
             with self.subTest(defect=defect), self.assertRaises(RuntimeError):
                 verify_components(parsed, "example", self.gpt, self.topics)
 
+    def test_native_alias_default_resolver_and_provenance_are_verified(self):
+        self.topics["Metadata"]["inputs"] = [
+            {"kind": "AutomaticTaskInput", "propertyName": "modelAlias", "defaultValue": "primary"}
+        ]
+        dialog = self.parsed["botComponentChanges"][1]["component"]["dialog"]
+        dialog["inputs"] = [{"$kind": "AutomaticTaskInput", "propertyName": "modelAlias",
+                             "defaultValue": {"$kind": "ValueExpression", "literalValue": "primary"}}]
+        dialog["beginDialog"]["actions"] = [
+            {"id": "ResolveFixedModelAlias", "value": {"expressionText": 'Coalesce(Topic.modelAlias, "primary")'}}
+        ]
+        dialog["outputType"] = {"properties": {
+            name: {} for name in ("stage", "connectorAttempted", "visibilityVerified", "resolvedModelAlias")
+        }}
+        verify_components(self.parsed, "example", self.gpt, self.topics)
+        for defect in ("default", "resolver", "provenance"):
+            parsed = copy.deepcopy(self.parsed)
+            value = parsed["botComponentChanges"][1]["component"]["dialog"]
+            if defect == "default":
+                value["inputs"][0].pop("defaultValue")
+            elif defect == "resolver":
+                value["beginDialog"]["actions"][0]["value"]["expressionText"] = "Topic.modelAlias"
+            else:
+                value["outputType"]["properties"].pop("connectorAttempted")
+            with self.subTest(defect=defect), self.assertRaises(RuntimeError):
+                verify_components(parsed, "example", self.gpt, self.topics)
+
 
 if __name__ == "__main__":
     unittest.main()

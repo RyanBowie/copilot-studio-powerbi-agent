@@ -52,6 +52,21 @@ def verify_components(parsed, schema_name, gpt_source, topics):
             raise RuntimeError("Native parser dropped topic inputs, trigger or actions: " + name)
         if source_begin["kind"] == "OnRecognizedIntent" and not begin.get("intent", {}).get("includeInOnSelectIntent"):
             raise RuntimeError("Native topic is not exposed to generative selection: " + name)
+        alias_source = next((item for item in expected.get("inputs", [])
+                             if item.get("propertyName") == "modelAlias"), None)
+        if alias_source and alias_source.get("defaultValue") == "primary":
+            alias = next((item for item in dialog.get("inputs", [])
+                          if item.get("propertyName") == "modelAlias"), {})
+            if (alias.get("$kind") != "AutomaticTaskInput"
+                    or alias.get("defaultValue", {}).get("literalValue") != "primary"):
+                raise RuntimeError("Native fixed-model alias default was dropped: " + name)
+            resolver = next((action for action in begin.get("actions", [])
+                             if action.get("id") == "ResolveFixedModelAlias"), {})
+            if resolver.get("value", {}).get("expressionText") != 'Coalesce(Topic.modelAlias, "primary")':
+                raise RuntimeError("Native blank-alias runtime resolution was dropped: " + name)
+            required_outputs = {"stage", "connectorAttempted", "visibilityVerified", "resolvedModelAlias"}
+            if not required_outputs.issubset(dialog.get("outputType", {}).get("properties", {})):
+                raise RuntimeError("Native error-provenance outputs were dropped: " + name)
         capabilities[name] = {"trigger": begin["$kind"], "actions": len(begin["actions"]),
                               "inputs": len(dialog.get("inputs", []))}
     return {"nativeAuthoringModel": actual_model, "nativeCapabilities": capabilities,

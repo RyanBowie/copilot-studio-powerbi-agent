@@ -25,6 +25,7 @@
     "test-agent.cjs",
     "test-studio.cjs",
     "tests\\test_agent_client.cjs",
+    "tests\\test_alias_binding.py",
     "tests\\test_generated_dax.py",
     "tests\\test_retire_fixed_tools.py",
     "tests\\test_studio_authoring.py",
@@ -55,6 +56,7 @@
     "test-agent.cjs",
     "test-studio.cjs",
     "tests\\test_agent_client.cjs",
+    "tests\\test_alias_binding.py",
     "tests\\test_generated_dax.py",
     "tests\\test_retire_fixed_tools.py",
     "tests\\test_studio_authoring.py",
@@ -85,28 +87,39 @@
     "verify-model.py"
   ],
   "changedSincePreviousPackage": [
-    "README.md"
+    "README.md",
+    "agent.mcs.yml",
+    "general_runtime.py",
+    "studio_authoring.py",
+    "templates\\agent.mcs.yml",
+    "tests\\test_alias_binding.py",
+    "tests\\test_studio_authoring.py"
   ],
   "pendingSelectiveCopy": [
     "README.md",
+    "agent.mcs.yml",
     "deploy.py",
     "general_runtime.py",
     "generated_dax.py",
     "retire-fixed-tools.py",
     "studio_authoring.py",
     "studio_yaml.py",
+    "templates\\agent.mcs.yml",
+    "tests\\test_alias_binding.py",
     "tests\\test_generated_dax.py",
     "tests\\test_retire_fixed_tools.py",
     "tests\\test_studio_authoring.py",
     "tests\\test_studio_yaml.py"
   ],
-  "addedSincePreviousPackage": [],
+  "addedSincePreviousPackage": [
+    "tests\\test_alias_binding.py"
+  ],
   "mergeDocumentation": [
     "README.md"
   ],
   "preserveUnrelatedParentDocumentationAndSite": true,
   "runtime": {
-    "publishedAtUtc": "2026-09-12T16:54:36Z",
+    "publishedAtUtc": "2026-09-12T19:14:03Z",
     "modelAliases": [
       "primary"
     ],
@@ -125,14 +138,15 @@
     "hostedBackendOrPermissionGrantsCreated": false
   },
   "validation": {
-    "currentUnitTests": 30,
-    "pythonContractTests": 25,
+    "currentUnitTests": 37,
+    "pythonContractTests": 32,
     "clientHarnessTests": 5,
     "directVariedExpressionCases": 8,
     "originalTop100MembershipAndOrder": "Direct regression passed",
     "unsupportedColumnError": "Observed through direct Power BI API",
     "chatEndToEndPass": false,
     "chatBoundary": "Published SDK previously returned HTTP 403 before sending a prompt. After native YAML repair, evaluation traces select ModelMetadata and AI-fill its arguments rather than falling back. A fully non-prompting metadata attempt hit a 120-second client timeout; an explicit catalog request with a 300-second client budget returned HTTP 504 UnexpectedError. No connector completion or authentication failure was established. Metadata authorization and cloud-generated DAX execution/answer remain unverified.",
+    "latestAliasRepair": "Native-compiled and published: automatic primary default plus runtime blank fallback across metadata/query/advice, explicit provenance, duplicate-failure cancellation and eight-attempt metadata budget. Fresh evaluation still returned the old input-validation error/old outputs three times and fallback. This does not establish that the new runtime revision executed; no Power BI authentication failure was demonstrated.",
     "agentStatusWarningTextIndependentlyRetrieved": false,
     "businessRowsOrIdentityValuesPublished": false
   },

@@ -16,7 +16,7 @@ This is selector-backend evidence, not an independently observed rendered picker
 | Check | Observation |
 |---|---|
 | Owner-prepared primary metadata | 21 tables, 244 columns, 166 measure names, 13 relationships |
-| Offline expression, serialization, authoring, and cleanup suite | 25 Python tests |
+| Offline expression, serialization, authoring, cleanup, and alias-repair suite | 32 Python tests |
 | Corrected client-harness suite | 5 tests |
 | Varied direct expression cases | Eight passed against the primary model |
 | Original ranking regression | Generic-contract result matched original top-100 membership/order directly |
@@ -73,6 +73,34 @@ The parsed selector backend retains GPT-5 Reasoning after successful publication
 on 12 September 2026. Authentication, Invoker binding, and cross-geo/privacy settings were not
 changed. The original warning text was not retrieved; publication does not prove it disappeared.
 Fresh rendered-picker state and effective inference telemetry are not independently observed.
+
+### Subsequent user-observed metadata validation failure
+
+A Studio request for a dated top-20 usage ranking with creator information repeatedly selected
+the metadata catalog. The selected activity showed a blank `modelAlias`, blank `tableNames`,
+and `view=catalog`. Blank table names are valid for the catalog; the configured primary alias
+was expected to be supplied internally.
+
+The final response quoted the local validation error:
+
+> Only the onboarded primary model is available. Choose catalog or tables; no arbitrary model IDs.
+
+That check runs before the schema-visibility connector action. The agent's accompanying claim
+that the platform rejected the visibility probe was therefore incorrect for this rejection.
+This is evidence of an input-validation failure, not a demonstrated Power BI permission failure.
+It also shows that at least the quoted error reached the final response; blank fields in a selected
+in-progress activity alone do not establish that every topic output is unbound.
+
+The correction was published at 19:14:03 UTC on 12 September 2026. It adds a primary input default
+and explicit runtime blank fallback across metadata/query/advice, preserves invalid-alias rejection,
+exposes error-stage/connector-attempt outputs, and adds duplicate-failure cancellation plus an
+eight-attempt metadata budget. Native compilation/readback passes; GPT-5 Reasoning, Invoker and
+privacy settings are unchanged.
+
+However, fresh evaluation still returned the old error/output contract three times, then fallback.
+This does not establish execution of the repaired revision; the reason for that discrepancy is
+unresolved. No connector progress, effective retry cancellation, or successful ranking was observed.
+Passing offline scalar-gate tests is not native Power Fx execution evidence.
 
 ## Historical evidence is not current-runtime proof
 

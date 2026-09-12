@@ -76,8 +76,9 @@ The corrected SDK attempt returned 403 before conversation creation because its 
 Power BI connector login problem. Use an appropriately authorized supported client; this repository
 does not request or bypass missing permissions.
 
-Separately, the evaluation route now selects metadata after serialization repair, but its latest
-metadata attempt returned HTTP 504. A normal Studio session must still be tested; neither
+Separately, the evaluation route selects metadata after serialization repair. Attempts have returned
+HTTP 504 and, after the later alias repair, the previous local validation error/output contract.
+A normal Studio session must still be tested; neither
 topic selection nor an HTTP error establishes that the complete published UI flow works.
 
 `test-studio.cjs` uses an independent project-local browser profile and never the shared MCP browser.

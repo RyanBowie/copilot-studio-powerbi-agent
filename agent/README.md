@@ -13,6 +13,25 @@ orchestrator is configured to author **new DAX table expressions** from machine-
 Power Fx topics validate the expression boundary and build a bounded DAX execution envelope. The
 standard Power BI connector runs it with **Invoker/end-user authentication**.
 
+### Latest repair: blank fixed-model alias
+
+The observed "Only the onboarded primary model is available..." error came from local input
+validation before the schema-visibility connector node, not a Power BI authorization failure.
+Metadata, generated-query and advice topics now use non-prompting `AutomaticTaskInput` with
+`defaultValue: primary`, plus native initialization `Coalesce(Topic.modelAlias, "primary")`.
+Nonempty invalid aliases remain invalid; connector workspace/model IDs remain trusted configuration.
+
+Outputs identify `stage`, `connectorAttempted`, `visibilityVerified` and `resolvedModelAlias`.
+A connector attempt does not prove that Power BI received or authorized it. Identical failed
+metadata requests within a user message stop via `CancelAllDialogs`; an eight-attempt message
+budget permits catalog-plus-table retrieval. These guards are native-compiled, but cancellation
+has not yet been observed in chat.
+
+Native authoring readback confirms the repair after publication. However, a fresh evaluation
+still returned the previous error and output contract three times, then fallback. The runtime/source
+revision discrepancy remains unresolved; caching is only a hypothesis. Neither the blank-alias
+runtime fix nor the requested dated usage/creator ranking is end-to-end verified.
+
 **Deployment is not a chat-success claim.** Unit and direct Power BI checks pass. The corrected SDK
 client now forwards custom prompts to the published endpoint, but its conversation-start request
 returns **403 Forbidden: “The caller is not authorized to perform the request.”** The existing token
@@ -177,7 +196,9 @@ The current unit suite covers unrestricted expression combinations, ownership-fi
 lexer/envelope escapes, aliases/sorting/bounds, relative date expressions, shared native-template
 generation, metadata authorization gating and advice without business-query execution. Additional
 tests cover Studio-compatible YAML, native-readback rejection of dropped model/topic fields,
-obsolete-tool deletion guards and safe client diagnostics: **25 Python tests and 5 Node tests**.
+obsolete-tool deletion guards, alias input gates, error provenance, retry termination and safe client
+diagnostics: **32 Python tests and 5 Node tests**. Scalar input-gate tests use a small offline
+evaluator over generated expressions, not the native Power Fx runtime.
 
 Direct authorized checks cover:
 
