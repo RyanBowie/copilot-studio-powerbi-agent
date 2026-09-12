@@ -1,25 +1,13 @@
-"""Render source templates for your own existing agent; makes no remote changes."""
-import json
+"""Validate local configuration. This makes no remote changes."""
 from pathlib import Path
 from config import load_config, validate_config
-
-ROOT = Path(__file__).resolve().parent
 config = load_config()
 validate_config(config)
-example = json.loads((ROOT / "resources.example.json").read_text(encoding="utf-8"))
-for source in (ROOT / "templates").rglob("*"):
-    if not source.is_file():
-        continue
-    content = source.read_text(encoding="utf-8")
-    for key, marker in example.items():
-        if key != "connectorId":
-            content = content.replace(marker, config[key])
-    target = ROOT / source.relative_to(ROOT / "templates")
-    target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(content, encoding="utf-8")
-from analytics import build_topic, build_advice_topic, build_clarification_topic
-import yaml
-for name, topic in [("ModelAnalytics", build_topic()), ("ModelDaxAdvice", build_advice_topic()), ("ModelQuestionClarification", build_clarification_topic())]:
-    target = ROOT / "topics" / (name + ".mcs.yml")
-    target.write_text(yaml.safe_dump(topic, sort_keys=False, allow_unicode=True, width=120), encoding="utf-8")
-print("Configured local source. Review it and run tests before deploying.")
+schema = Path(__file__).with_name("model-schema.private.json")
+if schema.exists():
+    import json
+    from general_runtime import generate
+    generate(config, json.loads(schema.read_text(encoding="utf-8")))
+    print("Generated private runtime topics; review and test before deploying.")
+else:
+    print("Configuration valid. Have an already-authorized owner run prepare-model.py, review the private snapshot, then run general_runtime.py.")

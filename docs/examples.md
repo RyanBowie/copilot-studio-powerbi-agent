@@ -1,117 +1,105 @@
-# Prompts and output contracts
+# General-question examples and evidence labels
 
-**All named agents and numeric outputs below are synthetic publication fixtures.** They illustrate expected presentation; they are not screenshots or transcripts of customer data. Actual verification status is recorded separately.
+These are prompts and expected answer contracts for the **generated-DAX design**, not predefined
+metric mappings. No successful new-runtime conversation is fabricated. Names/numbers in the ranking
+illustration are synthetic; direct test fixtures are not proof of cloud query generation.
 
-The `Agent365` example is a custom semantic model/report, **not Microsoft Agent 365**. These governance prompts are examples of the broader pattern. Other models can support their own sales, operations, finance, or service questions after the model-specific configuration and grounding are adapted.
+`Agent365` is the custom example model/report, not Microsoft Agent 365.
 
-## Top 100 agents
+## Metadata before querying
 
-**Prompt**
+> What tables and measures are in this model? Retrieve the model metadata before answering.
 
-> Give me the top 100 agents by usage.
+Expected behavior: invoke metadata retrieval, complete its requesting-user visibility probe, and
+answer from the prepared catalog. State snapshot freshness and avoid treating missing descriptions
+or an access failure as proof that data does not exist.
 
-**Illustrative output**
+**Observed boundary:** after serialization repair, the evaluator selected metadata and AI-filled its
+arguments. A later metadata attempt returned HTTP 504 without confirmed completion. The separate
+published SDK was denied before sending its prompt. Successful metadata disclosure remains unverified.
 
-> Ranked by audited Interactions for the selected period. The full result contains up to 100 agents, ordered highest first. Only three synthetic rows are shown in this documentation excerpt.
+## Multiple dimensions and filters
 
-| Rank | Agent | Interactions |
-|---|---|---|
-| 1 | Service Desk Demo | 1,284 |
-| 2 | Policy Finder Demo | 976 |
-| 3 | Onboarding Demo | 811 |
+> Compare usage by platform and region, filtered to two specified environment types. Show the query you used.
 
-The live top-100 experience should return all available requested rows up to its limit, not silently reduce the answer to ten. The documentation excerpt is intentionally shorter and is not a complete result.
+The orchestrator should find the actual relevant columns/measures, generate the combined expression,
+and explain the resulting metric and filters. The old one-group/one-filter limit no longer defines
+the expression contract.
 
-![Synthetic documentation rendering of the ranking output, not an actual Copilot Studio result.](assets/illustrative-ranking-output.png)
+Do not invent categorical values. If the user has not supplied them and metadata does not establish
+them, clarify or use an authorized bounded lookup.
 
-## Reusable analytics
+## A derived calculation
 
-The deployed reusable topic supports five metrics, one grouping, one exact categorical filter, optional paired inclusive audit dates up to 366 days, sorting, and 1-100 groups. It returns an additional Summary row. These prompts remain evaluation scenarios, not captured successful agent transcripts.
+> Calculate sessions per user by platform and explain what that ratio means.
 
-| Prompt | What a good answer establishes |
-|---|---|
-| How many agents and environments are visible to me? | The actual count definition; no unsupported claim that row counts are distinct entities. |
-| Show usage by environment for the last complete month in the data. | Usage measure, date boundaries, grouping, and model freshness. |
-| Which ten agents have the highest interaction count in that period? | The same metric and period; ordering and limit are explicit. |
-| Compare usage across supported agent types. | Uses a real supported grouping, or clearly states that the field is unavailable. |
-| What changed compared with the preceding period? | Uses comparable windows if supported; otherwise states the current capability boundary. |
+The proposed formula should use verified measure names and handle division by zero. It must explain
+the measure grain and avoid asserting that ratios or distinct counts are additive across groups.
 
-"Compare periods" is not a dedicated compiler operation. It would require separately executed comparable queries and interpretation; do not present it as a built-in, verified single-call feature.
+Illustrative table expression using names from the example model, **not a captured cloud-generated
+answer or an executed-as-shown result**:
 
-"Last month" should not be silently interpreted as a calendar month that lies beyond the data's refresh range. The agent should explain which time range it used.
-
-### Concrete structured request
-
-> Show interactions by platform for August 2026.
-
-```json
-{
-  "metric": "interactions",
-  "groupBy": "platform",
-  "filterBy": "none",
-  "filterValue": "",
-  "relativePeriod": "none",
-  "startDate": "2026-08-01",
-  "endDate": "2026-08-31",
-  "topN": 20,
-  "sortBy": "value",
-  "mode": "execute"
-}
+```dax
+SUMMARIZECOLUMNS(
+    'Agent'[Platform],
+    "SessionsPerUser", DIVIDE([Interaction Sessions], [Interaction Users])
+)
 ```
 
-The answer should use the Summary row to state the actual audit window and whether more groups exist, rather than inferring completeness from the displayed row count.
+The actual tool receives a table expression and projection/order metadata; it forms its own bounded
+execution envelope. This example is not an arbitrary full DAX script to paste as a tool argument.
 
-### Last-30-days ranking
+## Dates beyond one fixed period
 
 > Give me the top agents and their usage over the last 30 days.
 
-Use the reusable analytics route, not the fixed all-history ranking. Resolve the 30 inclusive UTC
-calendar dates from the invocation clock, and display the requested period separately from observed
-event bounds. On the test date of 12 September 2026, the requested window is 14 August through
-12 September inclusive. This is a test fixture, not a fixed production interval.
+> Compare the last complete calendar month with the preceding month.
 
-No complete successful chat transcript is claimed for this scenario; see [date filtering and verification](date-filtering.md).
+The model can generate paired scalar date expressions from the engine's `UTC_TODAY` context and
+use `QUERY_START`/`QUERY_END` in the table expression. It must state the interpretation, retain the
+requested interval, and distinguish observed records from completeness/refresh claims.
 
-## Model-grounded DAX help
+See [date semantics](date-filtering.md). Reference checks do not prove that arbitrary generated
+filter logic is semantically correct; observe the actual query.
 
-**Prompt**
+## Top-100 presentation
 
-> Explain how to write DAX to rank agents by Interactions. Use the actual model names and explain the filter context. Do not run the query yet.
+> Give me the top 100 agents by usage.
 
-**Expected answer contract**
+The ranking is now a regression goal for the generic expression path, not a fixed-query tool
+dependency. Preserve ranking order and the requested available rows up to the 100-row limit.
 
-- Names only tables, columns, and measures found in the model contract.
-- States whether it is writing a query, a measure, or a calculated column.
-- Explains aggregation grain, filters, ties, ordering, and date assumptions.
-- Prefers existing measures where their definitions match the question.
-- Labels the DAX **suggested, not executed** when execution was not requested.
-- Does not claim that new measures were saved to the model. This integration is read-only.
+![Synthetic ranking illustration, not a live Copilot Studio answer.](assets/illustrative-ranking-output.png)
 
-### Model-grounded DAX illustration
+Only three invented rows are shown in the illustration. The direct generic-contract regression
+matched the original top-100 membership/order; that is not a successful new cloud-chat transcript.
 
-**Suggested DAX, not executed as shown and not captured from a live agent answer:**
+## Explain DAX without executing it
 
-```dax
-EVALUATE
-SUMMARIZECOLUMNS(
-    'Date'[YearMonth],
-    "Sessions", [Interaction Sessions]
-)
-ORDER BY 'Date'[YearMonth]
-```
+> Write DAX for sessions by month and explain filter context. Do not execute the business query.
 
-This uses a verified column and measure name from the custom example's contract. It is a query, not a new measure definition. It groups the existing sessions measure by month; without a date filter it covers available dates in context. Distinct sessions across months are not necessarily additive.
+Expected behavior: retrieve authorized metadata and compile suggested DAX. The metadata visibility
+probe may run, but the proposed business query must not. Label the code **UNEXECUTED** and do not
+claim a measure was created or saved.
 
-The deployed advice topic returns the compiler's bounded query, including its Summary row, rather than promising to generate unrestricted arbitrary DAX. Further natural-language explanation must stay grounded in the declared model contract.
+Exact measure expressions are not retained by the current metadata preparation path. The agent must
+not pretend to know an existing measure's implementation merely because its name is in the catalog.
 
-## Unsupported analysis
+## Owner/creator questions and actual access
 
-**Prompt**
+> Which fields describe an agent's creator, and can you count records with that information?
 
-> Rank agents by customer satisfaction and include their owners' email addresses.
+The old blanket owner-field exclusion has been removed from the generic contract. Use the actual
+retrieved schema and requesting-user permissions; do not claim a field is absent because an earlier
+PoC omitted it. Direct owner/creator aggregate-count checks did not print identities.
 
-**Expected behavior**
+This repository still excludes personal/business values from examples and screenshots. Removing an
+invented query-field ban is not permission to publish private results or bypass RLS/OLS.
 
-Explain whether the model contains an approved satisfaction metric; do not substitute Interactions as if it meant satisfaction. Do not expose owner email addresses through this demonstration. Offer a supported aggregate alternative.
+## Unknown or ambiguous questions
 
-Do not claim the underlying model lacks owner/creator fields merely because the approved contract excludes them. Say that these fields are **not exposed by the current PoC tools**, and that full-model presence/absence has not been established.
+> Rank agents by satisfaction.
+
+Establish whether there is a relevant metric and what it means. Do not substitute interaction count
+for satisfaction. Explain missing context or actual access failures without inventing schema or
+results. A new expression is not automatically a correct business answer.

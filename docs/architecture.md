@@ -1,83 +1,112 @@
-# Architecture
+# Metadata-grounded generated-DAX architecture
 
-## Model-independent pattern, model-specific example
+**Deployment is not proof of successful chat orchestration.** The new generic runtime is deployed,
+but metadata -> cloud-generated DAX -> execution -> explanation has not been observed end to end.
+See [verification](verification.md) for the separate preview-routing and SDK-authorization blockers.
 
-The example's `Agent365` name belongs to a custom semantic model/report. It does not refer to the Microsoft Agent 365 product. This is a Power BI integration pattern, not a product-specific Agent 365 integration.
+The example named `Agent365` is a custom Power BI model/report, not Microsoft Agent 365.
+That distinction belongs in documentation, not runtime prompts.
 
-The same architecture can target other compatible semantic models. The example's table names, metrics, relationships, and DAX are not universal; adaptation and validation are required.
+## What replaces the earlier query templates
 
-See [capabilities and limits](capabilities-and-limits.md) for how schema discovery differs from query execution, what model-authored guidance can provide, and the proposed model-catalog architecture. That multi-model architecture is **not implemented** in the current agent.
+The six fixed/bounded legacy components are retired from the active design. Native topic capabilities
+now provide:
 
-## The reusable pattern
+1. **Get model metadata**: authorize schema visibility as the caller, then return catalog or selected-table metadata from the prepared snapshot.
+2. **Run generated DAX**: accept a generated table expression, output aliases/order, and optional date expressions; validate the boundary and execute a standard envelope.
+3. **Compile DAX advice**: use the same contract without executing the proposed business query.
+4. **Generated query error**: handle actual runtime failures without fabricated results or false model-absence claims.
 
-1. An authenticated user asks a business question.
-2. The standard Copilot Studio orchestrator interprets it using the model contract.
-3. The agent either selects a supported analytics action or explains model-specific DAX.
-4. An execution action constructs or supplies DAX for the configured model.
-5. The Power BI connector runs the query with the requesting user's connection.
-6. The agent explains the returned result, its metric, time scope, and limitations.
+These are topic-based capabilities, not the old three connector-tool cards. Appearance in the
+portal's Tools section is not, by itself, evidence that topic discovery or chaining works.
 
-The supported analytics surface must be defined by the actual tool inputs and query construction, not simply by a broad instruction such as "answer any question."
+There is no runtime list of five approved metrics or one permitted grouping/filter. The LLM is
+expected to generate new expressions from metadata. The execution format is still a controlled
+**table-expression contract**, not every possible full DAX script.
 
-## What is actually deployed
+## Two separate identity paths
 
-- Three preserved connector tools: smoke test, governance counts, and top-100 ranking.
-- `ModelAnalytics`: a generatively selected topic with structured inputs, executable Power Fx validation/query construction, and an Invoker Power BI connector action.
-- `ModelDaxAdvice`: a separate topic using the same query-construction logic without a connector action.
-- `ModelQuestionClarification`: handles unsupported or ambiguous model questions.
+### Governed preparation
 
-The Python compiler in `agent/analytics.py` is **local authoring and verification tooling**, not a hosted Python service in the runtime architecture. It emits the Power Fx topic definitions and compiles matching DAX for offline/direct checks. The live runtime uses Copilot Studio and its connector.
+An already-authorized model owner runs `prepare-model.py` against the documented Fabric
+`getDefinition?format=TMSL` read operation. This requires existing read/write model rights and the
+appropriate delegated scope. No new rights are granted.
 
-Date/filter/alternative-limit rankings select ModelAnalytics rather than the fixed all-history tool.
-The runtime resolves `last30Days` from a captured UTC calendar clock before query construction,
-and returns requested bounds separately from observed event bounds. See [date filtering](date-filtering.md).
+The preparation path retains table/column names, types, descriptions, measure names/format strings,
+and relationships. It excludes raw definitions, source/partition queries, connection material,
+roles, and exact measure expressions. A timestamp and content fingerprint describe the snapshot;
+they are not a live model-version guarantee.
 
-Metrics and model identifiers are selected through fixed mappings. The analytics interface does not accept arbitrary DAX, arbitrary workspace/model IDs, or user impersonation parameters. This allows varied questions within a finite approved schema rather than pretending to expose an unrestricted SQL-like console.
+Only `primary` is currently onboarded: 21 tables, 244 columns, 166 measure names, 13 relationships.
+The separately tested second model is not added to runtime routing.
 
-The editable diagram is [architecture.excalidraw](assets/architecture.excalidraw). The [walkthrough](index.html#architecture) contains a rendered version.
+### Requesting-user runtime
 
-## Three things that must stay separate
+Before returning snapshot content, an Invoker Power BI query references the prepared analytical
+columns inside zero-row expressions and returns only a visibility-probe result. An unavailable
+column makes the probe fail; the snapshot is not disclosed.
 
-| Responsibility | What it means |
-|---|---|
-| Grounding | Actual model tables, columns, measures, relationships, date semantics, and business definitions. |
-| Execution | An authenticated, scoped Power BI query call. |
-| Explanation | Interpreting returned results, or teaching DAX without pretending a suggestion was executed. |
+This is deliberately fail-closed. A narrower OLS identity may need a role-appropriate governed
+snapshot. Automatic per-role schema discovery is not implemented. The subsequent business query
+is independently authorized by Power BI.
 
-The Power BI connector accepts DAX query text. It does not automatically discover the model or supply reliable natural-language-to-DAX generation. The Execute Queries API is not a general schema-discovery endpoint; its documented limitations exclude INFO and DMV queries.
+No maker-execution fallback, arbitrary model ID, user impersonation input, or anonymous endpoint
+is exposed. No hosted backend or Fabric data agent was created.
 
-## Authentication and authorization
+## Query construction and execution
 
-The agent uses **Invoker/end-user credentials**, not a maker-owned connection as a fallback. There are separate configuration steps:
+The orchestrator supplies a table expression and free output aliases, not a business-template ID.
+Native Power Fx topics check structural boundaries and form a standard DAX envelope.
 
-- Create or select a connected Power BI connection.
-- Bind the agent's connection reference.
-- Approve the agent's use of that connection when prompted.
+The expression contract supports combinations such as `VAR/RETURN`, `FILTER`,
+`CALCULATETABLE`, `SUMMARIZECOLUMNS`, `ADDCOLUMNS`, `SELECTCOLUMNS`, and derived calculations.
+The system does not try to splice or truncate an arbitrary full query script.
 
-An existing environment connection does not by itself prove that the agent's runtime connection is approved.
+The envelope projects declared output fields, uses distinct projected rows and deterministic
+ordering, and bounds returned data. Include a genuine key when record identity or multiplicity
+matters; projection without a key can collapse otherwise distinct rows.
 
-Power BI is responsible for access enforcement. Read/Build permissions and row-level security apply to the executing identity. Workspace Admin, Member, and Contributor roles do not have the same RLS behavior as Viewer. A model that allows a user to read sensitive data cannot be made secure merely by telling the agent not to mention it.
+The lexer is **not a complete DAX parser, semantic checker, or cost estimator**. Power BI remains
+the language parser and data authorization boundary. A well-formed expression can still implement
+the wrong business meaning or consume excessive resources.
 
-## Boundaries and failure handling
+## Result/error contract
 
-- Keep the target workspace and semantic model in controlled deployment configuration.
-- Do not expose arbitrary model IDs or impersonated-user inputs to the agent.
-- Prefer approved measures and bounded structured inputs for repeatable analysis.
-- Treat generated DAX as unverified until it has executed successfully.
-- Enforce constraints in the query-building/execution layer wherever possible; prose is not enforcement.
-- Check both transport errors and errors embedded in the response.
-- Report unsupported questions, empty results, date coverage, and truncation explicitly.
-- Distinguish an approved-tool restriction from full-model absence or an actual permission failure.
-- Do not return owner identities, transcripts, or individual interaction records in this demonstration.
+- Up to 100 rows and 16 declared columns.
+- Up to 256 characters per text cell, with a truncation flag.
+- Required Summary/status/count envelope and a 64,000-character preview budget.
+- At most two execution attempts per user activity.
+- A 30-second connector timeout, not a server-cancellation guarantee.
 
-An approved fixed top-100 query can remain alongside reusable analytics. Tools should be organized by capability, not multiplied for each natural-language wording.
+The native connector exposes `firstTableRows`, not the entire REST error envelope. Native failures
+go through OnError; the owned Summary/count/budget checks reject missing or inconsistent output.
+Direct verification scripts can additionally inspect raw REST errors, including errors in HTTP 200.
 
-The reusable query produces one Summary row and at most 100 aggregate Data rows. It excludes zero/blank groups and uses a stable group key for sorting. Agent grouping excludes missing agent keys. All-surface totals can include base Copilot or unlinked audit events, so an all-surface total is not necessarily the sum of named-agent results. Distinct-user/session counts across groups are not additive.
+Missing data is not no activity. An unavailable schema field is not necessarily absent from the
+model. A permission error must remain an access explanation.
 
-Input/result limits do not prove low scan cost for every model; benchmark representative data volumes before production use.
+## Dates and advice
 
-## Why not Fabric data agents or MCP?
+The DAX envelope captures `UTCNOW()` and defines `UTC_TODAY`. The model generates scalar date
+expressions and uses `QUERY_START`/`QUERY_END` in the business expression. This can represent days,
+weeks, complete months, quarters, years, and explicit periods without adding a business-query template.
 
-Fabric data agents are not necessary to execute DAX against an existing semantic model. The connector uses the Power BI API.
+References and common date-intent guards prevent obvious unresolved date requests from becoming
+all history. They do not prove that arbitrary generated filter logic faithfully implements the
+user's intent. UTC anchoring does not establish the source-event timezone.
 
-Hosted Power BI MCP can offer schema retrieval and query execution, but it is a separate integration with its own tenant settings, authentication, preview status, and tool entitlements. The available MCP connection was not validated for the model used during this PoC. It is not represented as a working dependency.
+Advice uses the same compilation contract without executing the business query. Its metadata
+visibility probe still touches Power BI. The proposed DAX is **unexecuted**, and no measure is saved.
+Exact implementation explanations of existing measures are limited because exact measure
+expressions are not in this prepared snapshot.
+
+## Local source versus cloud runtime
+
+Python modules prepare metadata, generate native topic source, deploy reviewed changes, and run
+offline/direct checks. They are not a hosted service. Private generated topics and real snapshots
+are excluded from GitHub; the publication package includes generators and synthetic metadata.
+
+The editable [Excalidraw diagram](assets/architecture.excalidraw) and
+[walkthrough](index.html#architecture) describe this design. Neither is evidence of successful chat
+selection. Topic discovery, planner outputs, native Power Fx, consent/resumption, and final answers
+must still be observed in a working channel.

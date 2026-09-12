@@ -1,112 +1,244 @@
-# Model-grounded Copilot Studio / Power BI reference
+# Metadata-grounded generated DAX in Copilot Studio
 
-Source-only reference implementation for a standard Copilot Studio agent, not a Fabric data agent.
-This publication copy contains placeholder configuration, no live solution export, no authentication
-state, no customer output tables, and no screenshots.
+This publication copy contains generators, placeholder configuration, and synthetic offline
+metadata, not live generated topics, credentials, or a preauthenticated solution export.
+Use a private deployment copy. Keep this repository private and Pages disabled until the
+[public-release review](../docs/public-release.md) is complete.
 
-**Naming clarification:** `Agent365` is a custom demonstration semantic model/report, not the
-Microsoft Agent 365 product or an official product schema. The architecture is reusable with other
-compatible models after adapting the model contract, mappings, DAX, configuration and permissions.
+> **Example naming:** Agent365 is this demonstration's custom semantic model/report, **not the
+> Microsoft Agent 365 product**. This clarification belongs in documentation, not runtime instructions.
 
-## How it works
+This implementation replaces the earlier fixed-query/five-metric runtime. A standard Copilot Studio
+orchestrator is configured to author **new DAX table expressions** from machine-readable model metadata. Native
+Power Fx topics validate the expression boundary and build a bounded DAX execution envelope. The
+standard Power BI connector runs it with **Invoker/end-user authentication**.
 
-1. Generative orchestration chooses a preserved specialized tool or a reusable analytics topic.
-2. Structured metric/group/filter/date/limit inputs pass executable Power Fx validation.
-3. Fixed switches select approved model identifiers; filter literals are escaped.
-4. The standard Power BI ExecuteDatasetQuery connector executes against one configured semantic
-   model using Invoker/end-user credentials.
-5. One Summary row and bounded aggregate rows expose the actual audit window and any result limit.
-6. A separate DAX-advice topic uses the same compiler without a connector action; advice is marked
-   NOT EXECUTED. It is not evidence of a successful live query.
+**Deployment is not a chat-success claim.** Unit and direct Power BI checks pass. The corrected SDK
+client now forwards custom prompts to the published endpoint, but its conversation-start request
+returns **403 Forbidden: “The caller is not authorized to perform the request.”** The existing token
+has `CopilotStudio.Copilots.Test`, not `CopilotStudio.Copilots.Invoke`; no conversation or prompt turn
+was created. This is a published-client authorization blocker, not a demonstrated Power BI
+connection failure. No additional permissions were requested.
 
-The three specialized tools cover a constant smoke test, inventory counts, and top-100 agent usage.
-They coexist with reusable analytics rather than one tool per business question.
+The earlier evaluation fallback had a concrete serialization cause: the native Studio parser
+dropped the generic topics' triggers/actions despite their presence in stored YAML. Following repair,
+fresh evaluation traces selected `ModelMetadata` and generated its input arguments. This is actual
+planner evidence, not a completed metadata authorization or query result. Fully non-prompting
+metadata attempt reached the client's 120-second timeout without returned activities. An extended
+attempt, with a 300-second client budget and an explicit catalog request, returned **HTTP 504**
+(`UnexpectedError`, “An unexpected error occurred.”). Neither failure establishes an
+authentication failure or proves that the connector was reached.
+No cloud-generated DAX/tool-argument/result conversation has been verified.
 
-## Model contract and boundaries
+### Model-selection and parser correction
 
-The example expects Agent, Interaction and Date tables and the measure names documented in
-model-context.json. This is a sample approved schema subset, not automatic support for any model.
-Validate and adapt the contract before connecting another semantic model.
+The real UI showed GPT-4.1 while raw Dataverse YAML retained `PreviewModels/GPT5Reasoning`.
+The same authenticated authoring component API used by Studio returned **no parsed `aISettings`**;
+the UI therefore resolved the catalog's default GPT-4.1. Preserving the raw YAML was insufficient.
+The live model catalog includes GPT-5 Reasoning. After repairing YAML serialization, native
+authoring readback returns `PreviewModels/GPT5Reasoning` both before and after successful publication.
+This verifies the selector's backend, not model-execution telemetry or an independently observed
+rendered dropdown.
 
-Five metrics: interaction turns, distinct sessions, distinct-user counts, inventory agents and
-inventory environments. One grouping, one exact categorical filter, optional paired inclusive audit
-dates (maximum 366 days), and 1-100 returned aggregate groups are supported. The query includes an
-additional Summary row with TotalGroups, ReturnedGroups, HasMore and time-window bounds.
+`studio_yaml.py` uses indented sequences and literal multiline strings. `studio_authoring.py`
+checks parsed model settings, exact instruction text, starters, topic triggers, input counts and
+action counts; deployment now performs those checks before and after publication. Native compilation
+also exposed and resolved unsupported `System.Activity.Id`, regex escaping, deprecated table
+projection and duplicate action IDs. The shared guard now uses documented `System.LastMessage.Id`.
+The screenshot's single **Agent Status** warning text has not been independently retrieved;
+successful publication is not evidence that this separate warning disappeared.
 
-`relativePeriod=last30Days` resolves 30 inclusive UTC calendar dates from the runtime clock,
-including today; do not combine it with explicit dates. RequestedStartDate/RequestedEndDate are
-separate from observed WindowStart/WindowEnd. The source event timezone is unverified; UTC is
-the declared date-anchor convention. Unknown or unresolved periods stop for clarification rather
-than widening to all history. See `..\docs\date-filtering.md`.
+## Actual runtime
 
-Any date/filter/alternative-limit ranking uses ModelAnalytics. The fixed top-100 tool is reserved
-for the unfiltered all-history scenario; its original DAX is unchanged. The Agent365 product-naming
-clarification remains in this README and public documentation, not in runtime instructions.
+```text
+User question
+    → standard generative orchestrator
+    → Get model metadata: requesting-user schema visibility probe, then governed snapshot
+    → orchestrator authors DAX table expression + output aliases + ordering + optional date expressions
+    → Run generated DAX: structural checks, attempt budget, generic execution envelope
+    → Power BI ExecuteDatasetQuery, fixed model/workspace, Invoker
+    → validate owned Summary row, returned count, bounds and response size
+    → explain actual results, or report the actual failure
+```
 
-No arbitrary DAX execution, mutable model IDs, owner/user identities, transcripts, raw session IDs,
-anonymous endpoint, or maker-credential fallback is exposed. Inventory counts are current snapshots,
-not historical inventory. Distinct counts across groups are not necessarily additive.
+**Compile DAX advice** uses the same expression/envelope checks without executing the proposed
+business query. Metadata authorization still uses a zero-row Power BI probe. Advice is labelled
+UNEXECUTED; syntax/semantic correctness is not established by contract validation alone.
 
-## Example prompts
+**Generated query error** is a native OnError topic. It exposes bounded actual error information,
+does not claim results, and distinguishes access failures from model absence. Instructions allow
+one corrective attempt; a runtime counter limits execution to two attempts per user activity.
+If platform error handling terminates the turn, no automatic retry is claimed.
 
-- Show interactions by platform for a selected month.
-- How many agents are in each current risk band?
-- Show distinct sessions by month in chronological order.
-- Show the top three client hosts by distinct-user count.
-- Write DAX for sessions by month; do not execute it.
-- Give me the top 100 agents by usage.
+The three obsolete fixed connector tools (smoke, governance counts and top-100) were **deleted**,
+not merely disabled. They are absent from both Dataverse and the native authoring inventory. A
+private backup and IDs were retained; unchanged content, no references, platform deletion dependencies,
+child records and other-agent associations were checked first. The shared connection was not deleted.
+The three other legacy bounded topics remain inactive. Current generic capabilities appear under
+**Topics**, not as the old connector rows under **Tools**. Private historical source is under
+`legacy\`; the original top-100 DAX is an offline regression fixture, not a runtime dependency.
 
-See examples.json for precisely labelled evidence versus illustrations. No successful user-facing
-analytics screenshot is included. Do not render illustrative output as if it were captured evidence.
+Technical inputs do not prompt users to supply DAX, aliases or optional metadata/date parameters.
+They are optional at the platform-input boundary because required inputs must enable prompting;
+native runtime checks still reject missing expressions/aliases and invalid contracts before execution.
+Observed planner binding events establish that non-prompting inputs can still be AI-filled.
 
-## Configure your own existing agent
+## What is genuinely generated
 
-1. Install Python dependencies from requirements.txt and Node dependencies with npm ci.
-2. Copy resources.example.json to resources.json (gitignored), and enter your own resource IDs.
-   Never place connection credentials or tokens in that file.
-3. Run python configure.py, then npm test.
-4. Review the model mappings and generated YAML, then use python deploy.py only against your own
-   existing standard agent and dedicated solution. It does not create the initial agent.
-5. Create/choose your own authorized Power BI connection and bind your connection reference in
-   the target environment. Retain Invoker/end-user credentials.
-6. Publish with PAC using explicit environment/agent IDs. Wait for publishing and synchronization.
-7. Test in your approved Studio session. Test-channel connection approval is separate from merely
-   creating an environment connection.
+The runtime contains **no metric, grouping, filter-field or owner-field enumeration**. The LLM can
+author expressions using actual fields/measures and arbitrary supported DAX combinations, including
+`VAR/RETURN`, `FILTER`, `CALCULATETABLE`, `SUMMARIZECOLUMNS`, `ADDCOLUMNS`, `SELECTCOLUMNS`, `UNION`,
+relationship operations and derived calculations.
 
-Do not change global account/profile selections to run these scripts. Deployment gets tokens through
-the user's existing Azure CLI authentication and keeps them in memory. Inspect live changes before
-deployment; protected specialized tools are not silently overwritten.
+The input contract is a **table expression**, not an arbitrary full `EVALUATE/DEFINE/ORDER BY`
+script. The expression is inserted as a validated expression operand in a standard DAX envelope;
+the system does not truncate or attempt to repair arbitrary full-query syntax.
 
-## Validation status and limitations
+Projection and sorting are free output aliases, not business-query templates. Results are DISTINCT
+by the declared projection. Include an actual key if record identity/multiplicity matters.
+An explanation or proposed measure formula can be supplied as unexecuted advice; no measure is
+created or saved in the model.
 
-The sanitized source passes **25 offline tests**, including scope and date regressions. Three fixed,
-seven reusable, and five date-specific queries passed directly in the development model. These are not full runtime
-conversation tests.
+## Metadata acquisition and permissions
 
-The implementation's unit tests and direct compiled-query cases passed in its original environment.
-The original top-100 source was preserved. These statements do not establish that your deployment
-will work without configuration, model validation and consent.
+Only the **original model, alias `primary`**, is currently onboarded: its prepared definition contains
+21 tables, 244 columns, 166 measure names and 13 relationships. The separately tested second model is
+**not** a runtime option. Do not describe this release as multi-model routing.
 
-Automated chat-to-query-to-answer and live DAX-advice output were not fully verified. The evaluation
-channel requested per-agent connection approval; a separate published invocation route lacked its
-required first-party preauthorization. No permission bypass or maker fallback was used.
+`prepare-model.py` uses the documented Fabric semantic-model `getDefinition?format=TMSL` read
+operation and its asynchronous operation endpoint. This API requires existing model read+write
+permissions. It is a **governed owner preparation/refresh operation**, not a requirement imposed on
+agent users; this implementation grants no permissions.
 
-For the latest date correction, the shared authenticated browser was unavailable, a connector-free
-advice probe returned no activities, and an existing-conversation read returned 404. Those observations
-do not prove an authentication failure, tool invocation, or a full chat pass.
+Only table/column names, types, descriptions, measure names/format strings and relationships are
+retained. Raw definitions, partitions, source expressions/queries, connection material and roles
+are not persisted or returned. Exact measure expressions are deliberately not published by this
+preparation path, so name discovery is not an explanation of an existing measure's implementation.
+Model-authored instructions and verified answers remain unverified. Linguistic-metadata presence
+is detected, not treated as executable guidance.
 
-The latest scope correction distinguishes approved-tool restrictions, unknown full-model metadata,
-verified absence, and actual access errors. Owner/creator requests receive a scope explanation,
-not a claim that the underlying model lacks those fields. This did not expand identity access,
-change queries, or replace the user's selected cloud reasoning model.
+Before any snapshot is returned, a native Invoker query references every prepared analytical column
+inside zero-row expressions and returns only `AccessProbe=1`. A missing/inaccessible column causes
+the probe to fail, and the snapshot is not disclosed. Narrower OLS users may therefore require a
+role-appropriate governed snapshot; automatic per-role schema discovery is **not implemented**.
+The subsequent business query is independently authorized by Power BI.
 
-Run npm test for offline checks, python verify-model.py and python verify-analytics.py for explicitly
-authorized direct queries, and npm run test:agent -- --maker-test for a separate actual chat probe.
-The direct query scripts are not chat E2E tests. Review runtime output privately; do not commit logs.
+Snapshots have a preparation timestamp and a content fingerprint, not a claimed live model-version
+guarantee. Refresh and republish after model changes. Missing snapshot content, changed schema,
+authorization errors and genuine absence must not be conflated. No invented owner/creator exclusion
+is imposed; access follows the actual model and requesting-user permissions.
 
-## Before public release
+## Enforced boundaries and honest limitations
 
-Keep the repository private and Pages disabled until owner review. Check every source file and image
-for actual IDs, account names, URLs, business statistics, connection state and credentials. Never add
-raw solution ZIPs, .mcs state, local configuration, chat transcripts or unredacted screenshots.
-No GitHub repository or Pages setting is changed by this source bundle.
+| Boundary | Enforcement |
+|---|---|
+| Model/workspace | Fixed trusted configuration; only `primary`; no AI-supplied IDs |
+| Authentication | Integrated private agent, existing connection reference, Invoker, blank impersonation |
+| Read-only | Power BI ExecuteDatasetQuery; no model-management/write action |
+| Expression boundary | Lexer strips quoted literals/identifiers/comments for structural checks; balanced delimiters; reserved envelope names and full-query/introspection/external-model commands rejected |
+| Input resources | 12,000 expression characters, 4,000 code characters, nesting bounds; 1–16 output aliases |
+| Result resources | 1–100 rows; deterministic complete-key ordering; extra ties fail closed; 256 characters per text cell with explicit truncation flag |
+| Response | Required Summary/status/count envelope; 64,000-character preview budget; excessive responses rejected, not silently dropped |
+| Attempts | Maximum two execution attempts per user activity |
+| Time | Connector request timeout 30 seconds; not a guarantee that server computation is cancelled |
+
+The lexer is **not a complete DAX parser, semantic validator or cost estimator**. Power BI remains
+the parser and authorization boundary. Complex valid DAX can still be costly or wrong; capacity
+governance remains necessary.
+
+The native connector exposes `firstTableRows`, not the full raw REST error envelope. Native errors
+go through OnError; the owned Summary/count/budget checks reject missing/partial results. The direct
+verification transport additionally checks errors inside HTTP 200 responses. These mechanisms
+must not be described as access to raw connector error details that the connector does not expose.
+
+The envelope preserves numeric/date/Boolean values and caps text cells. Always disclose `__hasMore`
+and `__textTruncated`. A successful zero-row envelope means no matching returned rows in that scope,
+not no activity outside it or a complete telemetry history.
+
+## Dates
+
+The executor captures `UTCNOW()` and defines trusted `UTC_TODAY`. The LLM can generate paired
+date expressions for varied periods: days, weeks, complete months, quarters, years or explicit dates.
+Examples of scalar expressions include `UTC_TODAY-89`, `EOMONTH(UTC_TODAY,-2)+1` and
+`DATE(YEAR(UTC_TODAY),1,1)`. These are language primitives, not finite business-query mappings.
+
+Date-scoped requests must supply both expressions and use `QUERY_START` and `QUERY_END` in the table
+expression. Common date-bearing prompts without resolved bounds are rejected rather than run
+against all history. This is a reference/intent guard, not proof that arbitrary DAX filters express
+the user's meaning correctly.
+
+The Summary reports the engine UTC anchor and evaluated requested dates. State the chosen calendar
+interpretation. UTC anchoring does not establish the source-event timezone. Observed first/last
+events are not refresh timestamps or proof of continuous coverage. Never widen an empty/error period.
+
+## Validation
+
+The current unit suite covers unrestricted expression combinations, ownership-field references,
+lexer/envelope escapes, aliases/sorting/bounds, relative date expressions, shared native-template
+generation, metadata authorization gating and advice without business-query execution. Additional
+tests cover Studio-compatible YAML, native-readback rejection of dropped model/topic fields,
+obsolete-tool deletion guards and safe client diagnostics: **25 Python tests and 5 Node tests**.
+
+Direct authorized checks cover:
+
+- multiple groupings plus multiple filters, with an independent aggregate cross-check;
+- a derived tool-intensity ratio;
+- owner/creator fields as aggregate counts, without printing identities;
+- the familiar top-100 query, matching the original membership and ordering;
+- explicit-date rankings and relative complete-month comparisons;
+- another model table outside the old compiler's contract;
+- successful empty envelopes and genuine unsupported-column errors.
+
+These are **LLM-authored test fixtures applied to the generic contract**, not evidence of cloud chat
+generation. Runtime code does not contain these business queries. Metadata-topic selection and
+AI-filled metadata arguments have now been observed. Actual generated-DAX execution and user-facing
+analytical answers still need verification in an authenticated Studio session.
+Do not publish business rows, identity values, raw schema snapshots or fabricated screenshots.
+
+The SDK test harness previously ignored `--prompt` outside `--maker-test` and always sent a retired
+smoke-test request. That defect is fixed. Five isolated client-harness tests verify prompt forwarding
+on both routes, the published target, fresh-conversation behavior, body-free diagnostics, and that a
+conversation-start failure is not reported as a sent prompt or successful chat.
+
+## Owner workflow
+
+1. Configure your existing private agent and authorized model in `resources.json`; use the example
+   file supplied with the publication bundle. No credentials belong in that file.
+2. Install dependencies: `pip install -r requirements.txt` and `npm ci`.
+3. Inspect/capture live state with `python deploy.py --capture`.
+4. Run `python prepare-model.py` using an already-authorized model owner. Review the private snapshot.
+5. Run `python general_runtime.py`, then `npm test`.
+6. Apply reviewed source with `python deploy.py --apply --publish`. It refuses concurrent cloud edits,
+   retains current cloud settings/auth, verifies the native model-selector and topic contracts,
+   and never deploys stale `settings.mcs.yml`. A stored-YAML comparison alone is not sufficient.
+7. Run `python verify-generated.py` for authorized direct checks.
+8. Start a **fresh** Studio test conversation and inspect the activity plan, actual generated inputs,
+   authorization, Summary flags and explanation. Existing sessions may retain an old dialog stack.
+
+`node test-agent.cjs --prompt "What tables and measures are in this model?" --save-evidence` uses
+the SDK's published SSE endpoint. `--maker-test` explicitly selects the separate evaluation JSON
+endpoint. Both forward the same prompt; the default is metadata, not the retired smoke query.
+Diagnostics report HTTP statuses, routes and activity types without headers, business rows or raw
+generated expressions. `runtime-probe.private.json` is body-free private evidence, not a transcript
+or a publication artifact. Structured component/DAX hashes are hints, not automatic execution proof.
+
+The evaluation channel is not proof that the normal Studio/published channel works.
+`test-studio.cjs` uses a separate project-local Edge profile, never
+the shared MCP browser. It does not enter credentials or fabricate UI.
+
+Private generated topics and metadata stay under `.generated-private\` and `*.private.json`.
+The sanitized publication package contains generators and synthetic metadata for offline tests,
+not live generated metadata topics. Reuse with another compatible semantic model requires owner
+preparation, configuration, permissions and validation; it is not automatic support for any model.
+
+## Documentation and sources
+
+- [Copilot Studio topic inputs/outputs](https://learn.microsoft.com/en-us/microsoft-copilot-studio/advanced-managing-topic-inputs-outputs)
+- [System variables, including LastMessage.Id](https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-variables-about#system-variables)
+- [Primary model selection and default behavior](https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-select-agent-model)
+- [Power BI connector](https://learn.microsoft.com/en-us/connectors/powerbi/#run-a-query-against-a-dataset)
+- [Execute Queries REST contract](https://learn.microsoft.com/en-us/rest/api/power-bi/datasets/execute-queries)
+- [Fabric model definition API and permission requirement](https://learn.microsoft.com/en-us/rest/api/fabric/semanticmodel/items/get-semantic-model-definition)
+
+No hosted backend, new connection, app registration, secret, Fabric data agent or permission grant
+was created. Normal Copilot Studio and Power BI usage/capacity charges still apply.

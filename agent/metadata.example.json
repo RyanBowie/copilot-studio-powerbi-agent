@@ -1,0 +1,63 @@
+{
+  "example": true,
+  "modelAlias": "primary",
+  "source": "Synthetic shape example, not a live model export",
+  "retrievedAtUtc": "2026-01-01T00:00:00+00:00",
+  "tables": [
+    {
+      "name": "Entity",
+      "description": "Synthetic entity dimension",
+      "hidden": false,
+      "columns": [
+        {
+          "name": "Key",
+          "type": "string"
+        },
+        {
+          "name": "Owner",
+          "type": "string"
+        },
+        {
+          "name": "Score",
+          "type": "double"
+        }
+      ],
+      "measures": []
+    },
+    {
+      "name": "Event",
+      "description": "Synthetic event fact",
+      "hidden": false,
+      "columns": [
+        {
+          "name": "EntityKey",
+          "type": "string"
+        },
+        {
+          "name": "Date",
+          "type": "dateTime"
+        }
+      ],
+      "measures": [
+        {
+          "name": "Event Count",
+          "description": "Synthetic count",
+          "expressionAvailable": false
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "fromTable": "Event",
+      "fromColumn": "EntityKey",
+      "toTable": "Entity",
+      "toColumn": "Key",
+      "isActive": true
+    }
+  ],
+  "guidance": {
+    "authoredInstructions": "Not present in this synthetic example",
+    "verifiedAnswers": "Not present"
+  }
+}

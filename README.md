@@ -1,6 +1,6 @@
 # Copilot Studio + Power BI
 
-**Ask questions of a Power BI semantic model and get model-grounded DAX guidance from a standard Copilot Studio agent. No Fabric data agent is required.**
+**An experimental standard Copilot Studio agent for metadata-grounded DAX generation, execution, and explanation. No Fabric data agent is required.**
 
 This repository packages a proof of concept, its reusable agent source, and a publication-ready documentation site. It is intentionally private while the implementation and documentation are reviewed. GitHub Pages is not enabled.
 
@@ -17,34 +17,50 @@ This repository packages a proof of concept, its reusable agent source, and a pu
 - [Second-report scalability experiment](docs/scalability-experiment.md)
 - [Public-release checklist](docs/public-release.md)
 
-## What this demonstrates
+## Current status: broader design, unresolved chat verification
 
-The agent connects to an existing Power BI semantic model using the **Power BI connector**, rather than a Fabric data agent. A curated model contract grounds its interpretation of metrics, dimensions, dates, and DAX.
+The five-metric compiler and fixed business-query paths have been replaced in the deployed design.
+The new capabilities retrieve governed model metadata and accept **new DAX table expressions**
+authored by the orchestrator, rather than mapping questions to a predefined metric list.
 
-**Current scope: one configured model, not automatic whole-model or multi-model discovery.** Unavailable through the approved tools does not mean absent from the underlying model. The [capability and limits guide](docs/capabilities-and-limits.md) explains model onboarding, metadata/instruction retrieval, safe response wording, and what a scalability evaluation must measure.
+**This is not yet a demonstrated end-to-end conversational agent.** A YAML serialization defect
+caused Studio to omit model settings and topic bodies. After repair, native authoring readback
+retains GPT-5 Reasoning and evaluation traces select the metadata topic and AI-fill its arguments.
+The latest metadata attempt nevertheless returned HTTP 504; no completed connector result was observed.
+The separate published SDK client was denied with HTTP 403 before sending its prompt because its
+token lacked `CopilotStudio.Copilots.Invoke`. Neither failure proves a Power BI login problem.
+The three obsolete fixed tools have been deleted; generic capabilities appear under **Topics**.
+Rendered model-picker state, inference-model telemetry, and the original UI warning remain unverified.
 
-**Second-model evidence:** a separate authorized report resolved to a distinct model. Generic constant DAX passed, and a documented Fabric API retrieved its structural definition automatically. This proves a metadata-acquisition path, **not** automatic agent onboarding or business understanding. It used existing read/write model permissions; read-only-user parity and authored-instruction discovery remain unproven. See the [experiment and measured timings](docs/scalability-experiment.md).
+### Deployed design
 
-The implementation preserves the smoke-test, governance-count, and top-100-agent tools and adds a **reusable analytics topic**, a **connector-free DAX-advice topic**, and a clarification topic. The source and verification guide describe the actual supported scope; this is not a promise of arbitrary natural-language access to every model.
+**Question -> authorized metadata retrieval -> LLM-generated table expression -> validated execution envelope -> Power BI as the caller -> explanation.**
 
-**Execution and advice are different.** The connector executes DAX; it does not itself generate or validate the business meaning of DAX. Advice-only answers must label unexecuted DAX as a suggestion.
-
-### Current reusable capability
-
-| Input | Supported scope |
+| Capability | Implementation and boundary |
 |---|---|
-| Metric | Audited interaction turns, distinct sessions, distinct-user counts, inventory agent rows, distinct inventory environments |
-| Grouping | One of total, platform, environment, environment type, region, risk, activity, agent, month, day, or client host |
-| Filter | One exact categorical filter using an approved field; filter text is escaped |
-| Dates | Paired inclusive dates up to 366 days, or `last30Days` resolved from the runtime UTC calendar date; unresolved date requests never fall back to all history |
-| Results | 1-100 aggregate groups plus a Summary row with counts, truncation, requested dates, and separate observed-event bounds |
-| DAX advice | The same model-specific compiler returns suggested DAX without calling Power BI |
+| Metadata | Owner-prepared snapshot; requesting-user schema visibility probe before disclosure |
+| Query generation | New table expressions over actual fields/measures; no five-metric, grouping, or owner-field enumeration |
+| Query form | DAX table expression plus output aliases/order, not an arbitrary full `EVALUATE/DEFINE/ORDER BY` script |
+| Dates | Generated scalar expressions using engine-provided `UTC_TODAY`, `QUERY_START`, and `QUERY_END` |
+| Results | Up to 100 rows, 16 columns, and 256 characters per text cell; explicit count/truncation envelope |
+| Advice | Compile and explain proposed DAX without executing the business query; metadata authorization still uses a zero-row probe |
+| Models | Only the original model, alias `primary`, is onboarded |
 
-Inventory metrics are current snapshots, not historical inventory. Inventory does not support audit-date or client-host slicing. Zero/blank metric groups are excluded. Multiple simultaneous categorical filters, arbitrary calculations, and automatic schema discovery are not implemented.
+The primary snapshot contains **21 tables, 244 columns, 166 measure names, and 13 relationships**.
+It includes retained structural metadata, not complete business semantics or exact measure
+implementations. Preparation/refresh uses an already-authorized owner with read/write model access;
+agent users receive no new permissions.
 
-**Verification:** the sanitized source passes 25 offline tests, including scope explanations and relative-date boundaries. Three fixed, seven reusable, and five date-specific queries passed directly in the development model. Full chat-to-answer and live DAX-advice responses remain unverified; the latest probes did not expose an execution trace. The user's successful unfiltered top-100 observation is recorded separately.
+Eight varied direct-query cases passed, including combinations outside the retired compiler and a
+top-100 membership/order regression. The current offline suite comprises **25 Python tests and
+5 client-harness tests**. These are not cloud-generated conversational-query evidence.
 
-Filtered rankings use the reusable analytics topic. The fixed top-100 tool is reserved for the original unfiltered all-history request. See [date-filter behavior and evidence](docs/date-filtering.md) for the last-30-days convention and its limits.
+The useful top-100 presentation remains a regression goal, not a runtime business-query dependency.
+No successful new-runtime screenshot is fabricated. See [architecture](docs/architecture.md),
+[capabilities and limits](docs/capabilities-and-limits.md), and [verification](docs/verification.md).
+
+**Second-model evidence:** a separate approved model accepted constant DAX and automatic structural
+definition retrieval. That model is **not a runtime option**. See the [separate experiment](docs/scalability-experiment.md).
 
 ## Repository layout
 
@@ -81,7 +97,8 @@ The answer illustration is **synthetic**, not a customer result or a product scr
 - An authenticated user with **Read and Build** access to the model.
 - The tenant's **Dataset Execute Queries REST API** setting enabled.
 - Power Platform data policies that permit the required connector.
-- An approved model contract and a Power BI connection configured for **end-user / Invoker** execution.
+- A governed, current metadata snapshot and a Power BI connection configured for **end-user / Invoker** execution.
+- An already-authorized model owner for definition preparation/refresh; do not grant model-write access to every agent user.
 
 Build permission is more powerful than report-viewing permission. Review the model's data access before granting it. Row-level security follows the effective execution identity and Power BI workspace role; agent instructions are not an authorization boundary.
 

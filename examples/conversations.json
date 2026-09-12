@@ -18,7 +18,7 @@
       "prompt": "Explain how to rank agents by Interactions in DAX using this model. Do not run it yet.",
       "outputType": "answer contract, not an executed answer",
       "requirements": [
-        "Use verified model names and existing measure definitions.",
+        "Use retrieved model names; do not infer an existing measure's implementation from its name.",
         "Explain the difference between a DAX query and a measure.",
         "Explain filter context, date scope, ties and ordering.",
         "Mark suggested code as unexecuted.",

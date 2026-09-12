@@ -1,85 +1,60 @@
-# Filtered rankings and relative dates
+# Date semantics in generated DAX
 
-**The fixed all-history ranking is not an acceptable substitute for a requested date range.**
+**Current design:** generated scalar date expressions, not the retired finite
+`relativePeriod=last30Days` compiler. The original date-routing incident is useful historical
+evidence, but its old input schema is no longer the runtime contract.
 
-The date correction was published on 12 September 2026. It addresses conflicting ranking routes and the absence of deterministic relative-date resolution. It does not add another model or broaden data access.
+## Trusted anchor, generated periods
 
-## Which capability should run?
+The execution envelope captures `UTCNOW()` and defines `UTC_TODAY`. The orchestrator generates
+paired scalar date expressions for the requested interval, then uses `QUERY_START` and `QUERY_END`
+in the proposed table expression.
 
-| Request | Route |
+Examples of language primitives, **not captured successful cloud outputs**:
+
+| Interpretation | Example scalar expressions |
 |---|---|
-| Original unfiltered, all-history top 100 agents by usage | Preserved fixed top-100 tool |
-| Top agents over the last 30 days | Reusable ModelAnalytics, interactions by agent, descending value; default 20 groups if unspecified |
-| Top 100 agents over the last 30 days | Reusable ModelAnalytics with a 100-group limit |
-| Ranking with explicit dates, a categorical filter, another metric, or another limit | Reusable ModelAnalytics |
-| Explain the DAX for a supported date-scoped request without running it | Connector-free advice route using the same compiler |
+| 30 calendar dates including the current UTC date | `UTC_TODAY - 29` through `UTC_TODAY` |
+| 90 calendar dates including the current UTC date | `UTC_TODAY - 89` through `UTC_TODAY` |
+| Last complete calendar month | `EOMONTH(UTC_TODAY,-2)+1` through `EOMONTH(UTC_TODAY,-1)` |
+| Calendar year to date | `DATE(YEAR(UTC_TODAY),1,1)` through `UTC_TODAY` |
 
-The fixed tool's description was narrowed; its DAX bytes were preserved. The agent must not describe implemented date-scoped analytics as a future feature or redirect to report filtering instead of using the supported route.
+For a test anchor of 12 September 2026, 30 inclusive calendar dates are 14 August through
+12 September. Production must not hardcode that example or silently anchor to the latest recorded
+event instead.
 
-## What "last 30 days" means here
+UTC is the declared engine anchor. It does not establish the source-event timezone. A local-time
+or rolling-hour interpretation must be explained and implemented correctly, or clarified.
 
-The implementation uses **30 inclusive UTC calendar dates, including the invocation date**:
+## What is enforced versus what needs reasoning
 
-- Capture the trusted runtime clock once.
-- End date is the current UTC calendar date.
-- Start date is that date minus 29 days.
-- Compare against the model's `Date.Date` values as stored.
+Date-bearing requests must supply the paired expressions and reference the trusted date variables.
+Common unresolved-date prompts are rejected rather than intentionally routed to all history.
 
-For the **test fixture** of 12 September 2026, the requested interval is **14 August through 12 September 2026 inclusive**. Production does not hardcode these dates or anchor to the latest recorded event.
+These are **reference and intent guards**, not a semantic proof of arbitrary DAX. A generated
+expression might reference a date variable without filtering as intended. Inspect the actual DAX
+and test known answers; do not treat a lexer or a prompt instruction as proof of date correctness.
 
-This is a calendar-date window, not exactly the preceding 720 hours. The source-event timezone is **not established** by the approved schema. UTC is the declared anchor convention, not a claim that all source events were recorded in UTC.
+The output Summary records the evaluated requested dates and UTC anchor. If observed first/last
+event bounds are included, they are not refresh timestamps, continuous-coverage guarantees, or
+proof that no activity occurred outside the returned data.
 
-Requests for a different local-time convention, latest-available-event anchoring, or an unsupported unresolved period should clarify the interval rather than silently reinterpret it.
+No matching rows means no matching returned rows in that scope. Do not widen the interval.
 
-## Structured input
+## Advice
 
-```json
-{
-  "metric": "interactions",
-  "groupBy": "agent",
-  "filterBy": "none",
-  "filterValue": "",
-  "relativePeriod": "last30Days",
-  "startDate": "",
-  "endDate": "",
-  "topN": 20,
-  "sortBy": "value",
-  "mode": "execute"
-}
-```
+The advice capability uses the same expression contract without executing the proposed business
+query. Its output must be marked unexecuted. The separate metadata authorization probe may still
+run.
 
-Use `relativePeriod=none` for explicit paired dates or genuinely unfiltered requests. Unknown/unresolved relative values stop for clarification. Do not combine an explicit interval and a relative period.
+## Historical incident and regression
 
-The runtime resolves dates before validation and DAX construction; it does not rely solely on an LLM supplying an invented current date. Advice uses the same date interpretation without executing the query.
+An earlier agent chose or described an all-history ranking when the user asked for the last 30 days.
+The screenshot did not establish the exact selected tool. That fixed/bounded architecture was
+subsequently replaced; its specialist top-100 query is no longer a runtime dependency.
 
-## Requested interval versus observed data
-
-The Summary row separates:
-
-| Field | Meaning |
-|---|---|
-| `RequestedStartDate` / `RequestedEndDate` | The actual requested, resolved interval |
-| `RelativePeriod` / `DateConvention` | How that interval was interpreted |
-| `WindowStart` / `WindowEnd` | First/last observed matching events, where the measures support them |
-| `TotalGroups` / `ReturnedGroups` / `HasMore` | Result completeness relative to the group limit |
-
-Observed event bounds are **not refresh timestamps**, proof of continuous coverage, or evidence that nothing happened outside them. If recent records are missing, preserve the requested interval and disclose the observed bounds. If no recorded events match, say so; do not widen to all history or assert that there was no activity.
-
-The ranked answer should preserve the requested number of available rows, ordering, and readable ranking format. This documentation does not publish actual agent names or usage figures from the user's screenshot.
-
-## Verification and remaining uncertainty
-
-- The local and sanitized source suites passed **25 tests**, covering routing declarations, clock/date handling, month/year/leap boundaries, UTC-midnight behavior, conflicting inputs, no all-history fallback, and generated-topic parity.
-- Three fixed, seven reusable, and five date-specific direct-query cases passed.
-- The original fixed DAX, Invoker binding, and user's cloud reasoning-model selection were preserved.
-- The date-capable topic was published and read back.
-
-**Full agent chat remains unverified.** The screenshot did not prove which tool or arguments produced the faulty answer. Subsequent chat probes did not reveal a completed invocation: the shared authenticated browser was unavailable, one advice probe returned no activities, and an existing-conversation read returned 404.
-
-These are not proof of a new authentication problem or a successful date-filtered conversation. A fresh approved Studio test must still confirm the actual selected capability, resolved arguments, query result, and final explanation.
-
-The Agent365 custom-model-versus-product clarification is documentation-only, as requested. Runtime instructions retain the actual schema, business definitions, and scope safeguards.
-
-## Reference
+Direct generic-expression checks include explicit-date rankings and complete-month comparisons.
+These checks do not establish successful cloud generation, topic selection, or final chat wording.
+See [verification](verification.md) for the unresolved test routes.
 
 [Copilot Studio date and time handling](https://learn.microsoft.com/en-us/microsoft-copilot-studio/manage-date-and-time)

@@ -3,10 +3,18 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "test": "python -m unittest discover -s tests",
-    "test:agent": "node test-agent.cjs"
+    "test": "python -m unittest discover -s tests && node --test tests\\test_agent_client.cjs",
+    "test:agent": "node test-agent.cjs",
+    "test:direct": "python verify-generated.py",
+    "test:studio": "node test-studio.cjs",
+    "metadata:prepare": "python prepare-model.py",
+    "build:topics": "python general_runtime.py",
+    "test:client": "node --test tests\\test_agent_client.cjs"
   },
   "dependencies": {
     "@microsoft/agents-copilotstudio-client": "1.8.1"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.63.0"
   }
 }

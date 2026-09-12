@@ -49,7 +49,7 @@ Although this uses POST, it **retrieves** a definition; it does not update the s
 
 These are counts of all returned objects, including hidden or automatically generated objects. They are not counts of distinct business concepts or a claim that all those objects should enter an LLM prompt.
 
-No manually authored schema contract was needed to retrieve and count this structure. **However, it was not integrated into the live agent or its query compiler.**
+No manually authored schema contract was needed to retrieve and count this structure. **However, this second model was not integrated into the live agent.**
 
 ### Metadata retrieval timings
 
@@ -71,7 +71,7 @@ The Fabric definition API is a read operation, but its documented prerequisites 
 
 The test used existing authorized credentials; no permission was added. It does **not** establish that a read-only analyst or every end user can retrieve this definition. The API also documents restrictions for encrypted sensitivity labels, and the returned definition does not include the sensitivity label.
 
-**Do not grant model-write access to every agent user just to reproduce metadata discovery.** A possible design is approved metadata preparation by an already authorized model owner, with versioned, access-controlled contracts for the runtime. That design still needs implementation and permission-specific validation; it was not tested here.
+**Do not grant model-write access to every agent user just to reproduce metadata discovery.** The later primary-model design uses approved owner preparation and a caller visibility gate. That runtime has not passed an end-to-end conversation or representative permission-specific validation, and it was not tested on this second model.
 
 Using a Fabric API endpoint does **not** mean a Fabric data agent was created or required.
 
@@ -86,7 +86,7 @@ Using a Fabric API endpoint does **not** mean a Fabric data agent was created or
 **Still not proven or implemented:**
 
 - Automatic model routing or runtime onboarding.
-- Portability of Model A's metric/dimension mappings to Model B.
+- Correct generated-DAX grounding and execution on Model B.
 - Discovery of all model-authored guidance.
 - Correct interpretation of Model B's business measures, relationships, and filters.
 - Realistic question-to-query-to-answer behavior on Model B.

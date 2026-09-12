@@ -1,10 +1,11 @@
 resources.json
+*.private.json
+.generated-private/
+.browser-proof/
 node_modules/
 __pycache__/
 *.zip
 .mcs/
-.reference/
-live-*.json
+legacy/
 verification*.json
-*transcript*
-*runtime-log*
+live-*.json

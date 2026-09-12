@@ -228,6 +228,7 @@
         </div>
       </div>
     </div>
+    <div class="note"><strong>Experimental deployment, not a verified end-to-end agent.</strong> The generic expression path replaces the five-metric compiler. After serialization repair, the evaluator selects metadata and AI-fills arguments, but the latest metadata attempt returned HTTP 504. No complete cloud metadata -> generated DAX -> query -> answer chain has been observed. The separate published SDK is denied before sending its prompt.</div>
     <div class="strip">
       <div><strong>Standard Copilot Studio</strong><span>No alternative agent runtime required.</span></div>
       <div><strong>Existing Power BI model</strong><span>Query the semantic layer, not exported spreadsheets.</span></div>
@@ -237,28 +238,28 @@
 
     <section id="architecture">
       <div class="section-title"><div><span class="eyebrow">01 / How it works</span><h2>A small set of capabilities.<br>Many different questions.</h2></div><a href="assets/architecture.excalidraw" download>Download editable diagram</a></div>
-      <p class="section-copy">The model contract supplies context. The tool supplies execution. The agent supplies interpretation. None of these responsibilities should be confused with the others.</p>
+      <p class="section-copy">A governed metadata snapshot supplies structure. The orchestrator is expected to author a new DAX table expression. Native runtime controls form a bounded execution envelope. Deployment of those pieces is not proof of successful orchestration.</p>
       <div class="panel">
         <div class="architecture-visual" role="img" aria-label="Authenticated user question flows through Copilot Studio, a grounded analytics tool, Power BI connector, and the semantic model. Model context supports interpretation; DAX advice can return without execution.">
           <div class="flow-grid">
             <div class="flow-node"><span class="step-no">01 / ASK</span><b>Business question</b><small>Natural language from an authenticated user.</small></div>
-            <div class="flow-node"><span class="step-no">02 / INTERPRET</span><b>Copilot Studio</b><small>Standard orchestrator + curated model context.</small></div>
-            <div class="flow-node"><span class="step-no">03 / PREPARE</span><b>Analytics topic</b><small>Power Fx validation and model-scoped query construction.</small></div>
+            <div class="flow-node"><span class="step-no">02 / INTERPRET</span><b>Copilot Studio</b><small>Retrieve metadata; generate a new DAX expression.</small></div>
+            <div class="flow-node"><span class="step-no">03 / PREPARE</span><b>Execution envelope</b><small>Structural checks, projection, ordering, and result bounds.</small></div>
             <div class="flow-node"><span class="step-no">04 / EXECUTE</span><b>Power BI connector</b><small>Run a query against a dataset as the caller.</small></div>
             <div class="flow-node"><span class="step-no">05 / RETURN</span><b>Semantic model</b><small>Measures and permitted data -> grounded answer.</small></div>
           </div>
         </div>
         <div class="branch">
-          <div><strong>Grounding is a maintained contract</strong>Tables, columns, measures, relationships, date grain, and business meanings. Query execution alone does not discover this.</div>
-          <div><strong>DAX advice is a separate path</strong>Explain model-specific DAX without executing it. Mark suggestions as unexecuted; never imply that a measure was saved.</div>
+          <div><strong>Governed metadata, checked as the caller</strong>Owner-run definition preparation retains structural context. A zero-row Invoker probe gates runtime disclosure. Refresh and republish after schema changes.</div>
+          <div><strong>Advice does not execute the business query</strong>Compile proposed DAX and label it unexecuted. Metadata authorization may still probe Power BI. Exact existing-measure implementations are not in the snapshot.</div>
         </div>
       </div>
       <div class="three-grid">
         <article class="panel feature"><span class="step-no">PRESERVE</span><h3>The top-100 experience</h3><p>Keep the successful ranking presentation as a regression scenario, including ordering, metric definition, and all requested rows up to the limit.</p></article>
-        <article class="panel feature"><span class="step-no">GENERALIZE</span><h3>Tools by capability</h3><p>Reuse analytics inputs across supported questions. The implemented model and input contract determine the boundaries, not a promise to answer anything.</p></article>
+        <article class="panel feature"><span class="step-no">GENERALIZE</span><h3>Expressions, not metric templates</h3><p>Generate new combinations of actual fields, measures, filters, and calculations. The input is a table expression, not every possible full DAX script.</p></article>
         <article class="panel feature"><span class="step-no">EXPLAIN</span><h3>DAX with context</h3><p>Use real model names, explain filter context and time scope, and distinguish a query from a measure. Suggested code is not verified code.</p></article>
       </div>
-      <div class="note"><strong>Implemented scope:</strong> five metrics; one grouping; one exact categorical filter; paired dates up to 366 days or a runtime last-30-days UTC-calendar resolver; sorting; and 1-100 aggregate groups plus a Summary row. Dated rankings use reusable analytics, not the fixed all-history tool. The local Python compiler generates source and tests; it is not a hosted runtime service.</div>
+      <div class="note"><strong>Current contract:</strong> one onboarded primary model; generated table expressions, aliases/order, and scalar date bounds; up to 100 rows, 16 columns, and 256 characters per text cell with explicit truncation. No five-metric or owner-field enumeration. The local Python modules prepare metadata and native source; they are not a hosted runtime service.</div>
     </section>
 
     <section id="examples">
@@ -267,7 +268,7 @@
       <div class="example-layout">
         <div class="tabs" role="tablist" aria-label="Example conversations" aria-orientation="vertical">
           <button class="tab" role="tab" id="tab-rank" aria-controls="panel-rank" aria-selected="true" tabindex="0" data-tab="rank"><strong>Rank the agents</strong><span>Preserve the initial success</span></button>
-          <button class="tab" role="tab" id="tab-analyze" aria-controls="panel-analyze" aria-selected="false" tabindex="-1" data-tab="analyze"><strong>Explore the model</strong><span>Reusable analytics inputs</span></button>
+          <button class="tab" role="tab" id="tab-analyze" aria-controls="panel-analyze" aria-selected="false" tabindex="-1" data-tab="analyze"><strong>Explore the model</strong><span>New expression combinations</span></button>
           <button class="tab" role="tab" id="tab-dax" aria-controls="panel-dax" aria-selected="false" tabindex="-1" data-tab="dax"><strong>Help me write DAX</strong><span>Advice, without execution</span></button>
           <button class="tab" role="tab" id="tab-limits" aria-controls="panel-limits" aria-selected="false" tabindex="-1" data-tab="limits"><strong>Know the boundary</strong><span>No invented schema or metrics</span></button>
         </div>
@@ -281,8 +282,8 @@
         <div class="panel example-panel" id="panel-analyze" role="tabpanel" aria-labelledby="tab-analyze" tabindex="0" hidden>
           <span class="eyebrow">Question -> supported aggregation</span><h3>Reuse a capability, not a canned answer</h3>
           <div class="prompt-box"><p id="prompt-analyze">Give me the top agents and their usage over the last 30 days.</p><button class="copy" data-copy="prompt-analyze" type="button">Copy</button></div>
-          <p><strong>Expected answer contract:</strong> use reusable analytics, resolve 30 inclusive UTC calendar dates from the runtime clock, and show the requested interval separately from observed matching-event bounds. Do not substitute an all-history ranking.</p>
-          <p>Supported groupings include platform, environment, region, risk, activity, agent, month, day, and client host, with metric-specific restrictions. Follow with <em>"Now show the top ten agents for that same period."</em> The agent should make a new query using the same relevant date context.</p>
+          <p><strong>Expected answer contract:</strong> retrieve relevant metadata, generate a ranking expression with paired date expressions using the trusted engine UTC anchor, and explain the actual requested scope. Do not substitute an all-history ranking.</p>
+          <p>Follow with <em>"Add platform and region, apply these two filters, and calculate sessions per user."</em> Those combinations should be authored from metadata rather than require a new metric template. Observe the actual generated expression before claiming success.</p>
           <div class="note">Evaluation scenario, not a recorded successful chat. With a 12 September 2026 test clock, the requested window is 14 August-12 September inclusive. Production dates are dynamic. Observed event bounds are not refresh timestamps or proof of continuous coverage.</div>
         </div>
         <div class="panel example-panel" id="panel-dax" role="tabpanel" aria-labelledby="tab-dax" tabindex="0" hidden>
@@ -295,15 +296,15 @@ SUMMARIZECOLUMNS(
     "Sessions", [Interaction Sessions]
 )
 ORDER BY 'Date'[YearMonth]</code></pre>
-          <p class="footnote">Model-grounded illustration, not executed as shown or captured from a live answer. The actual advice topic emits the bounded compiler query with its Summary row.</p>
+          <p class="footnote">Model-grounded illustration, not executed as shown or captured from a live answer. The actual topic accepts a table expression and forms a bounded envelope; it does not accept this entire script as a tool argument.</p>
           <ul><li>State whether the code is a DAX query or a measure.</li><li>Prefer existing measures with the right business definition.</li><li>Label the answer <strong>suggested DAX, not executed</strong>.</li><li>Do not claim to create or save anything in Power BI.</li></ul>
           <p class="footnote">This integration is read-only. Model authoring is not implied by DAX guidance.</p>
         </div>
         <div class="panel example-panel" id="panel-limits" role="tabpanel" aria-labelledby="tab-limits" tabindex="0" hidden>
           <span class="eyebrow">Question -> honest boundary</span><h3>Unsupported should be explicit</h3>
           <div class="prompt-box"><p id="prompt-limits">Rank agents by customer satisfaction and include their owners' email addresses.</p><button class="copy" data-copy="prompt-limits" type="button">Copy</button></div>
-          <p><strong>Expected behavior:</strong> establish whether an approved satisfaction metric exists. Do not quietly substitute usage for satisfaction. Do not expose owner email addresses through this demonstration.</p>
-          <p>Explain the missing capability and offer a supported aggregate alternative rather than inventing fields or returning a generic unrelated-topic message.</p>
+          <p><strong>Expected behavior:</strong> establish whether an appropriate satisfaction metric exists and what it means. Do not quietly substitute usage for satisfaction. Identity fields follow actual metadata and the requesting user's permissions; the retired blanket demo ban is not a model limitation.</p>
+          <p>Clarify ambiguity or explain actual access failures rather than inventing fields. Private identity/business values must never enter this public-safe documentation.</p>
         </div>
       </div>
       <div id="copy-status" class="footnote" aria-live="polite"></div>
@@ -320,13 +321,13 @@ ORDER BY 'Date'[YearMonth]</code></pre>
 
     <section id="limits">
       <div class="section-title"><div><span class="eyebrow">Scope / Discovery / Scale</span><h2>Reusable execution is not<br>automatic model understanding.</h2></div><a href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/docs/capabilities-and-limits.md">Capability and limits guide</a></div>
-      <p class="section-copy">The current agent supports many questions inside one configured schema subset. It does not automatically search every model, discover all fields, or fetch model-authored instructions at runtime.</p>
+      <p class="section-copy">The primary snapshot contains 21 tables, 244 columns, 166 measure names, and 13 relationships. It is prepared metadata, not live per-turn definition discovery, complete business semantics, or verified conversational reasoning.</p>
       <div class="three-grid">
-        <article class="panel feature"><span class="step-no">IMPLEMENTED</span><h3>Bounded single-model analytics</h3><p>Approved metrics, dimensions, exact filters, date ranges, ranked results, and compiler-backed DAX advice. These are reusable combinations, not unrestricted query generation.</p></article>
-        <article class="panel feature"><span class="step-no">REQUIRES ONBOARDING</span><h3>Another model's meaning</h3><p>Schema, measures, relationships, definitions, permissions, and mappings must be obtained and validated. Changing only a dataset ID is not enough.</p></article>
+        <article class="panel feature"><span class="step-no">DEPLOYED / UNVERIFIED CHAT</span><h3>Generic expression capabilities</h3><p>Metadata, generated-DAX execution, advice, and error-handling topics. Structural controls are not a complete DAX parser, semantic proof, or cost estimator.</p></article>
+        <article class="panel feature"><span class="step-no">REQUIRES ONBOARDING</span><h3>Another model's meaning</h3><p>Prepare current metadata and validate permissions and semantics. No new five-metric template is intended, but changing only a dataset ID is still not a verified onboarding process.</p></article>
         <article class="panel feature"><span class="step-no">NOT YET DEMONSTRATED</span><h3>Automatic multi-model discovery</h3><p>A model catalog, focused metadata retrieval, routing, schema refresh, and cross-model interpretation remain separate work. No model-count or concurrency ceiling has been measured.</p></article>
       </div>
-      <div class="note"><strong>Not exposed does not mean nonexistent.</strong> Owner/creator details are excluded from this PoC's tools. That does not prove whether they exist in the underlying semantic model. The agent must distinguish restricted scope, unknown metadata, verified absence, and denied access.</div>
+      <div class="note"><strong>Not exposed does not mean nonexistent.</strong> The generic contract no longer bans owner/creator fields. Actual schema visibility, permissions, missing metadata, and genuine absence remain distinct. The all-column metadata probe may fail closed for narrower OLS users, who can require a role-appropriate snapshot.</div>
       <div class="panel" style="margin-top:24px">
         <h3>Second-model probe: structure discovery succeeded</h3>
         <p>A genuinely different model accepted three constant DAX queries. Its definition was retrieved automatically using the documented Fabric API: <strong>78 tables, 694 columns, 17 measures, and 79 relationships</strong>, including hidden/generated objects.</p>
@@ -350,15 +351,14 @@ ORDER BY 'Date'[YearMonth]</code></pre>
           <div class="check-row"><span class="status">DIRECT TEST</span><span>Counts and a 100-row ranking executed using the audited Interactions metric.</span></div>
           <div class="check-row"><span class="status">USER REPORT</span><span>The user confirmed they liked the top-100 output.</span></div>
           <div class="check-row"><span class="status">SCREENSHOT</span><span>Callable tools and a per-agent connection approval card are visible.</span></div>
-          <div class="check-row"><span class="status">OFFLINE</span><span>The sanitized packaged source passes 25 tests, including scope and relative-date regressions.</span></div>
-          <div class="check-row"><span class="status">DIRECT TEST</span><span>Seven reusable compiled-query cases passed in the development model.</span></div>
-          <div class="check-row"><span class="status">DIRECT TEST</span><span>Five date-specific query checks passed; the fixed all-history DAX was preserved.</span></div>
-          <p class="footnote">The corrections are published, but complete chat-to-answer and live DAX-advice output remain unverified. The latest probes did not reveal an invocation trace; this is not proof of a new authentication failure. Direct API success is not full agent validation.</p>
+          <div class="check-row"><span class="status">OFFLINE</span><span>The generic source has 25 Python tests and 5 corrected client-harness tests.</span></div>
+          <div class="check-row"><span class="status">DIRECT TEST</span><span>Eight varied expression cases passed, including new combinations and the original ranking membership/order.</span></div>
+          <p class="footnote">These are authored test fixtures, not observed cloud-generated queries. Native YAML repair restored parsed GPT-5 Reasoning settings and metadata selection; the latest metadata attempt returned HTTP 504. The separate published SDK receives 403 before sending the prompt. The three obsolete fixed tools are deleted; generic capabilities live under Topics. Rendered-picker state, inference telemetry, and the original UI warning remain unverified.</p>
         </div>
         <div class="panel">
           <h3>Production questions still matter</h3>
           <details open><summary>Does RLS automatically make this safe?</summary><p>RLS follows the actual execution identity and workspace role. Verify restricted users, Build permission, and the model's sensitive fields. Agent instructions do not enforce authorization.</p></details>
-          <details><summary>Can it answer any question?</summary><p>No. The current model contract and query compiler expose a finite approved subset. An unsupported field may still exist in the full model. Automatic whole-model discovery and multi-model routing are not implemented.</p></details>
+          <details><summary>Can it answer any question?</summary><p>No guarantee. The generic contract removes the five-metric mapping but still requires valid metadata, permissions, supported table-expression syntax, and correct reasoning. Exact measure implementations and automatic multi-model routing are not provided, and successful chat generation is not yet verified.</p></details>
           <details><summary>Is Fabric capacity or MCP required?</summary><p>A Fabric data agent is not required for the connector/REST route. Power BI licensing still applies. Hosted Power BI MCP is a separate optional integration; its query-generation tool has Copilot entitlement requirements.</p></details>
           <details><summary>Are these real business results?</summary><p>The UI screenshots are real. Public example names and numbers are synthetic. No customer result rows or private conversation transcripts are published here.</p></details>
         </div>

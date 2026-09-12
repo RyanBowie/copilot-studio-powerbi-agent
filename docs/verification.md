@@ -1,90 +1,112 @@
-# Evidence and limitations
+# Verification: what was observed, and what was not
 
-This page separates observations from illustrations and planned checks. It is not a security certification or production-readiness claim.
+## Current status
 
-## Evidence categories
+**The broader generated-DAX runtime is deployed but not end-to-end verified.** No observed
+conversation establishes metadata retrieval, cloud-authored DAX arguments, Power BI execution,
+and an explained result as a complete chain.
 
-| Category | Meaning |
+The Studio model selector showed GPT-4.1 despite raw YAML retaining a reasoning-model hint.
+Native Studio parsing had dropped `aISettings` and topic bodies. Corrected YAML serialization
+restored parsed GPT-5 Reasoning settings and full topic contracts before and after publication.
+This is selector-backend evidence, not an independently observed rendered picker or inference telemetry.
+
+## Current generic-contract evidence
+
+| Check | Observation |
 |---|---|
-| Direct API/connector test | A query ran outside a full agent conversation. |
-| Agent runtime test | A conversation actually invoked a tool and produced a result. |
-| User observation | The user reported or showed behavior in the authoring interface. |
-| Synthetic illustration | Deliberately invented demo names and numbers; not execution evidence. |
+| Owner-prepared primary metadata | 21 tables, 244 columns, 166 measure names, 13 relationships |
+| Offline expression, serialization, authoring, and cleanup suite | 25 Python tests |
+| Corrected client-harness suite | 5 tests |
+| Varied direct expression cases | Eight passed against the primary model |
+| Original ranking regression | Generic-contract result matched original top-100 membership/order directly |
+| Deliberately invalid column | Actual direct Power BI error observed |
+| Cloud-generated expression/tool arguments | Not observed |
+| Metadata-topic selection and AI-filled metadata arguments | Observed after serialization repair |
+| Complete new-runtime chat answer | Not verified |
 
-## Initial PoC evidence
+Direct cases include multiple groupings/filters, a derived ratio, owner/creator aggregate counts,
+the familiar ranking, explicit dates, complete-month comparisons, a table outside the old compiler,
+and empty output. They are **LLM-authored test fixtures used by the test executor**, not evidence
+that the cloud agent generated those expressions.
 
-- A constant-only DAX query executed successfully against the chosen model.
-- Direct count and ranking queries succeeded.
-- The top-100 query returned 100 rows using the model's audited Interactions metric.
-- The user confirmed they liked the top-100 output.
-- Early deployment defects were corrected: callable connector Tools replaced topic-only registration.
-- A connected environment connection and per-agent approval were separate requirements.
+No business rows, identity values, or fabricated success screenshots are published.
 
-## Screenshot provenance
+## Three separate runtime observations
 
-The tool-list and connection-approval images are crops of an actual user-supplied Copilot Studio screenshot. They demonstrate registered tools and the end-user consent experience, respectively. They **do not** demonstrate completed query execution.
+### Evaluation endpoint: fallback repaired, completion still unresolved
 
-Any image captioned "synthetic" or "illustrative" is a documentation illustration, not a product screenshot or test transcript.
+A metadata question originally returned:
 
-## Generalized enhancement
+> Sorry, I am not able to find a related topic. Can you rephrase and try again?
 
-The same agent was updated and published with reusable analytics, DAX advice, and model clarification. The original top-100 tool and existing connection were preserved. The custom-`Agent365` naming distinction now belongs to the README/public documentation, not runtime instructions.
+The native parser had omitted topic triggers/actions. After repair, traces selected `ModelMetadata`
+and AI-filled its metadata arguments. Technical inputs were also made non-prompting, with runtime
+validation retained. A subsequent attempt reached a 120-second client timeout; an extended request
+with a 300-second budget returned HTTP 504 `UnexpectedError`. Metadata authorization, connector
+completion, and cloud-generated DAX execution remain unverified. The timeout does not establish an
+authentication failure or even that the connector was reached.
 
-| Check | Recorded result |
-|---|---|
-| Offline validation of packaged sanitized source | **25 tests passed**, rerun from this repository's `agent` folder |
-| Reusable analytics direct-query cases | **Seven passed** in the development model, as recorded by the implementation handoff |
-| Original smoke/count/ranking regressions | Passed directly; original top-100 source preserved |
-| Publication and private solution-export consistency | Confirmed by implementation handoff; private export deliberately not included |
-| Automated full analytics conversation | **Not verified**: evaluation-channel connection approval remained a blocker |
-| Live user-facing DAX-advice response | **Not verified** |
-| Restricted-user/RLS scenarios | Not established by the current evidence |
+### Corrected published SDK client
 
-Direct-query tests cover compiled DAX against the model, not every branch of the runtime Power Fx compiler. Full agent testing is still needed in an approved session/channel.
+The old SDK harness ignored custom prompts outside the maker-test branch and sent a retired
+smoke-test request. That defect was fixed.
 
-The source's [labeled examples](../agent/examples.json) retain the verified constant result, a sanitized connection-response description, a clearly unexecuted DAX illustration, and the user's top-100 observation. They do not contain business result rows.
+The corrected published SDK attempt then received **HTTP 403 Forbidden** at conversation start:
+"The caller is not authorized to perform the request." Its token had `CopilotStudio.Copilots.Test`,
+not `CopilotStudio.Copilots.Invoke`.
 
-The documentation site was checked in desktop light/dark themes and a narrow mobile viewport, with embedded-image, tab, keyboard-navigation, overflow, and JavaScript-error checks.
+The metadata prompt was **not sent**, activities were empty, and no capability ran. This is a
+published-client authorization blocker, not a demonstrated Power BI connector login failure.
+No missing permission was requested or bypassed.
 
-## Scope-explanation correction
+### Studio and UI state
 
-Published and synchronized on 12 September 2026. Instructions, unsupported-input explanations, clarification behavior, and DAX-advice wording now distinguish:
+An independent browser could not reliably reach the authoring view. User screenshots confirmed
+publication and new instructions, but also showed GPT-4.1 and dimmed legacy tool entries.
 
-- A capability exposed by the approved tools.
-- A field excluded from or unknown to that partial contract.
-- Absence established by authoritative metadata for a particular model/version and visibility.
-- An actual permission failure.
+The three obsolete connector tools were subsequently deleted after backup and dependency checks;
+they are absent from both native authoring inventory and Dataverse. Three legacy bounded topics
+remain inactive. Current generic capabilities appear under Topics, not the old Tools rows.
 
-Owner/creator details remain outside the demonstration's tools, without asserting that the underlying model lacks them. The correction did not add identity queries, another model, or new permissions.
+The parsed selector backend retains GPT-5 Reasoning after successful publication at 16:54:36 UTC
+on 12 September 2026. Authentication, Invoker binding, and cross-geo/privacy settings were not
+changed. The original warning text was not retrieved; publication does not prove it disappeared.
+Fresh rendered-picker state and effective inference telemetry are not independently observed.
 
-The implementation handoff verified the user's selected cloud reasoning model and authentication/Invoker connection state before and after deployment; they were unchanged. Protected specialized queries and top-100 wording were preserved.
+## Historical evidence is not current-runtime proof
 
-The 17 offline tests include explanation/guardrail assertions and generated-source parity; they are not live conversation evidence. Three fixed and seven reusable direct-query regressions passed. Previously blocked chat channels were not repeatedly retried, and no new full-chat pass is claimed.
+The earlier fixed/bounded implementation passed its own 25-test suite and direct regressions.
+The user reported liking its original top-100 answer. It also produced incorrect all-history
+responses to date-scoped questions and incorrectly inferred model-wide field absence from tool scope.
 
-## Date-routing correction and documentation-only naming note
+That architecture has been replaced. Its test count is not the current suite, its successful fixed
+query is not proof of generated query routing, and its screenshots are labeled historical.
 
-Published and synchronized on 12 September 2026. The fixed ranking's broad description conflicted with the reusable date route, and relative dates had depended on supplied ISO strings rather than a deterministic resolver.
+The custom `Agent365` product-naming clarification remains in documentation only.
 
-The corrected runtime routes dated/filtered rankings to ModelAnalytics, resolves `last30Days` using a captured UTC calendar clock, rejects unresolved/conflicting dates, and reports requested bounds separately from observed event bounds. The original fixed ranking DAX is unchanged.
+## Second model
 
-The latest suite passes 25 tests in the packaged source. Three fixed, seven reusable, and five date-specific direct queries passed. These do not prove successful live topic selection or final-answer behavior.
+The [separate experiment](scalability-experiment.md) proved a distinct second model could execute a
+constant and expose structural metadata through an authorized Fabric definition request.
+Read/write preparation permissions were already present. That model is not a runtime alias,
+and no second-model conversational onboarding is claimed.
 
-The exact capability selected in the user's failed screenshot remains unproven. An attempted advice probe returned no activities, a conversation read returned 404, and the shared authenticated browser was unavailable. No new authentication-failure diagnosis or chat E2E success is inferred.
+## What a passing end-to-end test must show
 
-The user's selected cloud reasoning model and Invoker configuration were preserved. Product-disambiguation prose was removed from runtime instructions and the runtime grounding disclaimer field; actual schema and business definitions remain. The README/site retain the explanation.
+1. A fresh authenticated conversation using the intended current agent.
+2. Actual metadata capability selection and successful visibility check.
+3. Metadata returned to the orchestrator.
+4. A newly authored DAX expression and actual argument values.
+5. Execution through the expected Invoker connection and configured model.
+6. Successful result-envelope validation.
+7. A final answer faithful to the values, dates, units, and truncation flags.
 
-See [date filtering](date-filtering.md) for supported inputs, calendar conventions, example boundaries, and evidence limits.
+Observe this for metadata, a new calculation, multiple groupings/filters, a relative period,
+top-100 presentation, and advice-only behavior. Test representative restricted identities separately.
 
-## Limits of the evidence
+## Documentation checks
 
-### Second approved model
-
-A [separate read-only experiment](scalability-experiment.md) confirmed a genuinely different semantic model, three successful constant-query calls, and automatic structural-definition retrieval through Fabric `getDefinition`. The retrieved structure contained 78 tables, 694 columns, 17 measures, and 79 relationships including hidden/generated objects.
-
-That metadata route required the tested identity's existing read/write permissions. It did not establish read-only-user metadata access, authored-guidance discovery, runtime model routing, compiler portability, realistic business-question correctness, or second-model agent E2E. The available MCP schema connection still failed with an artifact/access error, which must not be interpreted as model absence.
-
-The observed PoC behavior does not establish accuracy for arbitrary DAX, arbitrary semantic models, every channel, or every identity. It does not establish that RLS has been tested across representative users.
-
-The repository excludes raw conversation captures and tenant-bound verification files to avoid publishing sensitive details. Keep private operational evidence in the deployment environment.
-
-The latest enhancement's scope is finite and model-specific; do not infer arbitrary schema support solely from the example prompts.
+The site is locally rendered in light/dark desktop and narrow mobile layouts. Embedded images,
+tab/keyboard behavior, overflow, and JavaScript errors are checked. Those are documentation tests,
+not evidence of Copilot Studio runtime correctness.

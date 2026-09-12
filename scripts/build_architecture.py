@@ -65,8 +65,8 @@ def main():
     text("subheading", 40, 80, "A reusable pattern for compatible semantic models. No Fabric data agent required.", 17)
     nodes = [
         ("user", "Business question", "Authenticated user\nNatural-language request"),
-        ("copilot", "Copilot Studio", "Standard orchestrator\nCurated model grounding"),
-        ("analytics", "Analytics topic", "Power Fx validation\nModel-scoped query logic"),
+        ("copilot", "Copilot Studio", "Retrieve metadata\nGenerate DAX expression"),
+        ("analytics", "Query envelope", "Structural checks\nProjection and bounds"),
         ("connector", "Power BI connector", "Execute DAX\nEnd-user / Invoker"),
         ("model", "Semantic model", "Approved measures\nPermitted result data"),
     ]
@@ -75,8 +75,8 @@ def main():
         box(identity, x, 160, 240, 170, title, description)
         if index < len(nodes) - 1:
             arrow(f"main-{index}", x + 244, 245, x + 272, 245)
-    box("contract", 320, 400, 430, 150, "Model contract", "Schema, relationships, business definitions,\ntime grain and supported metrics.", True)
-    box("advice", 800, 400, 560, 150, "DAX guidance: no execution required", "Explain model-specific DAX. Mark suggestions unexecuted.\nDo not claim to create or save measures.", True)
+    box("contract", 320, 400, 430, 150, "Governed metadata snapshot", "Owner preparation / refresh; caller visibility probe.\nNo complete business-meaning guarantee.", True)
+    box("advice", 800, 400, 560, 150, "Advice: business query is unexecuted", "Metadata authorization may still query Power BI.\nFull cloud-generated query chaining remains unverified.", True)
     arrow("grounding", 435, 395, 435, 340)
     arrow("advice-path", 560, 335, 870, 395)
     text("identity-note", 40, 580, "Power BI permissions and RLS follow the execution identity. Agent instructions are not an authorization boundary.", 16, 1350)

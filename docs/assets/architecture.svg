@@ -13,13 +13,13 @@
 <path class="line" marker-end="url(#arrowhead)" d="M284 245 L312 245"/>
 <rect x="320" y="160" width="240" height="170" rx="12" class="box"/>
 <text x="336" y="194.0" font-size="18">Copilot Studio</text>
-<text x="336" y="232.0" font-size="14">Standard orchestrator</text>
-<text x="336" y="253.7" font-size="14">Curated model grounding</text>
+<text x="336" y="232.0" font-size="14">Retrieve metadata</text>
+<text x="336" y="253.7" font-size="14">Generate DAX expression</text>
 <path class="line" marker-end="url(#arrowhead)" d="M564 245 L592 245"/>
 <rect x="600" y="160" width="240" height="170" rx="12" class="box"/>
-<text x="616" y="194.0" font-size="18">Analytics topic</text>
-<text x="616" y="232.0" font-size="14">Power Fx validation</text>
-<text x="616" y="253.7" font-size="14">Model-scoped query logic</text>
+<text x="616" y="194.0" font-size="18">Query envelope</text>
+<text x="616" y="232.0" font-size="14">Structural checks</text>
+<text x="616" y="253.7" font-size="14">Projection and bounds</text>
 <path class="line" marker-end="url(#arrowhead)" d="M844 245 L872 245"/>
 <rect x="880" y="160" width="240" height="170" rx="12" class="box"/>
 <text x="896" y="194.0" font-size="18">Power BI connector</text>
@@ -31,13 +31,13 @@
 <text x="1176" y="232.0" font-size="14">Approved measures</text>
 <text x="1176" y="253.7" font-size="14">Permitted result data</text>
 <rect x="320" y="400" width="430" height="150" rx="12" class="branch"/>
-<text x="336" y="434.0" font-size="18">Model contract</text>
-<text x="336" y="472.0" font-size="14">Schema, relationships, business definitions,</text>
-<text x="336" y="493.7" font-size="14">time grain and supported metrics.</text>
+<text x="336" y="434.0" font-size="18">Governed metadata snapshot</text>
+<text x="336" y="472.0" font-size="14">Owner preparation / refresh; caller visibility probe.</text>
+<text x="336" y="493.7" font-size="14">No complete business-meaning guarantee.</text>
 <rect x="800" y="400" width="560" height="150" rx="12" class="branch"/>
-<text x="816" y="434.0" font-size="18">DAX guidance: no execution required</text>
-<text x="816" y="472.0" font-size="14">Explain model-specific DAX. Mark suggestions unexecuted.</text>
-<text x="816" y="493.7" font-size="14">Do not claim to create or save measures.</text>
+<text x="816" y="434.0" font-size="18">Advice: business query is unexecuted</text>
+<text x="816" y="472.0" font-size="14">Metadata authorization may still query Power BI.</text>
+<text x="816" y="493.7" font-size="14">Full cloud-generated query chaining remains unverified.</text>
 <path class="line" marker-end="url(#arrowhead)" d="M435 395 L435 340"/>
 <path class="line" marker-end="url(#arrowhead)" d="M560 335 L870 395"/>
 <text x="40" y="596.0" font-size="16">Power BI permissions and RLS follow the execution identity. Agent instructions are not an authorization boundary.</text>

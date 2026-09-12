@@ -8,7 +8,7 @@ from urllib.parse import unquote, urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 IGNORED_PARTS = {".git", "__pycache__", ".venv", "node_modules"}
-TEXT_SUFFIXES = {".md", ".html", ".yml", ".yaml", ".json", ".py", ".js", ".svg", ".excalidraw", ".txt"}
+TEXT_SUFFIXES = {".md", ".html", ".yml", ".yaml", ".json", ".py", ".js", ".cjs", ".svg", ".excalidraw", ".txt"}
 
 
 class Page(HTMLParser):
@@ -57,7 +57,12 @@ def main():
         if not path.is_file() or any(part in IGNORED_PARTS for part in path.relative_to(ROOT).parts):
             continue
         relative = str(path.relative_to(ROOT))
-        if path.suffix.lower() in {".zip", ".har", ".log"} or ".mcs" in path.parts:
+        if (
+            path.suffix.lower() in {".zip", ".har", ".log"}
+            or ".mcs" in path.parts
+            or ".generated-private" in path.parts
+            or path.name.endswith(".private.json")
+        ):
             errors.append(f"Tenant-bound/private artifact: {relative}")
         if path.suffix.lower() not in TEXT_SUFFIXES:
             continue
