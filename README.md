@@ -42,7 +42,7 @@ The implementation preserves the smoke-test, governance-count, and top-100-agent
 
 Inventory metrics are current snapshots, not historical inventory. Inventory does not support audit-date or client-host slicing. Zero/blank metric groups are excluded. Multiple simultaneous categorical filters, arbitrary calculations, and automatic schema discovery are not implemented.
 
-**Verification:** the sanitized source passes 12 offline tests. Seven compiled analytics cases and the original query regressions passed directly in the development model. Automated full chat-to-answer and live DAX-advice responses remain unverified because the evaluation channel requested separate connection approval. The user's successful top-100 observation is recorded separately.
+**Verification:** the sanitized source passes 17 offline tests, including scope-explanation regressions. Seven compiled analytics cases and the original query regressions passed directly in the development model. Automated full chat-to-answer and live DAX-advice responses remain unverified because the evaluation channel requested separate connection approval. The user's successful top-100 observation is recorded separately.
 
 ## Repository layout
 

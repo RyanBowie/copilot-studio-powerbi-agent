@@ -4,7 +4,10 @@ modelDescription: Write, recommend or explain DAX grounded in this Power BI mode
   is called by this topic. The channel still uses its normal authentication. Reuses the same validated metric, grouping, exact
   filter, audit dates, topN and sorting compiler as model analytics. Choose metric sessions and groupBy month for sessions
   by month, interactions/platform for platform usage, etc. Returns clearly labelled UNEXECUTED DAX plus relationship/filter
-  explanation. Use for questions containing DAX, write a query, explain the formula, or help author model queries.
+  explanation. Grounding is an approved subset, not full model metadata. Owner/creator identities are outside this PoC's scope;
+  do not call this topic or ask grouping parameters for identity or field-existence questions. Explain that tool exclusions
+  do not establish model absence; never recommend identity DAX. Use for questions containing DAX, write a query, explain the
+  formula, or help author model queries.
 inputs:
 - kind: AutomaticTaskInput
   propertyName: metric
@@ -156,10 +159,11 @@ beginDialog:
       actions:
       - kind: SendActivity
         id: ValidateParametersMessage
-        activity: I can analyze interactions, sessions, distinct-user counts, agent inventory, or inventory-environment counts.
-          Choose one supported grouping/filter (platform, environment, environmentType, region, risk, activity, agent, audit
-          month/day, or host), an integer limit 1–100, and optional paired ISO dates. I cannot execute arbitrary DAX, unknown
-          fields, owner identities, or transcripts. Please clarify the unsupported parameter.
+        activity: These inputs are outside the approved tool contract or its limits; no query is run or recommended. Unavailable
+          through this PoC's approved tools does not establish whether a field exists in the underlying custom semantic model.
+          Owner/creator identities and transcripts are excluded from this PoC, including DAX advice. Approved alternatives
+          are interaction/session/distinct-user counts or current agent/inventory-environment counts, one approved grouping/filter,
+          limit 1–100 and paired ISO audit dates.
       - kind: EndDialog
         id: ValidateParametersStop
   - kind: ConditionGroup

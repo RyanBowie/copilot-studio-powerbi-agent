@@ -45,5 +45,30 @@
     "verify-analytics.py",
     "verify-model.py"
   ],
-  "githubActions": "None; repository creation, privacy, Pages and push are handled by the parent."
+  "githubActions": "None; repository creation, privacy, Pages and push are handled by the parent.",
+  "truthfulScopeCorrection": {
+    "publishedAtUtc": "2026-09-12T13:10:25Z",
+    "cloudModelSelectionPreserved": true,
+    "publicModelNote": "The user's existing cloud reasoning-model selection was preserved. No second model, runtime access or permissions were added.",
+    "currentQueryScopeUnchanged": true,
+    "localTestsPassed": 17,
+    "directFixedQueryCasesPassed": 3,
+    "directReusableQueryCasesPassed": 7,
+    "chatEndToEndPass": false,
+    "testBoundary": "Static/compiler regressions plus direct Power BI query checks, not live owner/follow-up chat evidence.",
+    "filesToCopy": [
+      "agent.mcs.yml",
+      "templates\\agent.mcs.yml",
+      "model-context.json",
+      "templates\\model-context.json",
+      "analytics.py",
+      "topics\\ModelAnalytics.mcs.yml",
+      "topics\\ModelDaxAdvice.mcs.yml",
+      "topics\\ModelQuestionClarification.mcs.yml",
+      "tests\\test_scope.py",
+      "tests\\test_analytics.py",
+      "publication-manifest.json"
+    ],
+    "preserveOtherPublicationFiles": true
+  }
 }

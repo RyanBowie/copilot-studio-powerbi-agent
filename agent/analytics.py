@@ -47,6 +47,12 @@ DEFAULTS = {
     "metric": "interactions", "groupBy": "total", "filterBy": "none", "filterValue": "",
     "startDate": "", "endDate": "", "topN": 20, "sortBy": "value", "mode": "execute",
 }
+SCOPE_LIMIT = "Unavailable through this PoC's approved tools does not establish whether a field exists in the underlying custom semantic model."
+IDENTITY_SCOPE = (
+    "Owner and creator identities are outside this PoC's approved analytics scope, so the current tools cannot return that table. "
+    "That does not establish whether those fields exist in the underlying custom semantic model. "
+    "I can provide approved agent-level aggregates. No identity query is run or recommended."
+)
 
 
 def literal(value):
@@ -55,10 +61,10 @@ def literal(value):
 
 def validate_request(request):
     if set(request) - set(DEFAULTS):
-        raise ValueError("Unknown analytics parameter; raw DAX and model identifiers are not accepted.")
+        raise ValueError("Unknown approved-tool parameter; raw DAX and model identifiers are not accepted. " + SCOPE_LIMIT)
     p = {**DEFAULTS, **request}
     if p["metric"] not in METRICS or p["groupBy"] not in GROUPS or p["filterBy"] not in FILTERS:
-        raise ValueError("Unsupported metric, grouping, or filter.")
+        raise ValueError("Metric, grouping, or filter is outside the approved analytics contract. " + SCOPE_LIMIT)
     if p["mode"] not in ("execute", "dax") or p["sortBy"] not in ("value", "group"):
         raise ValueError("Unsupported mode or sorting.")
     if isinstance(p["topN"], bool) or not isinstance(p["topN"], (int, float)) or int(p["topN"]) != p["topN"] or not 1 <= p["topN"] <= 100:
@@ -180,7 +186,7 @@ def _build_base_topic():
     ]
     actions = [
         rejection("ValidateParameters", "=" + " || ".join(conditions),
-                  "I can analyze interactions, sessions, distinct-user counts, agent inventory, or inventory-environment counts. Choose one supported grouping/filter (platform, environment, environmentType, region, risk, activity, agent, audit month/day, or host), an integer limit 1–100, and optional paired ISO dates. I cannot execute arbitrary DAX, unknown fields, owner identities, or transcripts. Please clarify the unsupported parameter."),
+                  "These inputs are outside the approved tool contract or its limits; no query is run or recommended. " + SCOPE_LIMIT + " Owner/creator identities and transcripts are excluded from this PoC, including DAX advice. Approved alternatives are interaction/session/distinct-user counts or current agent/inventory-environment counts, one approved grouping/filter, limit 1–100 and paired ISO audit dates."),
         rejection("ValidateInventoryContext",
                   '=Topic.metric in ["agents", "environments"] && (Topic.groupBy in ["month", "day", "host"] || Topic.filterBy = "host" || !IsBlank(Topic.startDate))',
                   "Inventory counts are a current snapshot. Audit dates and client hosts apply only to interaction/session/user metrics. The Agent creation-date relationship is inactive, so I will not mislabel inventory counts as historical usage. Choose an audit metric or remove those dimensions/dates."),
@@ -228,14 +234,14 @@ def _build_base_topic():
             "output": {"binding": {"firstTableRows": "Topic.Rows"}},
         },
         rejection("ValidateQueryResponse", "=IsEmpty(Topic.Rows) || CountRows(Topic.Rows) > 101",
-                  "The connector did not return the expected bounded response with a Summary row. This is an execution/response error, not evidence of zero usage. No successful analytics result is claimed."),
+                  "The connector did not return the expected bounded response with a Summary row. This is an execution/response error, not evidence of zero usage or absent fields. Actual permission errors are access issues, not model absence. No successful analytics result is claimed."),
         set_variable("result", "=Topic.Rows"),
         set_variable("generatedDax", "=Topic.Dax"),
         set_variable("queryContext", '="Metric=" & Topic.metric & "; grouping=" & Topic.groupBy & "; exact filter=" & Topic.filterBy & ":" & Topic.filterValue & "; requested inclusive audit dates=" & Topic.startDate & ".." & Topic.endDate & ". Blank dates mean all available data; inventory has no audit window. Use Summary.TotalGroups/ReturnedGroups/HasMore and actual WindowStart/WindowEnd. No Data rows means no positive matched groups, not proof about uncaptured telemetry."'),
     ]
     return {
         "kind": "AdaptiveDialog", "modelDisplayName": "Model analytics",
-        "modelDescription": "Execute reusable aggregate analytics over the approved model: totals, rankings, categorical breakdowns, filtered and date-windowed interaction/session/user aggregates, current agent/environment inventory breakdowns and time trends. Use this SAME capability for materially different data questions by setting structured inputs, never raw DAX. Supports one grouping, one exact categorical filter, one inclusive audit date range, topN 1–100. This is a DATA EXECUTION capability, not a DAX-writing capability. For writing/recommending/explaining DAX without execution, select Model DAX advice instead. Unknown metrics/columns and unsafe inputs are rejected in executable validation. Preserve the specialized top-100 tool for the unfiltered top-100-agent request.",
+        "modelDescription": "Execute reusable aggregate analytics over the approved analytical subset, not the full model schema: totals, rankings, categorical breakdowns, filtered and date-windowed interaction/session/user aggregates, current agent/environment inventory breakdowns and time trends. Use this SAME capability for materially different data questions by setting structured inputs, never raw DAX. Supports one grouping, one exact categorical filter, one inclusive audit date range, topN 1–100. This is a DATA EXECUTION capability, not a DAX-writing capability. For approved DAX advice without execution, select Model DAX advice instead. Unknown metrics/columns and unsafe inputs are rejected in executable validation. For owner/creator identities or questions about field existence, explain approved-tool scope without calling this topic or requesting grouping parameters. Tool exclusions do not establish model absence. Preserve the specialized top-100 tool for the unfiltered top-100-agent request.",
         "inputs": inputs, "inputType": {"properties": properties},
         "outputType": {"properties": {
             "result": {"type": "Any", "description": "Actual connector aggregate rows: one Summary and up to 100 Data rows. Present a readable table; disclose HasMore and audit window."},
@@ -271,6 +277,9 @@ def build_advice_topic():
         "exact filter, audit dates, topN and sorting compiler as model analytics. Choose metric sessions "
         "and groupBy month for sessions by month, interactions/platform for platform usage, etc. "
         "Returns clearly labelled UNEXECUTED DAX plus relationship/filter explanation. "
+        "Grounding is an approved subset, not full model metadata. Owner/creator identities are outside this PoC's scope; "
+        "do not call this topic or ask grouping parameters for identity or field-existence questions. "
+        "Explain that tool exclusions do not establish model absence; never recommend identity DAX. "
         "Use for questions containing DAX, write a query, explain the formula, or help author model queries."
     )
     topic["inputs"] = [item for item in topic["inputs"] if item["propertyName"] != "mode"]
@@ -294,8 +303,19 @@ def build_clarification_topic():
         "beginDialog": {
             "kind": "OnUnknownIntent", "id": "main",
             "actions": [
+                {
+                    "kind": "ConditionGroup", "id": "ExplainIdentityScope",
+                    "conditions": [{
+                        "id": "IdentityScopeQuestion",
+                        "condition": '=IsMatch(Lower(System.Activity.Text), "\\b(owner|owners|creator|creators|ownerupn|ownername|created by|owned by)\\b", MatchOptions.Contains)',
+                        "actions": [
+                            {"kind": "SendActivity", "id": "IdentityScopeMessage", "activity": IDENTITY_SCOPE},
+                            {"kind": "EndDialog", "id": "EndIdentityScope"},
+                        ],
+                    }],
+                },
                 {"kind": "SendActivity", "id": "ExplainModelScope",
-                 "activity": "I could not map that request to the approved analytical schema. This model supports audited interaction turns, distinct session counts, distinct-user counts (not identities), current agent inventory and inventory-environment counts. You can group/filter by platform, environment, region, risk, activity or agent; audit metrics also support month/day and client host. Optional paired audit dates span up to 366 days. Revenue, financial cost and product-category metrics are not in the approved schema, so I cannot invent them. Which supported metric and grouping did you mean? You can also ask 'Write DAX for sessions by month' for model-specific, unexecuted guidance."},
+                 "activity": "I could not map that request to this PoC's approved tool contract. These tools support audited interaction turns, distinct session counts, distinct-user counts (not identities), current agent inventory and inventory-environment counts. You can group/filter by platform, environment, region, risk, activity or agent; audit metrics also support month/day and client host. Optional paired audit dates span up to 366 days. Revenue, financial cost and product-category metrics are outside this approved subset. " + SCOPE_LIMIT + " Only authoritative full current-version metadata with sufficient visibility can prove absence; this subset, errors and empty results cannot. Actual permission errors are access issues, not model absence. If you want an approved aggregate, specify its metric and grouping. You can also ask 'Write DAX for sessions by month' for approved, unexecuted guidance."},
             ],
         },
     }

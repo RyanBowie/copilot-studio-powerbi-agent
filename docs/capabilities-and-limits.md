@@ -84,6 +84,8 @@ Example response:
 
 This correction does not grant access to identity fields or prove whether they exist.
 
+The explicit scope guardrail and clarification wording were deployed on 12 September 2026, with regression coverage and the user's chosen reasoning model preserved. Live conversational behavior after that correction remains a separate validation step; see [verification](verification.md).
+
 The exclusions and finite query vocabulary are **implementation choices made for this demonstration**, not assertions about the customer's organizational policy or Power BI's general capabilities. Expanding them requires an authorized change to the model contract and executable query surface, not simply a more capable reasoning model or a differently worded prompt.
 
 ## Suggested instruction principles

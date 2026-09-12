@@ -1,5 +1,6 @@
 import json
 from config import load_config
+import re
 from pathlib import Path
 import unittest
 
@@ -126,11 +127,56 @@ class AnalyticsTests(unittest.TestCase):
 
     def test_unknown_schema_has_useful_clarification(self):
         topic = build_clarification_topic()
+        generated = yaml.safe_load((ROOT / "topics" / "ModelQuestionClarification.mcs.yml").read_text(encoding="utf-8"))
+        self.assertEqual(generated, topic)
         self.assertEqual(topic["beginDialog"]["kind"], "OnUnknownIntent")
-        message = topic["beginDialog"]["actions"][0]["activity"]
+        message = topic["beginDialog"]["actions"][1]["activity"]
         self.assertIn("Revenue", message)
-        self.assertIn("Which supported metric and grouping", message)
+        self.assertIn("These tools support", message)
+        self.assertIn("does not establish whether a field exists", message)
+        self.assertNotIn("This model supports", message)
         self.assertFalse(any("connectionReference" in a for a in flatten(topic["beginDialog"]["actions"])))
+
+    def test_owner_fallback_and_followup_have_no_identity_query_or_grouping_prompt(self):
+        topic = build_clarification_topic()
+        branch = topic["beginDialog"]["actions"][0]["conditions"][0]
+        pattern = branch["condition"].split(', "', 1)[1].split('", MatchOptions.Contains)')[0]
+        for prompt in (
+            "Show agent owners and creators", "Does model have no owner fields?",
+            "Write DAX to return OwnerUpn", "Show who each agent was created by",
+        ):
+            self.assertIsNotNone(re.search(pattern, prompt.lower()))
+        actions = branch["actions"]
+        self.assertEqual([a["kind"] for a in actions], ["SendActivity", "EndDialog"])
+        message = actions[0]["activity"]
+        self.assertIn("outside this PoC's approved analytics scope", message)
+        self.assertIn("does not establish whether those fields exist", message)
+        self.assertIn("approved agent-level aggregates", message)
+        self.assertNotIn("grouping", message)
+        self.assertFalse(any(a["kind"] == "InvokeConnectorAction" for a in flatten(topic["beginDialog"]["actions"])))
+
+    def test_owner_parameters_rejected_before_query_or_advice_generation(self):
+        for mode in ("execute", "dax"):
+            for field in ("OwnerUpn", "OwnerName", "owner", "creator", "CreatedBy"):
+                for parameter in ("metric", "groupBy", "filterBy"):
+                    with self.subTest(mode=mode, field=field, parameter=parameter):
+                        with self.assertRaisesRegex(ValueError, "approved analytics contract.*does not establish"):
+                            build_query({"mode": mode, parameter: field})
+        for topic in (build_topic(), build_advice_topic()):
+            guard = next(a for a in topic["beginDialog"]["actions"] if a["id"] == "ValidateParameters")
+            rejected = guard["conditions"][0]["actions"]
+            self.assertIn("no query is run or recommended", rejected[0]["activity"])
+            self.assertIn("including DAX advice", rejected[0]["activity"])
+            self.assertEqual(rejected[-1]["kind"], "EndDialog")
+            self.assertIn("Tool exclusions do not establish model absence".lower(), topic["modelDescription"].lower())
+
+    def test_response_failure_is_not_schema_absence(self):
+        guard = next(a for a in build_topic()["beginDialog"]["actions"] if a["id"] == "ValidateQueryResponse")
+        message = guard["conditions"][0]["actions"][0]["activity"]
+        self.assertIn("execution/response error", message)
+        self.assertIn("not evidence of zero usage or absent fields", message)
+        self.assertIn("Actual permission errors are access issues", message)
+        self.assertEqual(guard["conditions"][0]["actions"][-1]["kind"], "EndDialog")
 
 
 if __name__ == "__main__":

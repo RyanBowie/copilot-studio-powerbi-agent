@@ -1,12 +1,13 @@
 kind: AdaptiveDialog
 modelDisplayName: Model analytics
-modelDescription: 'Execute reusable aggregate analytics over the approved model: totals, rankings, categorical breakdowns,
-  filtered and date-windowed interaction/session/user aggregates, current agent/environment inventory breakdowns and time
-  trends. Use this SAME capability for materially different data questions by setting structured inputs, never raw DAX. Supports
-  one grouping, one exact categorical filter, one inclusive audit date range, topN 1–100. This is a DATA EXECUTION capability,
-  not a DAX-writing capability. For writing/recommending/explaining DAX without execution, select Model DAX advice instead.
-  Unknown metrics/columns and unsafe inputs are rejected in executable validation. Preserve the specialized top-100 tool for
-  the unfiltered top-100-agent request.'
+modelDescription: 'Execute reusable aggregate analytics over the approved analytical subset, not the full model schema: totals,
+  rankings, categorical breakdowns, filtered and date-windowed interaction/session/user aggregates, current agent/environment
+  inventory breakdowns and time trends. Use this SAME capability for materially different data questions by setting structured
+  inputs, never raw DAX. Supports one grouping, one exact categorical filter, one inclusive audit date range, topN 1–100.
+  This is a DATA EXECUTION capability, not a DAX-writing capability. For approved DAX advice without execution, select Model
+  DAX advice instead. Unknown metrics/columns and unsafe inputs are rejected in executable validation. For owner/creator identities
+  or questions about field existence, explain approved-tool scope without calling this topic or requesting grouping parameters.
+  Tool exclusions do not establish model absence. Preserve the specialized top-100 tool for the unfiltered top-100-agent request.'
 inputs:
 - kind: AutomaticTaskInput
   propertyName: metric
@@ -170,10 +171,11 @@ beginDialog:
       actions:
       - kind: SendActivity
         id: ValidateParametersMessage
-        activity: I can analyze interactions, sessions, distinct-user counts, agent inventory, or inventory-environment counts.
-          Choose one supported grouping/filter (platform, environment, environmentType, region, risk, activity, agent, audit
-          month/day, or host), an integer limit 1–100, and optional paired ISO dates. I cannot execute arbitrary DAX, unknown
-          fields, owner identities, or transcripts. Please clarify the unsupported parameter.
+        activity: These inputs are outside the approved tool contract or its limits; no query is run or recommended. Unavailable
+          through this PoC's approved tools does not establish whether a field exists in the underlying custom semantic model.
+          Owner/creator identities and transcripts are excluded from this PoC, including DAX advice. Approved alternatives
+          are interaction/session/distinct-user counts or current agent/inventory-environment counts, one approved grouping/filter,
+          limit 1–100 and paired ISO audit dates.
       - kind: EndDialog
         id: ValidateParametersStop
   - kind: ConditionGroup
@@ -335,7 +337,8 @@ beginDialog:
       - kind: SendActivity
         id: ValidateQueryResponseMessage
         activity: The connector did not return the expected bounded response with a Summary row. This is an execution/response
-          error, not evidence of zero usage. No successful analytics result is claimed.
+          error, not evidence of zero usage or absent fields. Actual permission errors are access issues, not model absence.
+          No successful analytics result is claimed.
       - kind: EndDialog
         id: ValidateQueryResponseStop
   - kind: SetVariable

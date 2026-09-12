@@ -3,11 +3,28 @@ beginDialog:
   kind: OnUnknownIntent
   id: main
   actions:
+  - kind: ConditionGroup
+    id: ExplainIdentityScope
+    conditions:
+    - id: IdentityScopeQuestion
+      condition: =IsMatch(Lower(System.Activity.Text), "\b(owner|owners|creator|creators|ownerupn|ownername|created by|owned
+        by)\b", MatchOptions.Contains)
+      actions:
+      - kind: SendActivity
+        id: IdentityScopeMessage
+        activity: Owner and creator identities are outside this PoC's approved analytics scope, so the current tools cannot
+          return that table. That does not establish whether those fields exist in the underlying custom semantic model. I
+          can provide approved agent-level aggregates. No identity query is run or recommended.
+      - kind: EndDialog
+        id: EndIdentityScope
   - kind: SendActivity
     id: ExplainModelScope
-    activity: I could not map that request to the approved analytical schema. This model supports audited interaction turns,
+    activity: I could not map that request to this PoC's approved tool contract. These tools support audited interaction turns,
       distinct session counts, distinct-user counts (not identities), current agent inventory and inventory-environment counts.
       You can group/filter by platform, environment, region, risk, activity or agent; audit metrics also support month/day
       and client host. Optional paired audit dates span up to 366 days. Revenue, financial cost and product-category metrics
-      are not in the approved schema, so I cannot invent them. Which supported metric and grouping did you mean? You can also
-      ask 'Write DAX for sessions by month' for model-specific, unexecuted guidance.
+      are outside this approved subset. Unavailable through this PoC's approved tools does not establish whether a field exists
+      in the underlying custom semantic model. Only authoritative full current-version metadata with sufficient visibility
+      can prove absence; this subset, errors and empty results cannot. Actual permission errors are access issues, not model
+      absence. If you want an approved aggregate, specify its metric and grouping. You can also ask 'Write DAX for sessions
+      by month' for approved, unexecuted guidance.

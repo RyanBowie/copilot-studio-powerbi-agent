@@ -32,7 +32,7 @@ The same agent was updated and published with reusable analytics, DAX advice, mo
 
 | Check | Recorded result |
 |---|---|
-| Offline validation of packaged sanitized source | **12 tests passed**, rerun from this repository's `agent` folder |
+| Offline validation of packaged sanitized source | **17 tests passed**, rerun from this repository's `agent` folder |
 | Reusable analytics direct-query cases | **Seven passed** in the development model, as recorded by the implementation handoff |
 | Original smoke/count/ranking regressions | Passed directly; original top-100 source preserved |
 | Publication and private solution-export consistency | Confirmed by implementation handoff; private export deliberately not included |
@@ -45,6 +45,21 @@ Direct-query tests cover compiled DAX against the model, not every branch of the
 The source's [labeled examples](../agent/examples.json) retain the verified constant result, a sanitized connection-response description, a clearly unexecuted DAX illustration, and the user's top-100 observation. They do not contain business result rows.
 
 The documentation site was checked in desktop light/dark themes and a narrow mobile viewport, with embedded-image, tab, keyboard-navigation, overflow, and JavaScript-error checks.
+
+## Scope-explanation correction
+
+Published and synchronized on 12 September 2026. Instructions, unsupported-input explanations, clarification behavior, and DAX-advice wording now distinguish:
+
+- A capability exposed by the approved tools.
+- A field excluded from or unknown to that partial contract.
+- Absence established by authoritative metadata for a particular model/version and visibility.
+- An actual permission failure.
+
+Owner/creator details remain outside the demonstration's tools, without asserting that the underlying model lacks them. The correction did not add identity queries, another model, or new permissions.
+
+The implementation handoff verified the user's selected cloud reasoning model and authentication/Invoker connection state before and after deployment; they were unchanged. Protected specialized queries and top-100 wording were preserved.
+
+The 17 offline tests include explanation/guardrail assertions and generated-source parity; they are not live conversation evidence. Three fixed and seven reusable direct-query regressions passed. Previously blocked chat channels were not repeatedly retried, and no new full-chat pass is claimed.
 
 ## Limits of the evidence
 

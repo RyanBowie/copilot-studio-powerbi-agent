@@ -69,7 +69,7 @@ deployment; protected specialized tools are not silently overwritten.
 
 ## Validation status and limitations
 
-The sanitized source passes **12 offline tests**. Seven compiled analytics scenarios and the
+The sanitized source passes **17 offline tests**, including scope-explanation regressions. Seven compiled analytics scenarios and the
 original regressions passed directly in the development model. These are not full runtime
 conversation tests.
 
@@ -80,6 +80,11 @@ will work without configuration, model validation and consent.
 Automated chat-to-query-to-answer and live DAX-advice output were not fully verified. The evaluation
 channel requested per-agent connection approval; a separate published invocation route lacked its
 required first-party preauthorization. No permission bypass or maker fallback was used.
+
+The latest scope correction distinguishes approved-tool restrictions, unknown full-model metadata,
+verified absence, and actual access errors. Owner/creator requests receive a scope explanation,
+not a claim that the underlying model lacks those fields. This did not expand identity access,
+change queries, or replace the user's selected cloud reasoning model.
 
 Run npm test for offline checks, python verify-model.py and python verify-analytics.py for explicitly
 authorized direct queries, and npm run test:agent -- --maker-test for a separate actual chat probe.
