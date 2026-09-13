@@ -5,6 +5,15 @@ metric mappings. No successful new-runtime conversation is fabricated. Names/num
 illustration are synthetic; direct test fixtures are not proof of cloud query generation.
 
 `Agent365` is the custom example model/report, not Microsoft Agent 365.
+The tests used a **Power BI semantic model containing agents**, with agent inventory,
+creator/ownership and usage data. These are agent-focused examples because of that model's data,
+not because the reusable connector is restricted to agents.
+
+![User-provided Power BI Copilot interactions report for the tested agent-focused semantic model.](assets/powerbi-agents-report.png)
+
+This is report context, not a Copilot Studio answer. The report uses a different displayed date
+window from the conversation tests and does not independently verify their totals.
+The report and semantic model are not included in the solution ZIP.
 
 ## Actual published M365 prompts
 

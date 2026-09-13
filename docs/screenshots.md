@@ -25,6 +25,19 @@ personal identity. No replacement business values are invented.
 Prompt/response composites are labeled as such; browser scrolling and a taller
 viewport made the actual content visible without changing its text. Originals remain private.
 
+## User-provided report context
+
+`powerbi-agents-report.png` is the report screenshot the owner supplied and explicitly approved
+for publication on 13 September 2026. It shows the **Copilot interactions** page of the custom
+Power BI report connected to the agent-focused semantic model used for testing.
+
+The image contains aggregate usage values, chart labels and report filters, with no visible
+personal names or tenant/resource identifiers. No redaction was needed. It was re-encoded to
+remove embedded image metadata; the RGB pixels were preserved unchanged.
+This is not an assistant-captured test response, a synthetic illustration or proof that the
+report's totals reconcile with conversation answers. Its displayed date window differs.
+The report and semantic model are not included in the solution ZIP.
+
 ## Actual configuration, not a historical tool inventory
 
 ![Actual Power BI connector configuration in the Studio code editor, with resource IDs masked.](assets/studio-powerbi-action.png)

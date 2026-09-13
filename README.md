@@ -11,6 +11,17 @@ the architecture, real anonymized screenshots, solution download and setup steps
 
 > **About the example model:** `Agent365` is the name of a **custom Power BI semantic model/report** used in this demonstration. It is **not the Microsoft Agent 365 product**, an official Agent 365 schema, or an Agent 365 product integration. The architecture is reusable with other compatible Power BI semantic models; adapt the model contract, queries, configuration, permissions, and tests to your model.
 
+**Tested with a Power BI semantic model containing agents**, including agent inventory,
+creator/ownership and usage data. This is why the examples ask for agent rankings, creators and
+interactions. The agent runs DAX against the semantic model, not against report visuals.
+
+![User-provided Power BI report connected to the tested agent-focused semantic model, showing interactions, sessions and usage trends.](docs/assets/powerbi-agents-report.png)
+
+This owner-approved screenshot shows the custom report's **Copilot interactions** page, not an
+agent response. Its date window differs from the conversation tests; totals are not a like-for-like
+comparison. The report, semantic model and report-specific business definitions are not bundled in
+the solution ZIP.
+
 ## Start here
 
 - [Published walkthrough](https://ryanbowie.github.io/copilot-studio-powerbi-agent/) — architecture, screenshots, download and setup. The [self-contained local copy](docs/index.html) also opens without a build step.

@@ -4,6 +4,13 @@
 responses, not fabricated transcripts or direct-API substitutes. The checks below establish
 response shape and conversational consistency, not independent numerical correctness for all data.
 
+**Test model:** a Power BI semantic model containing agents, their inventory and creator/ownership
+details, and usage/interaction data. The user-provided
+[Copilot interactions report screenshot](assets/powerbi-agents-report.png) illustrates that model's
+reporting context. The agent queries the underlying semantic model, not the visuals. The report's
+displayed date window differs from these tests, so its totals are not an independent reconciliation.
+The custom report and semantic model are not included in the starter ZIP.
+
 Testing took place on 13 September 2026 local UK time, while the UTC date was still 12 September.
 The tenant-specific agent link, conversation identifiers and unredacted originals remain private.
 The owner later approved publishing actual agent names, usage figures and dates while masking

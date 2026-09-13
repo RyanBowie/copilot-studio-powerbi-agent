@@ -45,6 +45,12 @@ visible topic contracts complement the captures; diagrams are not execution evid
 This update does not expand the initial history-scan counts above. Unredacted originals, private
 OCR output and mask specifications remain excluded. The solution ZIP is unchanged.
 
+The owner also explicitly supplied and approved `powerbi-agents-report.png` as report context
+for the tested semantic model containing agents. Its visible aggregate figures and filters are
+retained. No personal names or tenant/resource identifiers are visible; image metadata was removed
+without changing RGB pixels. This supplied report image is separate from the browser-observed
+conversation evidence and does not reconcile totals across different date windows.
+
 ## Solution review boundary
 
 The ZIP contains a separate **unconfigured unmanaged starter**, not the working tenant export.

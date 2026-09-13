@@ -17,6 +17,9 @@ def main():
         assert page.locator("html").get_attribute("data-theme") == "light"
         assert "generate DAX" in page.locator(".hero .lead").inner_text()
         assert page.locator("#setup").count() == 1
+        assert "semantic model containing agents" in page.locator("#examples").inner_text()
+        assert page.locator("#tested-model-report img").count() == 1
+        assert "not an agent response" in page.locator("#tested-model-report").inner_text()
         assert page.locator("#tools-topics").count() == 1
         for name in ("Get model metadata", "Run generated DAX", "Compile DAX advice", "Generated query error"):
             assert name in page.locator("#tools-topics").inner_text()
