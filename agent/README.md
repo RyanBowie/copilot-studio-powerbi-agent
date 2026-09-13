@@ -1,9 +1,10 @@
 # Metadata-grounded generated DAX in Copilot Studio
 
-This publication copy contains generators, placeholder configuration, and synthetic offline
-metadata, not live generated topics, credentials, or a preauthenticated solution export.
-Use a private deployment copy. Keep this repository private and Pages disabled until the
-[public-release review](../docs/public-release.md) is complete.
+This sanitized source includes [four complete synthetic native topic definitions](example-topics/README.md).
+For the newer parent-run channel observations and actual screenshots, see
+[M365 testing](../docs/m365-testing.md). The separately import-verified
+[unmanaged starter solution](../docs/solution-import.md) intentionally contains onboarding stops,
+not the demonstration's private metadata or connection bindings.
 
 > **Example naming:** Agent365 is this demonstration's custom semantic model/report, **not the
 > Microsoft Agent 365 product**. This clarification belongs in documentation, not runtime instructions.
@@ -13,14 +14,18 @@ orchestrator is configured to author **new DAX table expressions** from machine-
 Power Fx topics validate the expression boundary and build a bounded DAX execution envelope. The
 standard Power BI connector runs it with **Invoker/end-user authentication**.
 
-### Current release: core workflow observed working after dynamic-result correction
+### Current status: user-observed scoped success
 
-The user has confirmed successful metadata retrieval, a last-30-days usage ranking, and a
-contextual creator/owner follow-up retaining the same date window and usage order. The working
-deployment is preserved. This is user-observed scoped success: matching post-fix execution
-traces and every displayed value have not been independently verified. The original combined,
-single-turn two-scope request remains unresolved; no universal query-correctness claim is made.
-Real names, emails, IDs and business values from the successful screenshots are not published.
+The user has observed **metadata retrieval, a dated usage ranking and a contextual creator/owner
+follow-up** working in Studio. The follow-up retained the date window and usage ordering.
+Displayed values have not been independently matched, and the original combined one-turn,
+two-scope request remains unverified. This is scoped success, not universal semantic correctness.
+
+The user has also published the agent to M365 Copilot. M365 UI tests and screenshots are separate
+from this source/label audit; no channel permissions or sharing settings are changed here.
+No additional user test is requested by this documentation update.
+
+### Current generic dynamic-result implementation
 
 Metadata success is now established by the user's Studio result and matching caller traces.
 The subsequent ranking question reached **two actual executions**. Each returned **one successful
@@ -55,9 +60,49 @@ Separate authorized direct-model checks pass for multiple filters/groupings, der
 owner/creator aggregates, dates, empty results, genuine unsupported-column errors and the original
 top-100 membership/order. These are not proof of the final caller-visible answer.
 
-**Observed confirmation:** separate dated-ranking and creator-follow-up answers now succeed in
-the user's connected Studio session. No further user run, reconnect, grant or deployment change
-is requested. The unresolved combined case is tracked in [verification](../docs/verification.md).
+The scoped Studio successes above are now user-observed. They do not establish universal correctness
+or reverify the combined one-turn/two-scope question. No new conversations or channel tests are part
+of this source/label audit.
+
+## Inspect the complete source and current capabilities
+
+| Artifact | What it contains |
+|---|---|
+| `agent.mcs.yml` | Full behavioral instructions, capability settings, conversation starters and model configuration |
+| `general_runtime.py` | Complete native topic builders and runtime Power Fx guards |
+| `generated_dax.py` | General expression validation and bounded DAX envelope |
+| `query_transport.py` | Dynamic result schema and decoder contracts |
+| `example-topics\ModelMetadata.mcs.yml` | Complete synthetic **Get model metadata** topic |
+| `example-topics\GeneratedDaxQuery.mcs.yml` | Complete synthetic **Run generated DAX** topic |
+| `example-topics\GeneratedDaxAdvice.mcs.yml` | Complete synthetic **Compile DAX advice** topic |
+| `example-topics\GeneratedQueryError.mcs.yml` | Complete synthetic **Generated query error** handler |
+| `example-topics\index.json` | Input/output schemas, triggers, connector operations and file index |
+| `example-topics\README.md` | Reference-only safety notes and regeneration/configuration steps |
+
+The reference YAML is generated from **built-in synthetic metadata and placeholder configuration**.
+It is not a deployed snapshot and contains no live model schema or resource identifiers.
+Run `python example_topics.py` to regenerate it locally; this never reads private configuration or
+metadata and makes no network calls. Real deployments use the separate owner workflow below.
+All four complete examples were checked against the pinned Microsoft authoring schema as well as
+round-tripped against their current builders. This is structural validation, not a deployment test
+against the placeholder model.
+
+### Studio labels and screenshot targets
+
+Open the agent's **Topics** page for **Get model metadata**, **Run generated DAX**, **Compile DAX
+advice**, and the automatic **Generated query error** handler. The first three are generatively
+selectable; the last runs on errors. Do not expect these replacements to appear as the old connector
+cards on **Tools**.
+
+The three obsolete fixed tools are deleted. **Model analytics**, **Model DAX advice**, and **Model
+question clarification** are inactive legacy topics, not current query capabilities.
+The remaining “Top 100 agents” label was a **conversation starter**, not an active tool. Its title is
+now **Analyze agent usage**, with the prompt “Review the semantic model and provide the top 20 used
+agents and their creators.” The original top-100 examples and offline ordering regression remain.
+The current generic capability names, schema identities and behavior are unchanged.
+The starter can be seen under the Overview's starter/suggested-prompt configuration.
+Publishing a label update does not independently prove that an installed M365 app has refreshed;
+its presentation should be recorded separately by the channel owner.
 
 ### Earlier metadata output-type correction
 
@@ -100,8 +145,9 @@ native tests expose the existing numeric-string/Boolean coercion without changin
 An error-shaped member is not an established provider denial. Actual connector exceptions remain
 on the existing separate OnError path.
 
-Metadata D1 diagnostics remain available on failures; no extra metadata-only test is currently
-needed. Successful dated ranking and contextual creator answers are now user-observed.
+Metadata D1 diagnostics remain available on failures; no extra metadata-only test is requested.
+Dated ranking and contextual creator follow-up are now user-observed successes; the combined case
+remains unverified.
 
 ### Previous change: native connector row normalization
 
@@ -109,8 +155,8 @@ The live connector schema declares `firstTableRows` as a single-column Power Fx 
 `Value: Any`. Ordinary `JSON(...)` therefore produced the synthetic equivalent of
 `[{"Value":{"[AccessProbe]":1}}]`, while our decoder expected `[{"[AccessProbe]":1}]`.
 Native Microsoft Power Fx execution reproduces the resulting false visibility rejection.
-Both metadata-probe and generated-query results now use the documented
-`JSON(..., JSONFormat.FlattenValueTables)` option. No columns were removed from the probe,
+At that stage both paths used `JSON(..., JSONFormat.FlattenValueTables)`. The final generic-query
+path instead serializes a dynamic `Any` array directly, as described above. No columns were removed from the probe,
 no permission check was bypassed, and connector targets/authentication are unchanged.
 
 Metadata advances to `schema_probe_output_validation` only after the connector returns.
@@ -125,7 +171,8 @@ full-reference zero-row probe returns its expected constant through separate dir
 testing; that is not chat/Invoker proof. A separate metadata-only evaluation reached the connector
 boundary but returned the platform's connection-manager card. The user's later Studio test returned
 and failed the probe validator instead. Neither result establishes a Power BI permission denial.
-No successful requesting-user metadata result or cloud-generated query/answer has been observed.
+At that earlier point no successful requesting-user metadata/query answer had been observed.
+The later scoped successes at the top of this document supersede that historical boundary.
 
 ### Earlier repair: blank fixed-model alias
 
@@ -164,9 +211,10 @@ metadata attempt reached the client's 120-second timeout without returned activi
 attempt, with a 300-second client budget and an explicit catalog request, returned **HTTP 504**
 (`UnexpectedError`, “An unexpected error occurred.”). Neither failure establishes an
 authentication failure or proves that the connector was reached.
-Those timeouts and the probe-validation failure are historical. Caller-generated queries returned
-successful envelopes before local serialization loss; after correction, dated ranking and creator
-follow-up answers are now user-observed successful.
+Those timeouts are historical; the latest user-observed boundary is the unresolved probe validation
+failure described above. Caller-generated queries returned successful envelopes before local
+serialization loss. Later dated-ranking and contextual creator responses are user-observed successes,
+without an independent value match or a universal correctness claim.
 
 ### Model-selection and parser correction
 
@@ -316,7 +364,8 @@ lexer/envelope escapes, aliases/sorting/bounds, relative date expressions, share
 generation, metadata authorization gating and advice without business-query execution. Additional
 tests cover Studio-compatible YAML, native-readback rejection of dropped model/topic fields,
 obsolete-tool deletion guards, blank/invalid alias input gates, error provenance, retry termination
-contracts, safe diagnostic output and client diagnostics: **50 Python tests and 5 Node tests**. The scalar input-gate
+contracts, safe diagnostic output, synthetic-reference generation and client diagnostics:
+**54 Python tests and 5 Node tests**. The scalar input-gate
 regressions execute a small offline evaluator over the generated expressions, not the native
 Power Fx runtime; native compilation/readback and actual chat observations are reported separately.
 
@@ -352,7 +401,8 @@ Direct authorized checks cover:
 These are **LLM-authored test fixtures applied to the generic contract**, not evidence of cloud chat
 generation. Runtime code does not contain these business queries. Metadata-topic selection and
 AI-filled metadata arguments and caller-generated DAX execution are now observed in real traces.
-The user has since confirmed successful dated-ranking and contextual creator/owner answers.
+The user has since observed a dated ranking and creator follow-up working. This does not reverify
+the original combined two-scope question or independently validate every displayed value.
 Do not publish business rows, identity values, raw schema snapshots or fabricated screenshots.
 
 The SDK test harness previously ignored `--prompt` outside `--maker-test` and always sent a retired
@@ -385,6 +435,10 @@ or a publication artifact. Structured component/DAX hashes are hints, not automa
 The evaluation channel is not proof that the normal Studio/published channel works.
 `test-studio.cjs` uses a separate project-local Edge profile, never
 the shared MCP browser. It does not enter credentials or fabricate UI.
+
+Authoring readback can require the specific audience reported by that service rather than the
+runtime/evaluation audience. `AADSTS500131` at that boundary is an authoring-token audience mismatch,
+not a Power BI model denial; do not change agent authentication or grant permissions to address it.
 
 Private generated topics and metadata stay under `.generated-private\` and `*.private.json`.
 The sanitized publication package contains generators and synthetic metadata for offline tests,

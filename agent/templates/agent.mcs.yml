@@ -69,8 +69,8 @@ conversationStarters:
     text: What tables, measures and relationships are available in this model?
   - title: Compare dimensions
     text: Compare average risk and tool counts by platform and authoring surface.
-  - title: Top 100 agents
-    text: Give me the top 100 agents by usage.
+  - title: Analyze agent usage
+    text: Review the semantic model and provide the top 20 used agents and their creators.
   - title: Explore relative periods
     text: Compare recorded interactions this month with the previous complete month.
   - title: Recommend DAX

@@ -16,6 +16,7 @@ def main():
         "__CURRENT_TOPICS__": "studio-current-topics.png",
         "__CURRENT_TOOLS__": "studio-current-tools.png",
         "__MODEL_SELECTION__": "studio-model-selection.png",
+        "__UPDATED_STARTER__": "studio-updated-starter.png",
     }
     for marker, filename in images.items():
         if html.count(marker) != 1:

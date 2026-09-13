@@ -15,6 +15,7 @@ These captures come from actual browser tests, not the synthetic illustration be
 | `studio-current-tools.png` | Empty standalone Tools tab; connector actions reside in topics |
 | `studio-model-selection.png` | Actual GPT-5 Reasoning (Preview) picker |
 | `studio-current-warnings.png` | Current preview-model and formal-evaluation warnings |
+| `studio-updated-starter.png` | Actual saved Analyze agent usage title/prompt in Studio; not M365 propagation evidence |
 
 Opaque pixel replacement removes identities and business values. No replacement business values
 are invented. Prompt/response composites are labeled as such; browser scrolling and a taller

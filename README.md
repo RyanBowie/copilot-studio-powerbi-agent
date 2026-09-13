@@ -13,6 +13,7 @@ This repository packages a proof of concept, its reusable agent source, and a pu
 - [Setup and adaptation](docs/setup.md)
 - [Download and import the unmanaged starter solution](docs/solution-import.md)
 - [Full instruction, topic and connector reference](docs/topic-and-tool-reference.md)
+- [Complete synthetic native topic YAML](agent/example-topics/README.md)
 - [Published M365 tests, exact prompts and real redacted screenshots](docs/m365-testing.md)
 - [Example prompts and output contracts](docs/examples.md)
 - [Evidence and known limitations](docs/verification.md)
@@ -69,7 +70,7 @@ implementations. Preparation/refresh uses an already-authorized owner with read/
 agent users receive no new permissions.
 
 Eight varied direct-query cases passed, including combinations outside the retired compiler and a
-top-100 membership/order regression. The current offline suite comprises **50 Python tests and
+top-100 membership/order regression. The current offline suite comprises **54 Python tests and
 5 client-harness tests**, plus 55 synthetic native Power Fx checks. The native null-serialization
 caveat is documented in [verification](docs/verification.md). These are not cloud-generated
 conversational-query evidence.
@@ -114,6 +115,11 @@ This genuine prompt/response composite is explicitly labeled and uses opaque red
 invented result values. [All current channel tests and authoring captures](docs/m365-testing.md)
 include consent, follow-up, advice, active topics, the empty standalone Tools tab and model settings.
 Formatting and semantic-verification limitations are documented alongside the images.
+
+The old **Top 100 agents** conversation starter is now **Analyze agent usage**, saved and published
+with a generic top-20/creator prompt. [The actual Studio capture](docs/assets/studio-updated-starter.png)
+shows the change. A post-publication M365 landing reload still showed the old label; channel
+presentation is not claimed updated.
 
 ![Actual initial Copilot Studio tool registration: governance counts, smoke test, and top 100 agents by usage.](docs/assets/tools-initial-poc.png)
 

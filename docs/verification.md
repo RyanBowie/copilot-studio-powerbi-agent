@@ -35,7 +35,7 @@ and no formal Studio evaluation. These need not be the same as the previously un
 | Check | Observation |
 |---|---|
 | Owner-prepared primary metadata | 21 tables, 244 columns, 166 measure names, 13 relationships |
-| Offline expression, serialization, authoring, cleanup, alias, row-decoding, and diagnostic suite | 50 Python tests |
+| Offline expression, serialization, authoring, cleanup, alias, row-decoding, diagnostics and complete-topic examples | 54 Python tests |
 | Corrected client-harness suite | 5 tests |
 | Synthetic native Microsoft Power Fx checks | 55; null-serialization caveat below |
 | Varied direct expression cases | Eight passed against the primary model |
@@ -48,6 +48,9 @@ and no formal Studio evaluation. These need not be the same as the previously un
 | User-visible dated ranking | User confirmed success; explicit metric, UTC anchor, dates and descending usage order |
 | Contextual creator/owner follow-up | User confirmed success; same date window and usage ordering |
 | Original combined single-turn request | Still unresolved; not superseded by narrower successful cases |
+| Complete synthetic topic references | Four full YAML files, deterministic generation and reference checks |
+| Starter rename | Analyze agent usage saved/native-verified/published; actual Studio screenshot confirms title/prompt |
+| M365 starter presentation | Old label still displayed on a post-publication landing reload; cause not established |
 
 Direct cases include multiple groupings/filters, a derived ratio, owner/creator aggregate counts,
 the familiar ranking, explicit dates, complete-month comparisons, a table outside the old compiler,

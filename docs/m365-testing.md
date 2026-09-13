@@ -85,6 +85,25 @@ evaluation feature, and the model selection was not changed to suppress the warn
 
 ![Actual current preview-model and evaluation warnings, without account information.](assets/studio-current-warnings.png)
 
+## Updated conversation starter
+
+**Top 100 agents** was a suggested prompt, not a surviving fixed-query tool. It is now
+**Analyze agent usage**, with a generic top-20/creator question:
+
+> Review the semantic model and provide the top 20 used agents and their creators.
+
+The change was saved, native-verified and published at **00:38:17 UTC on 13 September 2026**.
+This genuine Studio crop independently confirms the new title and prompt:
+
+![Actual saved Suggested prompts section showing Analyze agent usage and the generic top-20 prompt.](assets/studio-updated-starter.png)
+
+A M365 landing reload around **00:45 UTC**, after publication, still displayed the old starter.
+The earlier 00:01 UTC observation preceded this publication. Neither observation is evidence that
+the new label reached M365. Microsoft documents
+[possible suggested-prompt propagation delays](https://learn.microsoft.com/en-us/microsoft-copilot-studio/configure-starter-prompts);
+the specific cause here was not established. The channel was not removed/re-added merely to force
+a cosmetic refresh, and the completed test conversation was preserved.
+
 ## Capture and privacy method
 
 The prompt/response images are explicitly labeled composites of real element screenshots from the

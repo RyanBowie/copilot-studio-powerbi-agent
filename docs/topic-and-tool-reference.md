@@ -6,6 +6,16 @@ Read the [full agent instructions and starters](../agent/agent.mcs.yml), the
 [DAX envelope/boundary implementation](../agent/generated_dax.py) and
 [dynamic result transport](../agent/query_transport.py).
 
+Four **complete synthetic native YAML definitions**, including every action and input/output
+schema, are available in [the reference topic folder](../agent/example-topics/README.md):
+[metadata](../agent/example-topics/ModelMetadata.mcs.yml),
+[execution](../agent/example-topics/GeneratedDaxQuery.mcs.yml),
+[advice](../agent/example-topics/GeneratedDaxAdvice.mcs.yml) and
+[error handling](../agent/example-topics/GeneratedQueryError.mcs.yml).
+The [machine-readable index](../agent/example-topics/index.json) describes their interfaces.
+These use invented Entity/Event metadata and placeholder resources, not a deployed snapshot.
+Regenerate them offline with `python example_topics.py` from the `agent` directory.
+
 The [importable solution's complete native source](../solution/src) is also included. Its metadata
 topic is intentionally an onboarding stop rather than a live catalog, and query/advice begin with
 configuration stops. The [import guide](solution-import.md) explains how deployment replaces these
@@ -91,5 +101,13 @@ Actual published-channel prompts/captures: [M365 testing](m365-testing.md).
 
 The historical **Top 100 agents** label was a conversation starter after the fixed tool's deletion.
 It does not restrict supported questions or prove a dedicated ranking tool remains installed.
-The latest independently checked M365 landing page still showed that old label; its live rename
-is not claimed complete here. The new importable starter uses model-neutral prompts.
+It has now been changed to **Analyze agent usage**, with the prompt:
+
+> Review the semantic model and provide the top 20 used agents and their creators.
+
+The change was native-verified and published on 13 September 2026 at 00:38:17 UTC.
+The [actual Studio screenshot](assets/studio-updated-starter.png) independently confirms both
+fields. A M365 landing reload around 00:45 UTC still displayed the old label, so M365 presentation
+is not claimed updated. Microsoft documents possible propagation delays; the specific cause was
+not established. No channel removal, permission change or unrelated runtime modification was made.
+The new importable starter uses separate model-neutral prompts.
