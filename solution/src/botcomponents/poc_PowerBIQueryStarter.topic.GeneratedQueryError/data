@@ -1,0 +1,29 @@
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnError
+  id: main
+  actions:
+    - kind: SetVariable
+      id: setGlobalLastQueryError
+      variable: Global.LastQueryError
+      value: =If(Global.AnalyticsStage = "query_result_validation", "Local decoder failure; no provider diagnosis is established.", Left(System.Error.Message, 2000))
+    - kind: SetVariable
+      id: setGlobalLastQueryErrorCode
+      variable: Global.LastQueryErrorCode
+      value: =Text(System.Error.Code)
+    - kind: SendActivity
+      id: ReportActualError
+      activity: 'The operation failed at the last recorded stage {Global.AnalyticsStage}; no successful query result is claimed. Error: {Global.LastQueryErrorCode} — {Global.LastQueryError}. Local input-validation and decoder failures are not Power BI authorization failures. A connector attempt alone does not prove a request reached Power BI. Access errors do not prove model fields are absent. Do not change identities, widen scope, or repeat an identical failed metadata request. At query_result_validation stop without another DAX attempt. Only an actual execution error may be corrected at most once using that error and verified metadata.'
+    - kind: ConditionGroup
+      id: StopDecoderError
+      conditions:
+        - id: LocalDecoderError
+          condition: =Global.AnalyticsStage = "query_result_validation"
+          actions:
+            - kind: CancelAllDialogs
+              id: CancelDecoderError
+              activityProcessed: true
+    - kind: EndDialog
+      id: EndError
+inputType: {}
+outputType: {}

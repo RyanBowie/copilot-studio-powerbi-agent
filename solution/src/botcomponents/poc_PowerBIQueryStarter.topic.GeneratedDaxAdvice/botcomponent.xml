@@ -1,0 +1,11 @@
+<botcomponent schemaname="poc_PowerBIQueryStarter.topic.GeneratedDaxAdvice">
+  <componenttype>9</componenttype>
+  <iscustomizable>1</iscustomizable>
+  <language>1033</language>
+  <name>Compile DAX advice</name>
+  <parentbotid>
+    <schemaname>poc_PowerBIQueryStarter</schemaname>
+  </parentbotid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</botcomponent>

@@ -6,6 +6,22 @@ illustration are synthetic; direct test fixtures are not proof of cloud query ge
 
 `Agent365` is the custom example model/report, not Microsoft Agent 365.
 
+## Actual published M365 prompts
+
+These three prompts completed in the published channel. See the
+[real redacted screenshots and specific evidence boundaries](m365-testing.md):
+
+> Review the Agents semantic model and provide me the top 20 used agents and their creators.
+
+> For the same period, show only the top 5 agents in a table with Agent, Creator, and Interactions. Keep the same usage definition and state the exact date range.
+
+> Based on this semantic model, write DAX to compare interactions by platform over the same date range. Explain the filter context and mark the DAX as unexecuted. Do not execute the proposed business query.
+
+The first answer contained 20 descending, distinct usage values and creators. The second matched
+the prior first five, but used a list instead of a table. The third explicitly labeled its DAX
+unexecuted, but used prose rather than a code block. Values, DAX semantics and advice-path
+nonexecution were not independently audited. These are observations, not reusable fixed queries.
+
 ## Metadata before querying
 
 > What tables and measures are in this model? Retrieve the model metadata before answering.

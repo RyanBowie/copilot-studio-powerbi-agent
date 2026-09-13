@@ -1,0 +1,49 @@
+{
+  "classification": "public-safe summary of actual M365 Copilot UI observations",
+  "localTestDate": "2026-09-13",
+  "utcDateAnchor": "2026-09-12",
+  "channel": "Published M365 Copilot agent",
+  "tests": [
+    {
+      "id": "generic-ranking",
+      "prompt": "Review the Agents semantic model and provide me the top 20 used agents and their creators.",
+      "outcome": "response completed",
+      "observedRows": 20,
+      "descendingDisplayedUsage": true,
+      "distinctDisplayedUsageValues": 20,
+      "period": "2026-08-14 through 2026-09-12 inclusive",
+      "caveats": ["Agent chose a 30-day default absent from the prompt.", "Additional per-row date lacked a label.", "No independent model-value audit."],
+      "screenshot": "docs/assets/m365-ranking-redacted.png"
+    },
+    {
+      "id": "contextual-followup",
+      "prompt": "For the same period, show only the top 5 agents in a table with Agent, Creator, and Interactions. Keep the same usage definition and state the exact date range.",
+      "outcome": "response completed with format deviation",
+      "observedRows": 5,
+      "matchesPriorTopFive": true,
+      "sameDateRange": true,
+      "renderedTable": false,
+      "caveats": ["List instead of requested table.", "Fresh query execution not independently observed."],
+      "screenshot": "docs/assets/m365-followup-redacted.png"
+    },
+    {
+      "id": "unexecuted-advice",
+      "prompt": "Based on this semantic model, write DAX to compare interactions by platform over the same date range. Explain the filter context and mark the DAX as unexecuted. Do not execute the proposed business query.",
+      "outcome": "advice response completed",
+      "explicitUnexecutedLabel": true,
+      "sameDateRange": true,
+      "filterContextExplanation": true,
+      "renderedCodeBlock": false,
+      "caveats": ["DAX semantics not independently validated.", "Business-query nonexecution not independently instrumented."],
+      "screenshot": "docs/assets/m365-dax-advice.png"
+    }
+  ],
+  "scopeLimits": [
+    "Deferred repeated-value ranking concern remains unresolved.",
+    "Original combined single-turn two-scope request not reverified.",
+    "No model-count, load, concurrency, or representative identity validation.",
+    "Raw identity and business values are excluded."
+  ],
+  "repositoryPrivate": true,
+  "githubPagesEnabled": false
+}

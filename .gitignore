@@ -6,6 +6,7 @@
 config.local.json
 *.local.json
 *.zip
+!solution/PowerBIQueryStarter_unmanaged.zip
 *.har
 *.log
 node_modules/

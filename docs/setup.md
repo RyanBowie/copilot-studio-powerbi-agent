@@ -1,14 +1,16 @@
 # Preparing and testing the generated-DAX design
 
-**Experimental: the deployed generic runtime has not passed a complete cloud conversation.**
-Do not mistake successful local/direct tests for a ready production agent.
+**Experimental: scoped Studio and published M365 conversations have succeeded.**
+This is not production certification or proof of correctness for every model/question.
+See the [actual M365 tests and limitations](m365-testing.md).
 
 The custom `Agent365` example is not Microsoft Agent 365. Reuse requires metadata preparation,
 appropriate identity access, deployment review, and realistic testing on the intended model.
 
 ## Prerequisites
 
-- An existing standard Copilot Studio agent and dedicated development solution.
+- An existing standard Copilot Studio agent and dedicated development solution, or the
+  [importable unmanaged starter ZIP](solution-import.md).
 - Copilot Studio/Power BI licensing and permitted connector use.
 - Runtime users with appropriate Power BI Read/Build rights.
 - The tenant Execute Queries setting and applicable model/RLS/OLS permissions.
@@ -18,6 +20,17 @@ Do not grant model-write rights to all runtime users for convenience. No credent
 source or the local resource configuration.
 
 ## Owner preparation and deployment
+
+Create a standard agent in Copilot Studio if you do not already have one. Use a dedicated
+development solution; identify its environment URL, agent ID and schema name. In that environment,
+create a Power BI connection using an authorized account and a solution connection reference.
+Configure requesting-user/Invoker execution rather than silently using the maker's identity.
+The deployment script updates an existing agent; it does not provision all of these resources.
+
+Install Python and Node.js for the source tools, and authenticate the Azure CLI to the intended
+tenant using your organization's supported process. Review `agent/resources.example.json` and
+`agent/README.md` for the complete configuration and tool prerequisites. Resolve workspace/model
+identifiers from your own authorized Power BI resources. Do not copy this demonstration's identifiers.
 
 Work in a private deployment copy:
 
@@ -49,6 +62,28 @@ Inspect warnings, reopen the model picker, and compare the post-publication repr
 The snapshot is a governed preparation artifact. Refresh and republish after model changes.
 It is not an automatically refreshed remote catalog, and only alias `primary` is onboarded.
 
+## Publish and test in M365 Copilot
+
+1. Open the agent's Overview and inspect its instructions and model picker. Preserve the intended
+   model selection; preview models carry separate suitability warnings.
+2. Inspect Topics: **Get model metadata**, **Run generated DAX**, **Compile DAX advice** and
+   **Generated query error** are the active generic capabilities. Connector actions are inside these
+   topics; an empty standalone Tools tab is intentional, not a missing Power BI integration.
+3. Inspect the conversation starters. They are example prompts, not fixed-query tools or a list
+   of all supported questions.
+4. Publish in Studio and enable the Microsoft 365 Copilot channel using the tenant's permitted
+   availability/sharing process. Follow any administrator approval requirements. Copy your own
+   published agent link; this repository deliberately contains no tenant-bound deep link.
+5. Open a new M365 conversation as the intended user. If prompted, approve use of their existing
+   Power BI connection. Consent does not grant Read/Build, bypass RLS/OLS, or authorize maker fallback.
+6. Run the [three generic prompts](m365-testing.md), then expand to representative questions and
+   identities. Inspect actual activity inputs and compare important values with independent model
+   queries. UI completion alone does not establish correct DAX filter context.
+
+The demonstration currently shows two warnings: preview-model suitability and no formal Studio
+evaluation. Its browser tests do not satisfy the formal evaluation feature. Evaluate correctness,
+permissions and expected question coverage before treating your own deployment as production-ready.
+
 ## Verify in layers
 
 1. **Offline contract/client tests:** `npm test`.
@@ -78,8 +113,9 @@ does not request or bypass missing permissions.
 
 Separately, the evaluation route selects metadata after serialization repair. Attempts have returned
 HTTP 504 and, after the later alias repair, the previous local validation error/output contract.
-A normal Studio session must still be tested; neither
-topic selection nor an HTTP error establishes that the complete published UI flow works.
+Those historical failures did not establish whether the complete UI flow worked. Subsequent
+Studio and M365 observations are successful through their own authenticated sessions; neither
+topic selection nor an HTTP error alone establishes UI completion.
 
 The automated evaluation's connection-manager card is separate from the connected Studio user.
 Metadata now succeeds, and actual caller queries returned successful envelopes before local
@@ -95,7 +131,8 @@ It does not enter credentials or fabricate interaction evidence.
 ## Keep private artifacts private
 
 Do not commit `.generated-private`, real metadata snapshots, resource IDs, browser profiles, raw
-definitions, solution exports, runtime probes, transcripts, or business rows. The source bundle has
+definitions, tenant-bound solution exports, runtime probes, transcripts, or business rows. Only the
+separately generated and inspected unconfigured starter ZIP is approved for this repository. The source bundle has
 synthetic metadata for offline tests, not the live model snapshot.
 
 Before enabling Pages or changing repository visibility, complete the [release checklist](public-release.md).

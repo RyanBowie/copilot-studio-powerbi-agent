@@ -1,0 +1,19 @@
+{
+  "verifiedDate": "2026-09-13",
+  "artifact": "PowerBIQueryStarter_unmanaged.zip",
+  "sha256": "a8d814f9d69053dbf057b5448f40a816f2c28d4ce68e8dd490b276576c872bbc",
+  "reproducibleBuildChecked": true,
+  "importSucceeded": true,
+  "target": "Authorized development environment; identifiers excluded",
+  "distinctFromWorkingDemonstration": true,
+  "unpublishedAfterImport": true,
+  "channelsEmpty": true,
+  "connectionUnbound": true,
+  "activeTopics": 4,
+  "metadataTopicHasNoConnector": true,
+  "queryAndAdviceStopBeforeConnector": true,
+  "nativeParsedContractsVerified": true,
+  "configuredBusinessQueryTested": false,
+  "crossTenantImportTested": false,
+  "caveat": "Model preparation, connection binding, business definitions, authentication review and channel publication remain destination-owner responsibilities."
+}

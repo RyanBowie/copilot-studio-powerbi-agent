@@ -11,6 +11,9 @@ This repository packages a proof of concept, its reusable agent source, and a pu
 - [Visual walkthrough](docs/index.html) — architecture, example conversations, screenshots, and caveats. Open this file locally; it has no build step.
 - [Architecture and execution identity](docs/architecture.md)
 - [Setup and adaptation](docs/setup.md)
+- [Download and import the unmanaged starter solution](docs/solution-import.md)
+- [Full instruction, topic and connector reference](docs/topic-and-tool-reference.md)
+- [Published M365 tests, exact prompts and real redacted screenshots](docs/m365-testing.md)
 - [Example prompts and output contracts](docs/examples.md)
 - [Evidence and known limitations](docs/verification.md)
 - [Capabilities, model discovery, and scaling limits](docs/capabilities-and-limits.md)
@@ -23,9 +26,11 @@ The five-metric compiler and fixed business-query paths have been replaced in th
 The new capabilities retrieve governed model metadata and accept **new DAX table expressions**
 authored by the orchestrator, rather than mapping questions to a predefined metric list.
 
-**The user has now observed metadata retrieval, a dated usage ranking, and a contextual
-creator/owner follow-up working in Studio.** The follow-up retained the same date window
-and usage order without a separate fixed-query tool. Identity-bearing screenshots are not published.
+**The published M365 Copilot agent has now been browser-tested:** a generic request returned
+20 agents with creators in descending usage order; a top-five follow-up matched the previous
+first five; and an advice request returned explicitly unexecuted DAX with filter-context explanation.
+See the [exact prompts, observed checks and real redacted screenshots](docs/m365-testing.md).
+Earlier Studio successes were user-observed. No unredacted identity-bearing results are published.
 
 This is scoped PoC success, not universal correctness. The earlier combined, single-turn
 two-ranking request remains unresolved; matching post-correction traces and every displayed
@@ -39,8 +44,9 @@ but rejected because tested fractional values were truncated. No per-question qu
 was introduced. Metadata gating and Invoker identity are unchanged.
 
 The three obsolete fixed tools are deleted; generic capabilities appear under **Topics**.
-Native readback retains GPT-5 Reasoning. Rendered-picker state, inference telemetry and the
-original UI warning remain unverified. Earlier evaluator/SDK blockers and their separate
+Native readback and the rendered picker show GPT-5 Reasoning (Preview). Current UI warnings concern
+the preview model and absence of a formal Studio evaluation; inference telemetry remains unverified.
+Earlier evaluator/SDK blockers and their separate
 identities are documented in [verification](docs/verification.md).
 
 ### Deployed design
@@ -79,7 +85,8 @@ definition retrieval. That model is **not a runtime option**. See the [separate 
 
 ```text
 agent/                  Sanitized, environment-independent agent source
-examples/               Synthetic public-safe conversations and outputs
+solution/               Importable unmanaged starter ZIP, unpacked source and checksums
+examples/               Synthetic examples and a public-safe M365 observation summary
 scripts/                Packaging and documentation validation
 docs/
   index.html            Self-contained, GitHub Pages-ready walkthrough
@@ -89,11 +96,24 @@ docs/
 
 Tenant-bound solution exports, credentials, connection IDs, sync caches, live transcripts, and raw customer data are deliberately excluded. This is an adaptation kit, not a preauthenticated one-click deployment.
 
+**[Download the solution ZIP](solution/PowerBIQueryStarter_unmanaged.zip).** Its import was verified
+as a separate unpublished agent. It deliberately stops before queries until you bind your own
+connection, prepare the target model metadata, customize business definitions and deploy the generated
+topics. The demo report/model and report-specific guidance are not bundled.
+Follow the [complete import and customization guide](docs/solution-import.md), not just an ID replacement.
+
 ## Architecture at a glance
 
 ![Copilot Studio interprets a question with model context, constructs a supported query, and invokes Power BI as the user. DAX guidance can return without execution.](docs/assets/architecture.svg)
 
 ## Screenshots and examples
+
+![Actual M365 top-20 request and response, with identities and business values redacted.](docs/assets/m365-ranking-redacted.png)
+
+This genuine prompt/response composite is explicitly labeled and uses opaque redactions, not
+invented result values. [All current channel tests and authoring captures](docs/m365-testing.md)
+include consent, follow-up, advice, active topics, the empty standalone Tools tab and model settings.
+Formatting and semantic-verification limitations are documented alongside the images.
 
 ![Actual initial Copilot Studio tool registration: governance counts, smoke test, and top 100 agents by usage.](docs/assets/tools-initial-poc.png)
 

@@ -1,6 +1,26 @@
 # Screenshots and provenance
 
-## Actual Copilot Studio interface
+## Current published M365 and Studio captures
+
+See the [M365 test walkthrough](m365-testing.md) for exact prompts, results and limitations.
+These captures come from actual browser tests, not the synthetic illustration below.
+
+| Asset | What it records |
+|---|---|
+| `m365-connection-consent.png` | Generic prompt and normal Power BI Allow/Cancel card |
+| `m365-ranking-redacted.png` | Genuine top-20 prompt/response composite; all sensitive result cells masked |
+| `m365-followup-redacted.png` | Genuine contextual top-five composite; result cells masked |
+| `m365-dax-advice.png` | Genuine advice prompt/response composite; DAX explicitly labeled unexecuted |
+| `studio-current-topics.png` | Four active and three inactive topics; editor identity masked |
+| `studio-current-tools.png` | Empty standalone Tools tab; connector actions reside in topics |
+| `studio-model-selection.png` | Actual GPT-5 Reasoning (Preview) picker |
+| `studio-current-warnings.png` | Current preview-model and formal-evaluation warnings |
+
+Opaque pixel replacement removes identities and business values. No replacement business values
+are invented. Prompt/response composites are labeled as such; browser scrolling and a taller
+viewport made the actual content visible without changing its text. Originals remain private.
+
+## Historical Copilot Studio interface
 
 The following PNGs are crops of a screenshot supplied by the user during the initial PoC on 12 September 2026. They retain actual UI pixels; only the surrounding area was cropped away. Embedded source-image metadata was not carried into the exported images.
 

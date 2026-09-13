@@ -1,0 +1,22 @@
+<ImportExportXml version="9.2" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive">
+  <SolutionManifest>
+    <UniqueName>poc_PowerBIQueryStarter</UniqueName>
+    <LocalizedNames>
+      <LocalizedName description="Power BI Query Starter" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions />
+    <Version>1.0.0.0</Version>
+    <Managed>0</Managed>
+    <Publisher>
+      <UniqueName>PowerBIQueryStarter</UniqueName>
+      <LocalizedNames>
+        <LocalizedName description="Power BI Query Starter" languagecode="1033" />
+      </LocalizedNames>
+      <Descriptions />
+      <CustomizationPrefix>poc</CustomizationPrefix>
+      <CustomizationOptionValuePrefix>89396</CustomizationOptionValuePrefix>
+    </Publisher>
+    <RootComponents />
+    <MissingDependencies />
+  </SolutionManifest>
+</ImportExportXml>

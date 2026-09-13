@@ -1,0 +1,70 @@
+{
+  "solution": "poc_PowerBIQueryStarter",
+  "version": "1.0.0.0",
+  "managed": false,
+  "configured": false,
+  "publishOnImport": false,
+  "sha256": "a8d814f9d69053dbf057b5448f40a816f2c28d4ce68e8dd490b276576c872bbc",
+  "entries": {
+    "[Content_Types].xml": {
+      "sha256": "0937df3e88e8b2029f1d618a584bdecae8372b442e97447b95509c8af4f5dcef",
+      "bytes": 1676
+    },
+    "botcomponents/poc_PowerBIQueryStarter.gpt.default/botcomponent.xml": {
+      "sha256": "1696e71f74f21bf0758e7fa8f802ad6d9125dc33e73f72f9f0dda34ccd601476",
+      "bytes": 374
+    },
+    "botcomponents/poc_PowerBIQueryStarter.gpt.default/data": {
+      "sha256": "303c067ba00eff44d9cb28810faaa7d010b78eac452cdc89ed1811e347739a60",
+      "bytes": 6798
+    },
+    "botcomponents/poc_PowerBIQueryStarter.topic.GeneratedDaxAdvice/botcomponent.xml": {
+      "sha256": "d405264e3fc0b2ffb8d997d07aaf748f5e760c334fe5a371e5b8a7d172211d87",
+      "bytes": 369
+    },
+    "botcomponents/poc_PowerBIQueryStarter.topic.GeneratedDaxAdvice/data": {
+      "sha256": "2e8be8ed660f87e3d297a4fb8281b7b0ed2db6f513136e03e5def4501212b13f",
+      "bytes": 29179
+    },
+    "botcomponents/poc_PowerBIQueryStarter.topic.GeneratedDaxQuery/botcomponent.xml": {
+      "sha256": "32065eab1c571236f1892c432eceb46fde5a6fa50380547834d194cc28c1787c",
+      "bytes": 367
+    },
+    "botcomponents/poc_PowerBIQueryStarter.topic.GeneratedDaxQuery/data": {
+      "sha256": "ae92b48f151828403a48cae12d687be83ad6a9a048a1a208acf48a7b15e1163e",
+      "bytes": 36905
+    },
+    "botcomponents/poc_PowerBIQueryStarter.topic.GeneratedQueryError/botcomponent.xml": {
+      "sha256": "bd85a769ea1bcf7f662b81092600bf880e0c2a30b1cf0cb890f670bbed409c32",
+      "bytes": 373
+    },
+    "botcomponents/poc_PowerBIQueryStarter.topic.GeneratedQueryError/data": {
+      "sha256": "25078be51999e0d6e0da1bd963c0e228a3d5537d4b6ec4fafe02ce67ccaa653e",
+      "bytes": 1555
+    },
+    "botcomponents/poc_PowerBIQueryStarter.topic.ModelMetadata/botcomponent.xml": {
+      "sha256": "5dc388b1da4727196cdd5c8b2af7ef034c75c45aa359b2b543cd40d80d2979d4",
+      "bytes": 364
+    },
+    "botcomponents/poc_PowerBIQueryStarter.topic.ModelMetadata/data": {
+      "sha256": "87234053a6518386a67f3d51c8218f057bbe606c421132c0eb5326a254c490a2",
+      "bytes": 6431
+    },
+    "bots/poc_PowerBIQueryStarter/bot.xml": {
+      "sha256": "41efeff66bc543339ecdba4e3b7c78948475696be1443373ed344609ee36799f",
+      "bytes": 323
+    },
+    "bots/poc_PowerBIQueryStarter/configuration.json": {
+      "sha256": "5956c2fe655cb66b892fb1162d4692f3a2032d56c7dac35cd507afec744b46b8",
+      "bytes": 493
+    },
+    "customizations.xml": {
+      "sha256": "92af29b1b7a6c204674eeab5999394f6076b7bcc1ebcd3add0083ca9ecd76566",
+      "bytes": 903
+    },
+    "solution.xml": {
+      "sha256": "bd52209fd6bf7ad56504bdfc69d7bf73c3dad14be89f37ebdea25c045326a023",
+      "bytes": 900
+    }
+  }
+}

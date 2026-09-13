@@ -1,0 +1,22 @@
+{
+  "$kind": "BotConfiguration",
+  "channels": [],
+  "settings": {
+    "GenerativeActionsEnabled": true
+  },
+  "publishOnImport": false,
+  "gPTSettings": {
+    "$kind": "GPTSettings",
+    "defaultSchemaName": "poc_PowerBIQueryStarter.gpt.default"
+  },
+  "isLightweightBot": false,
+  "aISettings": {
+    "$kind": "AISettings",
+    "useModelKnowledge": false,
+    "isFileAnalysisEnabled": false
+  },
+  "recognizer": {
+    "$kind": "GenerativeAIRecognizer"
+  },
+  "deferredProvisioning": false
+}

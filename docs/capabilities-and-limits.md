@@ -1,8 +1,10 @@
 # Capabilities, metadata, and scaling limits
 
-**This is an experimental generated-DAX implementation with user-observed core workflow success.**
-Metadata retrieval, a dated usage ranking and a contextual creator/owner follow-up now work in
-the reported Studio session. This does not establish correctness for every question or identity.
+**This is an experimental generated-DAX implementation with scoped Studio and M365 success.**
+Metadata retrieval, ranking and creator follow-up worked in the reported Studio session.
+Published M365 browser tests then completed a generic top-20 request, consistent top-five
+follow-up and explicitly unexecuted DAX advice. See [observations and captures](m365-testing.md).
+This does not establish correctness for every question or identity.
 
 The custom model/report called `Agent365` is not Microsoft Agent 365.
 

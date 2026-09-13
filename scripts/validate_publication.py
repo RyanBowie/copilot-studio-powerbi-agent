@@ -1,14 +1,63 @@
 """Check publication assets, local HTML links, and common accidental deployment data."""
 import json
+import hashlib
 import re
 import sys
+import zipfile
+import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 IGNORED_PARTS = {".git", "__pycache__", ".venv", "node_modules"}
-TEXT_SUFFIXES = {".md", ".html", ".yml", ".yaml", ".json", ".py", ".js", ".cjs", ".cs", ".csproj", ".svg", ".excalidraw", ".txt"}
+TEXT_SUFFIXES = {".md", ".html", ".yml", ".yaml", ".json", ".py", ".js", ".cjs", ".cs", ".csproj", ".svg", ".excalidraw", ".txt", ".xml"}
+SOLUTION_ZIP = ROOT / "solution" / "PowerBIQueryStarter_unmanaged.zip"
+
+
+def solution_texts(path):
+    """Only accept the reviewed starter archive, and inspect every decompressed entry."""
+    manifest = json.loads((path.parent / "package-manifest.json").read_text(encoding="utf-8"))
+    if hashlib.sha256(path.read_bytes()).hexdigest() != manifest["sha256"]:
+        raise ValueError("Solution ZIP checksum differs from its manifest.")
+    observation = json.loads((path.parent / "import-verification.json").read_text(encoding="utf-8"))
+    if observation["sha256"] != manifest["sha256"]:
+        raise ValueError("Import observation is for a different ZIP; verify this rebuilt artifact.")
+    if manifest["configured"] or manifest["publishOnImport"] or manifest["managed"]:
+        raise ValueError("Publication package must remain an unconfigured unmanaged starter.")
+    with zipfile.ZipFile(path) as archive:
+        entries = archive.infolist()
+        if (len(entries) != len({item.filename for item in entries})
+                or len(entries) > 30 or sum(item.file_size for item in entries) > 2_000_000
+                or set(archive.namelist()) != set(manifest["entries"])):
+            raise ValueError("Unexpected or oversized solution archive inventory.")
+        result = []
+        for item in entries:
+            name = item.filename
+            if (name.startswith(("/", "\\")) or ".." in name.split("/")
+                    or "\\" in name or item.flag_bits & 1):
+                raise ValueError("Unsafe solution archive entry.")
+            if not (name.endswith((".xml", ".json", "/data"))):
+                raise ValueError("Unexpected nontext solution entry: " + name)
+            data = archive.read(item)
+            expected = manifest["entries"][name]
+            if len(data) != expected["bytes"] or hashlib.sha256(data).hexdigest() != expected["sha256"]:
+                raise ValueError("Solution entry differs from manifest: " + name)
+            text = data.decode("utf-8-sig")
+            if name.endswith(".xml"):
+                ET.fromstring(text)
+            if name.endswith(".json"):
+                json.loads(text)
+            # PAC aggregates the two XML manifests; all other payloads must match tracked source.
+            if name not in {"solution.xml", "customizations.xml", "[Content_Types].xml"}:
+                source = path.parent / "src" / name
+                if source.read_text(encoding="utf-8-sig").replace("\r\n", "\n") != text.replace("\r\n", "\n"):
+                    raise ValueError("Solution payload differs from source: " + name)
+            result.append((str(path.relative_to(ROOT)) + "::" + name, text))
+        config = json.loads(archive.read("bots/poc_PowerBIQueryStarter/configuration.json"))
+        if config["publishOnImport"] or config["channels"]:
+            raise ValueError("Starter must not publish or configure channels on import.")
+        return result
 
 
 class Page(HTMLParser):
@@ -43,6 +92,8 @@ def main():
         "docs/assets/architecture.excalidraw", "docs/assets/architecture.svg",
         "docs/assets/tools-initial-poc.png", "docs/assets/connection-approval.png",
         "agent/README.md",
+        "solution/PowerBIQueryStarter_unmanaged.zip", "solution/package-manifest.json",
+        "docs/solution-import.md",
     ]
     for name in required:
         if not (ROOT / name).is_file():
@@ -53,18 +104,25 @@ def main():
     token = re.compile(r"\b(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|eyJ[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]+)")
     private_url = re.compile(r"https://[A-Za-z0-9-]+\.(?:crm\d*\.dynamics\.com|onmicrosoft\.com)", re.I)
     file_count = 0
+    archive_texts = []
     for path in ROOT.rglob("*"):
         if not path.is_file() or any(part in IGNORED_PARTS for part in path.relative_to(ROOT).parts):
             continue
         relative = str(path.relative_to(ROOT))
         if (
-            path.suffix.lower() in {".zip", ".har", ".log"}
+            (path.suffix.lower() == ".zip" and path != SOLUTION_ZIP)
+            or path.suffix.lower() in {".har", ".log"}
             or ".mcs" in path.parts
             or ".generated-private" in path.parts
             or path.name.endswith(".private.json")
         ):
             errors.append(f"Tenant-bound/private artifact: {relative}")
-        if path.suffix.lower() not in TEXT_SUFFIXES:
+        if path == SOLUTION_ZIP:
+            try:
+                archive_texts.extend(solution_texts(path))
+            except (ValueError, KeyError, OSError, zipfile.BadZipFile, ET.ParseError) as exc:
+                errors.append(f"Invalid starter solution: {exc}")
+        if path.suffix.lower() not in TEXT_SUFFIXES and not (path.name == "data" and "solution" in path.parts):
             continue
         file_count += 1
         text = path.read_text(encoding="utf-8")
@@ -80,6 +138,14 @@ def main():
                 json.loads(text)
             except json.JSONDecodeError as exc:
                 errors.append(f"Invalid JSON in {relative}: {exc}")
+
+    for relative, text in archive_texts:
+        file_count += 1
+        for label, pattern in [("deployment GUID", guid), ("credential", token), ("private tenant URL", private_url)]:
+            if pattern.search(text):
+                errors.append(f"Possible {label} inside archive: {relative}")
+        if "C:\\Users\\" in text:
+            errors.append(f"Local user path inside archive: {relative}")
 
     index = ROOT / "docs" / "index.html"
     if index.exists():

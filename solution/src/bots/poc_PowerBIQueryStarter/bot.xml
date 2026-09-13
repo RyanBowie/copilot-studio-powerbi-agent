@@ -1,0 +1,9 @@
+<bot schemaname="poc_PowerBIQueryStarter">
+  <authenticationmode>2</authenticationmode>
+  <authenticationtrigger>1</authenticationtrigger>
+  <iscustomizable>1</iscustomizable>
+  <language>1033</language>
+  <name>Power BI Query Starter</name>
+  <runtimeprovider>0</runtimeprovider>
+  <template>empty-1.0.0</template>
+</bot>

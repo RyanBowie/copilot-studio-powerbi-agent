@@ -2,16 +2,33 @@
 
 ## Current status
 
+**Published M365 UI testing completed three scenarios:** top-20 agents with creators,
+same-period top-five follow-up, and explicitly unexecuted model-grounded DAX advice.
+The ranking contained 20 distinct descending numeric usage values; the follow-up matched the prior
+first five. Requested table/code-block formatting was not fully followed. These are visible-output
+and consistency checks, not an independent model-value, DAX-semantic or no-execution audit.
+See [exact prompts and genuine redacted captures](m365-testing.md).
+
 **The core PoC workflow is now user-observed successful:** metadata retrieval, a dated usage
 ranking, and a contextual creator/owner follow-up retaining the date window and usage order.
 Matching post-correction traces and every displayed value have not been independently checked.
 The original combined single-turn two-scope request remains unresolved; this is not universal
 query correctness, a load benchmark, or a multi-model validation claim.
 
+**Deferred correctness concern:** a subsequent ranking repeats the same display name, creator label
+and usage value across its visible rows. The user correctly challenged this result. Until the
+executed DAX, returned rows and independent per-agent counts are compared, neither the ranking's
+accuracy nor a semantic-model defect is established. Investigation distinguishes lost DAX filter
+context, duplicate source labels/grain, model relationships and final-answer duplication.
+Earlier user-observed success confirms the response path, not numerical correctness for this case.
+The user explicitly deferred this investigation. Later successful M365 samples do not resolve it.
+
 The Studio model selector showed GPT-4.1 despite raw YAML retaining a reasoning-model hint.
 Native Studio parsing had dropped `aISettings` and topic bodies. Corrected YAML serialization
 restored parsed GPT-5 Reasoning settings and full topic contracts before and after publication.
-This is selector-backend evidence, not an independently observed rendered picker or inference telemetry.
+The current rendered picker has now independently been observed as GPT-5 Reasoning (Preview).
+Inference telemetry remains unverified. The current warning grid identifies preview-model suitability
+and no formal Studio evaluation. These need not be the same as the previously unidentified warning.
 
 ## Current generic-contract evidence
 
@@ -79,7 +96,9 @@ remain inactive. Current generic capabilities appear under Topics, not the old T
 The parsed selector backend retains GPT-5 Reasoning after successful publication at 16:54:36 UTC
 on 12 September 2026. Authentication, Invoker binding, and cross-geo/privacy settings were not
 changed. The original warning text was not retrieved; publication does not prove it disappeared.
-Fresh rendered-picker state and effective inference telemetry are not independently observed.
+At that stage the rendered picker was not independently observed. The later M365 testing visit
+confirmed its current GPT-5 Reasoning (Preview) selection and captured the two current warnings;
+effective inference telemetry remains unverified.
 
 ### Subsequent user-observed metadata validation failure
 

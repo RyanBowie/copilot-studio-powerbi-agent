@@ -10,6 +10,12 @@ def main():
     images = {
         "__TOOLS_SCREENSHOT__": "tools-initial-poc.png",
         "__CONSENT_SCREENSHOT__": "connection-approval.png",
+        "__M365_RANKING__": "m365-ranking-redacted.png",
+        "__M365_FOLLOWUP__": "m365-followup-redacted.png",
+        "__M365_ADVICE__": "m365-dax-advice.png",
+        "__CURRENT_TOPICS__": "studio-current-topics.png",
+        "__CURRENT_TOOLS__": "studio-current-tools.png",
+        "__MODEL_SELECTION__": "studio-model-selection.png",
     }
     for marker, filename in images.items():
         if html.count(marker) != 1:

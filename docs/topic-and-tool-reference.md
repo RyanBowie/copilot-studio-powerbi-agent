@@ -1,0 +1,95 @@
+# Instructions, topics and connector details
+
+**The configured runtime uses generic native topics, not a separate tool for each question.**
+Read the [full agent instructions and starters](../agent/agent.mcs.yml), the
+[complete topic generator](../agent/general_runtime.py), the
+[DAX envelope/boundary implementation](../agent/generated_dax.py) and
+[dynamic result transport](../agent/query_transport.py).
+
+The [importable solution's complete native source](../solution/src) is also included. Its metadata
+topic is intentionally an onboarding stop rather than a live catalog, and query/advice begin with
+configuration stops. The [import guide](solution-import.md) explains how deployment replaces these
+stops with topics generated from your authorized model. Do not confuse the unconfigured ZIP with
+the working demonstration's private generated metadata.
+
+## Capability inventory
+
+| Studio name | Schema suffix | Trigger | Configured behavior |
+|---|---|---|---|
+| Get model metadata | `topic.ModelMetadata` | Generative selection | Validate alias/view, probe requester schema visibility, return governed catalog or selected tables |
+| Run generated DAX | `topic.GeneratedDaxQuery` | Generative selection | Require current-turn/user metadata gate, validate expression/envelope, execute and return bounded rows |
+| Compile DAX advice | `topic.GeneratedDaxAdvice` | Generative selection | Same expression contract; compile without executing the proposed business query |
+| Generated query error | `topic.GeneratedQueryError` | OnError | Report error and stop rather than fabricate an answer |
+
+The original three fixed connector tools are deleted in the demonstration. Three historical bounded
+topics remain inactive there; they are not included in the starter solution. The empty standalone
+Tools tab is expected: connector invocations are embedded nodes in the active topics.
+
+## Metadata inputs
+
+| Name | Type | Meaning |
+|---|---|---|
+| `modelAlias` | String | Blank defaults to `primary`; another supplied alias rejects |
+| `view` | String | `catalog` or `tables` |
+| `tableNames` | String | Comma-separated verified table names, at most four; blank for catalog |
+
+The configured metadata topic validates a numeric `[AccessProbe]` marker from a zero-row query
+referencing the prepared model's columns before disclosing its snapshot. It declares
+`firstTableRows` as a table with that numeric column. Alias/input rejection, connector failure and
+returned-row decoding failure are separate stages. Narrower OLS users may need a suitable snapshot.
+
+## Query and advice inputs
+
+| Name | Type | Meaning |
+|---|---|---|
+| `modelAlias` | String | Same fixed primary-model rule |
+| `tableExpression` | String | New DAX table expression, not a full EVALUATE/DEFINE/ORDER BY script |
+| `columns` | String | 1-16 distinct output aliases, comma-separated |
+| `sortBy` | String | Declared aliases plus asc/desc; remaining aliases are tie breakers |
+| `limit` | Number | Integer 1-100, default 20 |
+| `startDateExpression` | String | Optional scalar DAX date expression; paired with end |
+| `endDateExpression` | String | Optional scalar DAX date expression; paired with start |
+
+The orchestrator fills technical inputs; users ask business questions, not write connector arguments.
+Native automatic inputs are non-prompting; runtime checks still reject missing/invalid required
+business-query material. Dates use `UTC_TODAY`, `QUERY_START` and `QUERY_END`, with declared calendar
+semantics. Resource IDs and execution identity are not model-authored input parameters.
+
+## Shared outputs
+
+| Name | Type | Interpretation |
+|---|---|---|
+| `status` | String | success, advice, rejected or stopped; completion alone is not success |
+| `stage` | String | Local validation, connector or decoder boundary |
+| `connectorAttempted` | Boolean | Advanced to the connector, not proof of authorization/completion |
+| `connectorReturned` | Boolean | Connector returned normally, not proof its rows passed validation |
+| `probeResultStatus` | String | Probe result/decoding classification |
+| `visibilityVerified` | Boolean | Requester's metadata probe was validated |
+| `resolvedModelAlias` | String | Resolved fixed alias |
+| `error` | String | Actual contract or envelope error |
+| `result` | String | Verified metadata or bounded result-envelope JSON |
+| `generatedDax` | String | Compiled DAX; not by itself evidence of execution |
+
+The OnError topic has no declared task inputs/outputs. Its complete handling is in `build_error_topic`.
+
+## Power BI connector action
+
+The configured query uses the standard `shared_powerbi` connector's `ExecuteDatasetQuery` operation,
+with a trusted workspace/model mapping and `Invoker` mode. There is no custom connector or hosted
+MCP dependency. The requesting user still needs appropriate Power BI permissions and consent.
+
+The query action declares `firstTableRows: Any` and serializes the dynamic array directly to preserve
+arbitrary aliases and numeric precision. `serializerSettings.includeNulls=false` is explicit:
+omitted declared aliases mean DAX BLANK/null; empty strings remain empty strings. The bounded
+envelope carries Summary and Data rows, count/status checks, date bounds and truncation flags.
+Malformed output stops locally; it is not repaired by rerunning unrelated DAX or granting access.
+
+Limits and caveats: [capabilities and limits](capabilities-and-limits.md).
+Actual published-channel prompts/captures: [M365 testing](m365-testing.md).
+
+## Starters are not tools
+
+The historical **Top 100 agents** label was a conversation starter after the fixed tool's deletion.
+It does not restrict supported questions or prove a dedicated ranking tool remains installed.
+The latest independently checked M365 landing page still showed that old label; its live rename
+is not claimed complete here. The new importable starter uses model-neutral prompts.
