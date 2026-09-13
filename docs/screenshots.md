@@ -59,4 +59,7 @@ They are deliberately not copied into this repository or embedded in the site. T
 scenarios are documented in [verification](verification.md) without those values. The synthetic
 ranking illustration remains labeled synthetic; it is not substituted as photographic proof.
 
-Review all images at full resolution before changing repository visibility. Microsoft product UI and trademarks remain their owners' property. Publication permissions and licensing must be reviewed by the repository owner; no public release has been assumed.
+The owner approved public release after the current and historical imagery was reviewed. Real
+identities and business-result cells remain masked, with no substitute values. Continue reviewing
+new images at full resolution before publication. Microsoft product UI and trademarks remain their
+owners' property; no additional intellectual-property license is implied by public visibility.

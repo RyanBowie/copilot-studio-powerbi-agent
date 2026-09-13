@@ -15,6 +15,11 @@ def main():
         url = (ROOT / "docs" / "index.html").as_uri()
         page.goto(url + "?scoutTheme=light", wait_until="load")
         assert page.locator("html").get_attribute("data-theme") == "light"
+        assert "generate DAX" in page.locator(".hero .lead").inner_text()
+        assert page.locator("#setup").count() == 1
+        assert page.get_by_role("link", name="Download solution ZIP", exact=True).get_attribute("href") == (
+            "https://github.com/RyanBowie/copilot-studio-powerbi-agent/raw/refs/heads/main/"
+            "solution/PowerBIQueryStarter_unmanaged.zip")
         page.locator("img").evaluate_all("(images) => Promise.all(images.map(img => { img.loading = 'eager'; return img.decode(); }))")
         assert page.locator("img").evaluate_all("(images) => images.every(img => img.complete && img.naturalWidth > 0)")
         assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")

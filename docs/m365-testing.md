@@ -117,5 +117,6 @@ Private originals and rectangle specifications are not committed. The reusable
 overwriting originals. Every derivative was visually reviewed. These images are distinct from the
 older, explicitly synthetic ranking illustration.
 
-The repository remains private and GitHub Pages remains disabled. Publication of the agent into
-M365 Copilot does not authorize public release of its data or this repository.
+The owner subsequently authorized a public repository and GitHub Pages release after privacy review.
+Only these reviewed derivatives are included; original captures and business rows remain private.
+Publishing an agent into M365 Copilot does not itself authorize public release of its data.

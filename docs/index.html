@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A standard Copilot Studio agent that queries Power BI and explains model-grounded DAX, without Fabric data agents. Architecture, examples, and implementation evidence.">
+  <meta name="description" content="Ask questions about a Power BI semantic model. A standard Copilot Studio agent generates DAX, executes it as the user and explains results. Download the configurable solution; no Fabric data agent required.">
   <title>Copilot Studio + Power BI | A practical agent blueprint</title>
   <script>
     (() => {
@@ -194,6 +194,7 @@
       <a class="brand" href="#main"><span aria-hidden="true">P</span> Copilot Studio + Power BI</a>
       <nav aria-label="Main navigation">
         <a href="#architecture">Architecture</a>
+        <a href="#setup">Setup</a>
         <a href="#examples">Examples</a>
         <a href="#screenshots">Screenshots</a>
         <a href="#limits">Limits</a>
@@ -207,12 +208,13 @@
       <div>
         <span class="eyebrow">A practical agent blueprint</span>
         <h1>Your semantic model.<br>Your questions.<br><em>No Fabric data agent.</em></h1>
-        <p class="lead">A standard Copilot Studio agent that calls Power BI for analytics and helps explain DAX using the model's own definitions.</p>
+        <p class="lead">Ask questions about a Power BI semantic model. A standard Copilot Studio agent uses prepared model metadata to generate DAX, run it with your Power BI permissions, and explain the results. No tool per question.</p>
         <div class="actions">
-          <a class="button" href="#architecture">Explore the architecture</a>
+          <a class="button" href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/raw/refs/heads/main/solution/PowerBIQueryStarter_unmanaged.zip">Download solution ZIP</a>
+          <a class="button secondary" href="#setup">Import and configure</a>
           <a class="button secondary" href="https://github.com/RyanBowie/copilot-studio-powerbi-agent">View repository</a>
         </div>
-        <p class="footnote">Private preparation draft. Documentation is Pages-ready; no public site is enabled.</p>
+        <p class="footnote">Experimental, import-verified unmanaged starter. Configure your own connection, model metadata and business definitions before publishing. This website is documentation, not a live agent or a connection to your data.</p>
       </div>
       <div class="chat-card">
         <div class="chat-title"><strong>A question, not another tool</strong><span class="small-tag">Synthetic illustration</span></div>
@@ -379,6 +381,16 @@ ORDER BY 'Date'[YearMonth]</code></pre>
       </div>
     </section>
 
+    <section id="setup">
+      <div class="section-title"><div><span class="eyebrow">05 / Import and configure</span><h2>A deployable starter.<br>Your model's configuration.</h2></div><a href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/docs/solution-import.md">Complete import guide</a></div>
+      <div class="three-grid">
+        <article class="panel feature"><span class="step-no">1 / IMPORT</span><h3>Import into development</h3><p>Download the unmanaged ZIP and import it through Power Apps or Copilot Studio Solutions. It creates a separate unpublished agent with no configured channels or bound Power BI connection.</p></article>
+        <article class="panel feature"><span class="step-no">2 / CONFIGURE</span><h3>Ground it in your model</h3><p>Bind an end-user connection, prepare authorized model metadata and review your metric definitions, relationships, dates and permissions. Demo report instructions and private model data are not included.</p></article>
+        <article class="panel feature"><span class="step-no">3 / VERIFY AND PUBLISH</span><h3>Generate, test, then share</h3><p>Generate and deploy the configured topics using the supplied source. Validate important answers independently, then publish and configure your M365 Copilot channel. The ZIP stops before queries until configured.</p></article>
+      </div>
+      <div class="note"><strong>Reusable does not mean unlimited.</strong> One model alias is configured at a time. Missing business definitions, unsupported expressions and incorrect DAX filter context can still prevent a correct answer. Successful execution alone is not an accuracy guarantee.</div>
+      <p><a href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/tree/main/agent/example-topics">Full synthetic topic YAML</a> &middot; <a href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/agent/agent.mcs.yml">Complete agent instructions</a> &middot; <a href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/solution/package-manifest.json">Package checksums</a></p>
+    </section>
     <section id="resources">
       <div class="section-title"><div><span class="eyebrow">05 / Build on it</span><h2>Source, setup, and the fine print.</h2></div></div>
       <div class="three-grid">
@@ -388,8 +400,8 @@ ORDER BY 'Date'[YearMonth]</code></pre>
       </div>
     </section>
     <div class="release">
-      <div><h3>Prepared for public review, not publicly deployed.</h3><p>The repository starts private. Credentials, tenant-bound exports, live identifiers, and customer records are excluded. Review the source, screenshots, licensing, and evidence before changing visibility.</p></div>
-      <a class="button secondary" href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/docs/public-release.md">Release checklist</a>
+      <div><h3>Public documentation. Private data stays private.</h3><p>Real screenshots use opaque redactions for identities and business result cells; illustrative names and numbers are labeled synthetic. The reviewed ZIP excludes credentials, tenant bindings and the demo model. No open-source license has been selected; public visibility does not grant additional reuse rights.</p></div>
+      <a class="button secondary" href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/docs/public-release.md">Release review and limitations</a>
     </div>
   </main>
   <footer class="wrap"><span>Copilot Studio + Power BI &middot; A practical proof of concept</span><span>No external analytics &middot; No external fonts &middot; Light and dark themes</span></footer>

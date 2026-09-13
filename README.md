@@ -2,13 +2,18 @@
 
 **An experimental standard Copilot Studio agent for metadata-grounded DAX generation, execution, and explanation. No Fabric data agent is required.**
 
-This repository packages a proof of concept, its reusable agent source, and a publication-ready documentation site. It is intentionally private while the implementation and documentation are reviewed. GitHub Pages is not enabled.
+Ask a question about your Power BI semantic model: the configured agent uses prepared metadata to
+generate new DAX, executes it with the requesting user's permissions, and explains the results.
+You do not need a fixed query or separate tool for each question.
+
+**[Open the GitHub Pages walkthrough](https://ryanbowie.github.io/copilot-studio-powerbi-agent/)** for
+the architecture, real anonymized screenshots, solution download and setup steps.
 
 > **About the example model:** `Agent365` is the name of a **custom Power BI semantic model/report** used in this demonstration. It is **not the Microsoft Agent 365 product**, an official Agent 365 schema, or an Agent 365 product integration. The architecture is reusable with other compatible Power BI semantic models; adapt the model contract, queries, configuration, permissions, and tests to your model.
 
 ## Start here
 
-- [Visual walkthrough](docs/index.html) — architecture, example conversations, screenshots, and caveats. Open this file locally; it has no build step.
+- [Published walkthrough](https://ryanbowie.github.io/copilot-studio-powerbi-agent/) — architecture, screenshots, download and setup. The [self-contained local copy](docs/index.html) also opens without a build step.
 - [Architecture and execution identity](docs/architecture.md)
 - [Setup and adaptation](docs/setup.md)
 - [Download and import the unmanaged starter solution](docs/solution-import.md)
@@ -168,7 +173,15 @@ Both builds use only the Python standard library. `scripts\preview_site.py` is a
 
 ## Publication status
 
-**Private repository; no public site.** The Pages workflow is manual-only and refuses to deploy from a private repository. Before changing visibility, follow the release checklist, choose a license, and review all source, history, and imagery. A private repository does not guarantee that a subsequently enabled Pages site will be private.
+**Public repository and documentation website, released with owner approval after privacy review.**
+The review covered current files, tracked history, screenshots and the exact import-verified solution ZIP.
+Real identities and business result cells are masked; unredacted originals and tenant configuration
+remain excluded. See the [release review](docs/public-release.md) for scope and limitations.
+
+Pages deployment remains manual-only and gated to public repositories. After reviewing future
+changes, run **Actions > Publish reviewed documentation > Run workflow**. The workflow checks that
+the committed site matches its source and validates the publication bundle before deploying `docs`.
+No open-source license has been selected; public visibility alone does not grant additional reuse rights.
 
 ## Microsoft references
 

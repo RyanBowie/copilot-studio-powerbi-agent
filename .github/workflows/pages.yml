@@ -21,6 +21,10 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - name: Check the committed site matches its reviewed source
+        run: |
+          python scripts/build_site.py
+          git diff --exit-code -- docs/index.html
       - name: Validate publication bundle
         run: python scripts/validate_publication.py
       - uses: actions/configure-pages@v5
