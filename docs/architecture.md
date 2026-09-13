@@ -10,10 +10,12 @@ That distinction belongs in documentation, not runtime prompts.
 
 ## Message to answer
 
-![Message flows through Copilot Studio's reusable metadata and DAX capabilities to an explained answer.](assets/architecture-simple.svg)
+![Message flows through Copilot Studio and topics, then the Power BI tool Run a query against a dataset, to an explained answer.](assets/architecture-simple.svg)
 
 Copilot Studio retrieves governed metadata, generates DAX, invokes the native query topic and
-explains the returned rows. That topic calls Power BI as the requesting user. Advice instead
+explains the returned rows. The diagram explicitly separates the **Power BI tool**:
+**Run a query against a dataset** (`ExecuteDatasetQuery`). It is a connector action embedded in
+the topics, not a separate deployment or a new tool for every question. It runs as the requesting user. Advice instead
 returns proposed DAX without executing the business query; metadata authorization may still probe.
 
 [Editable simple diagram](assets/architecture-simple.excalidraw) |

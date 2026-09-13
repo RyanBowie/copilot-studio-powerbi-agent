@@ -250,8 +250,8 @@
     <section id="architecture">
       <div class="section-title"><div><span class="eyebrow">01 / How it works</span><h2>A small set of capabilities.<br>Many different questions.</h2></div><a href="assets/architecture-simple.excalidraw" download>Download simple editable diagram</a></div>
       <figure>
-        <div class="diagram-scroll" tabindex="0" role="region" aria-label="Simple architecture diagram; scroll horizontally on narrow screens"><img src="__SIMPLE_ARCHITECTURE__" data-diagram="simple" alt="Message flows to Copilot Studio: retrieve metadata, generate DAX, validate it and call Power BI as the user. Returned rows become an explained answer. Advice returns unexecuted DAX."></div>
-        <figcaption><strong>Message -> reusable capabilities -> answer</strong>The middle step is orchestrated by Copilot Studio, not a separate fixed query for each question. <a href="assets/architecture.svg">Detailed diagram</a> &middot; <a href="assets/architecture.excalidraw" download>Editable detailed source</a>.</figcaption>
+        <div class="diagram-scroll" tabindex="0" role="region" aria-label="Simple architecture diagram; scroll horizontally on narrow screens"><img src="__SIMPLE_ARCHITECTURE__" data-diagram="simple" alt="Message flows through Copilot Studio and topics to the Power BI tool, Run a query against a dataset, then an explained answer. The connector executes generated DAX as the user."></div>
+        <figcaption><strong>Message -> Copilot Studio / topics -> Power BI tool -> answer</strong>Topics control the workflow; the embedded <b>Run a query against a dataset</b> connector action executes the DAX. The separate tool box makes its role visible, not a separate deployment. <a href="assets/architecture.svg">Detailed diagram</a> &middot; <a href="assets/architecture.excalidraw" download>Editable detailed source</a>.</figcaption>
       </figure>
       <p class="section-copy">A governed metadata snapshot supplies structure. The orchestrator is expected to author a new DAX table expression. Native runtime controls form a bounded execution envelope. Deployment of those pieces is not proof of successful orchestration.</p>
       <div class="panel">
@@ -336,7 +336,6 @@ ORDER BY 'Date'[YearMonth]</code></pre>
         <figure><img src="__CURRENT_TOPICS__" loading="lazy" alt="Actual current four active and three inactive topics; editor identity redacted."><figcaption><strong>Current generic capabilities</strong>Metadata, generated execution, advice and error handling live under Topics. Three older bounded topics remain inactive.</figcaption></figure>
         <figure><img src="__M365_CONSENT__" loading="lazy" alt="Actual M365 Copilot prompt and Power BI Allow or Cancel consent card."><figcaption><strong>Power BI access as the requesting user</strong>The current published-channel consent step, not a historical tool-registration screen. Connection consent does not grant missing model permissions.</figcaption></figure>
         <figure><img src="__MODEL_SELECTION__" loading="lazy" alt="Actual GPT-5 Reasoning Preview model picker."><figcaption><strong>Rendered model selection observed</strong>GPT-5 Reasoning (Preview). Current warnings concern preview-model suitability and no formal Studio evaluation; inference telemetry is not verified.</figcaption></figure>
-        <figure><img src="__UPDATED_STARTER__" loading="lazy" alt="Actual Studio Suggested prompts section showing Analyze agent usage and the generic top-20 question."><figcaption><strong>Updated starter, not another tool</strong>Analyze agent usage replaces Top 100 agents. Saved and published; Studio shows the new title and prompt. A post-publication M365 landing reload still showed the old label, so channel presentation is not claimed updated.</figcaption></figure>
       </div>
     </section>
 
@@ -349,6 +348,32 @@ ORDER BY 'Date'[YearMonth]</code></pre>
         <article class="panel feature"><h3>Compile DAX advice</h3><p><strong>Trigger:</strong> generative selection.</p><p>Uses the same expression contract, but compiles the proposed business query without executing it. The answer must label it unexecuted; metadata authorization may still probe Power BI.</p><p><strong>Inputs:</strong> the same seven query parameters.</p><p><strong>Output:</strong> proposed <code>generatedDax</code> and advice/status envelope, not business result rows.</p><a href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/agent/example-topics/GeneratedDaxAdvice.mcs.yml">Full synthetic advice topic</a></article>
       </div>
       <div class="note"><strong>Generated query error</strong> &middot; Trigger: <code>OnError</code>. Reports the actual error and stops rather than fabricating an answer. No declared task inputs or outputs. <a href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/agent/example-topics/GeneratedQueryError.mcs.yml">Full synthetic error topic</a>.</div>
+      <div id="connector-setup" class="panel" style="margin-top:24px">
+        <h3>The actual tool: Power BI &gt; Run a query against a dataset</h3>
+        <p><strong>Connector:</strong> Power BI (<code>shared_powerbi</code>). <strong>Action:</strong> Run a query against a dataset. <strong>Operation ID:</strong> <code>ExecuteDatasetQuery</code>. These are the names to look for in Studio, not the custom topic names above. The connector executes DAX; Copilot Studio generates it.</p>
+        <div class="table-scroll" tabindex="0" role="region" aria-label="Topics mapped to real connector actions"><table><thead><tr><th>Topic</th><th>Actual connector action</th></tr></thead><tbody>
+          <tr><td>Get model metadata</td><td>Run a query against a dataset: execute a schema-visibility probe, then return the prepared metadata snapshot. This is not a built-in metadata-discovery action.</td></tr>
+          <tr><td>Run generated DAX</td><td>Run a query against a dataset: execute the compiled business query.</td></tr>
+          <tr><td>Compile DAX advice</td><td>No connector action in this topic. Native Power Fx compiles the proposed query; the separate metadata topic may still probe Power BI.</td></tr>
+          <tr><td>Generated query error</td><td>No connector action. Native error handling reports and stops.</td></tr>
+        </tbody></table></div>
+        <h3>Add the tool yourself</h3>
+        <ol>
+          <li>Open your agent's <strong>Topics</strong> page and the query topic. Select <strong>+ Add node &gt; Add a tool &gt; Connector</strong>, search for <strong>Power BI</strong>, and choose <strong>Run a query against a dataset</strong>.</li>
+          <li>Create or select a Power BI connection and retain <strong>user credentials / Invoker</strong>. The requesting user needs the appropriate Read/Build permissions and connection consent.</li>
+          <li>Set the fixed workspace/model and bind the query/output as shown below. Do not let the agent invent resource IDs or an impersonated user.</li>
+          <li>Add the same action in the metadata topic for its generated visibility probe. Keep advice and error handling as native topic logic, not extra Power BI actions.</li>
+        </ol>
+        <div class="table-scroll" tabindex="0" role="region" aria-label="Power BI action field bindings"><table><thead><tr><th>Action field</th><th>Query-topic setting</th></tr></thead><tbody>
+          <tr><td>Workspace (<code>groupid</code>)</td><td>Your authorized workspace, fixed configuration.</td></tr>
+          <tr><td>Dataset (<code>datasetid</code>)</td><td>Your semantic model, fixed configuration.</td></tr>
+          <tr><td>Query text (<code>query</code>)</td><td>Power Fx formula <code>Topic.generatedDax</code> (<code>=Topic.generatedDax</code> in native YAML). This is the complete compiled DAX query, not the raw tableExpression input.</td></tr>
+          <tr><td>Impersonate user (<code>impersonatedUserName</code>)</td><td>Leave blank (<code>=Blank()</code> in YAML); execution uses the requesting user's connection.</td></tr>
+          <tr><td>Output (<code>firstTableRows</code>)</td><td>Bind to <code>Topic.RawRows</code>. Preserve <code>Any</code> in the native output schema for arbitrary generated columns.</td></tr>
+        </tbody></table></div>
+        <p>In the native action source, retain <code>serializerSettings: ={includeNulls:false}</code> and <code>requestTimeoutInMilliseconds: 30000</code>. The metadata action instead uses its prepared probe query, <code>Topic.ProbeRows</code> and the numeric <code>AccessProbe</code> output schema.</p>
+        <p><strong>Adding the connector alone does not recreate this agent.</strong> You also need the model-specific metadata, agent instructions, topic inputs, DAX compilation/validation and result handling. <a href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/docs/topic-and-tool-reference.md#build-the-connector-actions-yourself">Follow the complete manual wiring guide</a> and the linked native topic source. <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/advanced-connectors#add-a-tool-from-a-prebuilt-connector-in-a-topic">Microsoft's topic-tool steps</a> &middot; <a href="https://learn.microsoft.com/en-us/connectors/powerbi/#run-a-query-against-a-dataset">Power BI action reference</a>.</p>
+      </div>
       <h3>Query and advice inputs</h3>
       <p>The orchestrator fills these arguments; the user asks an ordinary business question. Workspace/model IDs and execution identity are trusted configuration, not model-authored inputs.</p>
       <div class="table-scroll" tabindex="0" role="region" aria-label="Query input contract"><table><thead><tr><th>Input</th><th>Type</th><th>Contract</th></tr></thead><tbody>
@@ -386,12 +411,6 @@ ORDER BY 'Date'[YearMonth]</code></pre>
         <p>A genuinely different model accepted three constant DAX queries. Its definition was retrieved automatically using the documented Fabric API: <strong>78 tables, 694 columns, 17 measures, and 79 relationships</strong>, including hidden/generated objects.</p>
         <p class="muted">This used existing read/write model permissions. No nonempty object descriptions were found; authored-instruction discovery remains unproven. The schema has not been wired into the agent, and this is not evidence of automatic business understanding or read-only-user metadata access.</p>
         <p class="footnote">Observed constant-query request times: 823 / 461 / 538 ms. Three sequential samples, not a benchmark, concurrency test, or complete-chat latency.</p>
-      </div>
-      <div class="panel" style="margin-top:24px">
-        <h3>What a useful scalability test measures</h3>
-        <p class="muted">Metadata coverage and onboarding effort; correct model routing; measure/answer accuracy; schema-drift behavior; permission boundaries; and metadata, query, and complete-chat latency separately.</p>
-        <p>The API documents 120 requests/minute/user and result-size limits. Those are service constraints, not proof of agent throughput. A second report is only another model if its dataset identity differs.</p>
-        <a href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/docs/scalability-experiment.md">Read the second-report experiment and its evidence boundaries</a>
       </div>
     </section>
 

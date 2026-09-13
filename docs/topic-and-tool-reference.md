@@ -108,7 +108,18 @@ The OnError topic has no declared task inputs/outputs. Its complete handling is 
 
 ## Power BI connector action
 
-The configured query uses the standard `shared_powerbi` connector's `ExecuteDatasetQuery` operation,
+**In the Studio action picker, choose Power BI > Run a query against a dataset.**
+Its connector ID is `shared_powerbi` and operation ID is `ExecuteDatasetQuery`.
+The four friendly names above are custom topics, not four built-in connector actions.
+
+| Topic | Real connector action used |
+|---|---|
+| Get model metadata | **Run a query against a dataset**, for schema-visibility probing only; the topic then returns prepared metadata |
+| Run generated DAX | **Run a query against a dataset**, for the compiled business query |
+| Compile DAX advice | None in this topic; native Power Fx compiles advice. The separate metadata topic may probe Power BI |
+| Generated query error | None; native error handling |
+
+The configured query uses the standard connector's `ExecuteDatasetQuery` operation,
 with a trusted workspace/model mapping and `Invoker` mode. There is no custom connector or hosted
 MCP dependency. The requesting user still needs appropriate Power BI permissions and consent.
 
@@ -117,6 +128,54 @@ arbitrary aliases and numeric precision. `serializerSettings.includeNulls=false`
 omitted declared aliases mean DAX BLANK/null; empty strings remain empty strings. The bounded
 envelope carries Summary and Data rows, count/status checks, date bounds and truncation flags.
 Malformed output stops locally; it is not repaired by rerunning unrelated DAX or granting access.
+
+## Build the connector actions yourself
+
+1. Prepare your model metadata and the native topics using the [setup guide](setup.md) and
+   [model-specific import/customization guide](solution-import.md). Set the three callable topics
+   up for generative selection, and retain the separate OnError topic.
+2. In Copilot Studio, open **Topics > Run generated DAX** (your custom topic).
+   On the canvas choose **+ Add node > Add a tool > Connector**.
+   Search for **Power BI**, then choose **Run a query against a dataset**.
+   These are [Microsoft's documented topic-tool steps](https://learn.microsoft.com/en-us/microsoft-copilot-studio/advanced-connectors#add-a-tool-from-a-prebuilt-connector-in-a-topic).
+3. Create or select the Power BI connection. Keep **user credentials**, represented by
+   `connectionProperties.mode: Invoker` in native YAML. Bind your own connection reference.
+   Do not switch to maker credentials or grant additional model rights merely to make a test pass.
+4. Configure the following fields. The topic must declare and populate the variables first;
+   entering a variable name as plain query text is not a formula binding.
+
+| Studio field / native key | Run generated DAX configuration |
+|---|---|
+| Workspace / `groupid` | Your authorized workspace, fixed configuration |
+| Dataset / `datasetid` | Your semantic model, fixed configuration |
+| Query text / `query` | Formula `Topic.generatedDax`; native YAML `=Topic.generatedDax` |
+| Impersonate user / `impersonatedUserName` | Leave blank; native YAML `=Blank()` |
+| Output / `firstTableRows` | Bind to `Topic.RawRows`; native dynamic output schema is `Any` |
+| Native `serializerSettings` | `={includeNulls:false}` |
+| Native `requestTimeoutInMilliseconds` | `30000` |
+
+`Topic.generatedDax` contains the **complete compiled query**, including its execution envelope.
+Do not wire the raw `tableExpression` input straight into Query text: it is not the full query
+and would skip this implementation's envelope and validation. Retain direct serialization with
+`JSON(Topic.RawRows)` and the result checks from the complete query-topic source.
+
+For **Get model metadata**, add the **same connector action**, with the same fixed resources and
+Invoker connection. Its query is the model-specific visibility probe generated during preparation,
+not `Topic.generatedDax`. Bind `firstTableRows` to `Topic.ProbeRows` and retain the numeric
+`[AccessProbe]` table schema and validation shown in the complete metadata-topic source.
+Only after that check does the topic disclose its prepared snapshot. There is no separate
+Power BI connector action named "Get model metadata" that automatically provides this behavior.
+
+Do **not** add a business-query connector call to Compile DAX advice, or any connector to
+Generated query error. Preserve their native compilation/error logic.
+
+Adding these two action nodes alone is not the complete agent: use the linked full native topic
+definitions for the metadata gate, input schemas, compilation, bounded results and error handling,
+plus the [full agent instructions](../agent/agent.mcs.yml). The supplied example YAML uses synthetic
+Entity/Event metadata; generate your own rather than copying those example field names into a real
+model. Verify the parsed action bindings and test with the intended requesting user's permissions
+before publishing. The [Power BI action reference](https://learn.microsoft.com/en-us/connectors/powerbi/#run-a-query-against-a-dataset)
+documents the connector, not the surrounding custom topic logic.
 
 Limits and caveats: [capabilities and limits](capabilities-and-limits.md).
 Actual published-channel prompts/captures: [M365 testing](m365-testing.md).

@@ -4,22 +4,29 @@
 <style>svg{--cp-bg:#f7f4ef;--cp-surface:#ffffff;--cp-border:#dedede;--cp-text:#242424;--cp-text-muted:#5c5c5c;--cp-accent:#b11f4b;--cp-accent-soft:rgba(177,31,75,0.08);font-family:"Segoe UI",Aptos,Calibri,sans-serif}text{fill:var(--cp-text)}.box{fill:var(--cp-surface);stroke:var(--cp-border)}.branch{fill:var(--cp-accent-soft);stroke:var(--cp-accent)}.line{fill:none;stroke:var(--cp-accent);stroke-width:2}</style>
 <defs><marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" style="fill:var(--cp-accent)"/></marker></defs>
 <rect width="1440" height="440" style="fill:var(--cp-bg)"/>
-<text x="40" y="54.0" font-size="30">Message -&gt; reusable capabilities -&gt; answer</text>
-<text x="40" y="97.0" font-size="17">Copilot Studio orchestrates the work. A different question does not require another fixed-query tool.</text>
-<rect x="40" y="150" width="300" height="160" rx="12" class="box"/>
+<text x="40" y="54.0" font-size="30">Message -&gt; Copilot Studio / topics -&gt; Power BI tool -&gt; answer</text>
+<text x="40" y="97.0" font-size="17">Topics control the workflow. The embedded connector tool executes the DAX against the semantic model.</text>
+<rect x="40" y="150" width="240" height="160" rx="12" class="box"/>
 <text x="56" y="184.0" font-size="18">Message</text>
 <text x="56" y="222.0" font-size="14">Natural-language question</text>
 <text x="56" y="243.7" font-size="14">Signed-in user</text>
-<rect x="400" y="150" width="600" height="160" rx="12" class="box"/>
-<text x="416" y="184.0" font-size="18">Copilot Studio + callable topics</text>
-<text x="416" y="222.0" font-size="14">Get metadata -&gt; generate DAX</text>
-<text x="416" y="243.7" font-size="14">Topic validates -&gt; Power BI executes as user</text>
-<rect x="1060" y="150" width="340" height="160" rx="12" class="box"/>
-<text x="1076" y="184.0" font-size="18">Answer</text>
-<text x="1076" y="222.0" font-size="14">Explain returned rows</text>
-<text x="1076" y="243.7" font-size="14">Or label DAX as unexecuted</text>
-<path class="line" marker-end="url(#arrowhead)" d="M352 230 L388 230"/>
-<path class="line" marker-end="url(#arrowhead)" d="M1012 230 L1048 230"/>
-<text x="40" y="367.0" font-size="17">The standard Power BI connector queries the semantic model. No Fabric data agent or MCP is required.</text>
+<rect x="320" y="150" width="320" height="160" rx="12" class="box"/>
+<text x="336" y="184.0" font-size="18">Copilot Studio + topics</text>
+<text x="336" y="222.0" font-size="14">Retrieve governed metadata</text>
+<text x="336" y="243.7" font-size="14">Agent generates DAX</text>
+<text x="336" y="265.4" font-size="14">Topics gate and validate</text>
+<rect x="680" y="150" width="400" height="160" rx="12" class="box"/>
+<text x="696" y="184.0" font-size="18">Power BI tool</text>
+<text x="696" y="222.0" font-size="14">Run a query against a dataset</text>
+<text x="696" y="243.7" font-size="14">ExecuteDatasetQuery</text>
+<text x="696" y="265.4" font-size="14">Execute as the user / Invoker</text>
+<rect x="1120" y="150" width="280" height="160" rx="12" class="box"/>
+<text x="1136" y="184.0" font-size="18">Answer</text>
+<text x="1136" y="222.0" font-size="14">Explain returned rows</text>
+<text x="1136" y="243.7" font-size="14">Or label DAX as unexecuted</text>
+<path class="line" marker-end="url(#arrowhead)" d="M292 230 L308 230"/>
+<path class="line" marker-end="url(#arrowhead)" d="M652 230 L668 230"/>
+<path class="line" marker-end="url(#arrowhead)" d="M1092 230 L1108 230"/>
+<text x="40" y="367.0" font-size="17">The Power BI tool is a connector action inside the topics, not a tool per question. No Fabric data agent or MCP required.</text>
 <text x="40" y="406.0" font-size="16">Advice skips the proposed business query; metadata authorization may still probe Power BI.</text>
 </svg>

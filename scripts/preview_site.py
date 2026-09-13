@@ -21,7 +21,15 @@ def main():
         for name in ("Get model metadata", "Run generated DAX", "Compile DAX advice", "Generated query error"):
             assert name in page.locator("#tools-topics").inner_text()
         assert page.locator("#tools-topics img").count() == 3
+        connector = page.locator("#connector-setup")
+        assert "Run a query against a dataset" in connector.inner_text()
+        for binding in ("ExecuteDatasetQuery", "groupid", "datasetid", "Topic.generatedDax", "Topic.RawRows", "Invoker"):
+            assert binding in connector.inner_text()
+        assert "Updated starter, not another tool" not in page.locator("main").inner_text()
+        assert page.get_by_role("heading", name="What a useful scalability test measures", exact=True).count() == 0
         assert page.locator('img[data-diagram="simple"]').count() == 1
+        diagram = (ROOT / "docs" / "assets" / "architecture-simple.svg").read_text(encoding="utf-8")
+        assert "Power BI tool" in diagram and "Run a query against a dataset" in diagram
         assert page.get_by_role("heading", name="Historical initial PoC", exact=True).count() == 0
         assert page.get_by_role("img", name="Actual empty standalone Tools tab.", exact=True).count() == 0
         assert page.get_by_role("link", name="Download solution ZIP", exact=True).get_attribute("href") == (

@@ -145,7 +145,12 @@ not a standalone tool per question.
 ![Actual Studio Power BI action: generated DAX binding, Invoker mode and dynamic rows, with resource IDs masked.](docs/assets/studio-powerbi-action.png)
 
 The connector operation is `ExecuteDatasetQuery`; its query is `Topic.generatedDax`, not a fixed
-top-100 expression. Read the [complete topic inputs, outputs, triggers and configuration captures](docs/topic-and-tool-reference.md),
+top-100 expression. In Studio, select **+ Add node > Add a tool > Connector > Power BI >
+Run a query against a dataset** inside the topic. Metadata probing and business-query execution
+use that same action; advice and error handling are native topic logic.
+The [manual connector wiring guide](docs/topic-and-tool-reference.md#build-the-connector-actions-yourself)
+lists the exact fields, formula bindings, output schemas and required surrounding logic.
+Read the [complete topic inputs, outputs, triggers and configuration captures](docs/topic-and-tool-reference.md),
 [full agent instructions](agent/agent.mcs.yml), and [all four complete synthetic topic YAML definitions](agent/example-topics/README.md).
 These screenshots show the configured demo; the ZIP remains deliberately unconfigured.
 See [screenshot provenance and previews](docs/screenshots.md).

@@ -30,7 +30,6 @@ def main():
         "__QUERY_INPUT__": "studio-query-input.png",
         "__POWERBI_ACTION__": "studio-powerbi-action.png",
         "__MODEL_SELECTION__": "studio-model-selection.png",
-        "__UPDATED_STARTER__": "studio-updated-starter.png",
     }
     for marker, filename in images.items():
         if html.count(marker) != 1:
