@@ -5,6 +5,10 @@ They are **synthetic reference artifacts**, not an export of a deployed agent.
 Only the invented `Entity` and `Event` schema and placeholder resource identifiers are used.
 No live metadata, identities, business rows, connection state or credentials are included.
 
+**Download the full files:** the [walkthrough has direct YAML and instruction downloads](https://ryanbowie.github.io/copilot-studio-powerbi-agent/#source-downloads).
+These topics are long; use the complete file, not a screenshot or truncated preview.
+The published copies are checked against this source during every build.
+
 | File | Capability | Trigger |
 |---|---|---|
 | `ModelMetadata.mcs.yml` | Get model metadata | Generative selection |

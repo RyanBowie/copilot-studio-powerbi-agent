@@ -228,6 +228,7 @@
       <div class="actions">
           <a class="button" href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/raw/refs/heads/main/solution/PowerBIQueryStarter_unmanaged.zip">Download solution ZIP</a>
           <a class="button secondary" href="#setup">Import and configure</a>
+          <a class="button secondary" href="#source-downloads">Download YAML &amp; instructions</a>
           <a class="button secondary" href="https://github.com/RyanBowie/copilot-studio-powerbi-agent">View repository</a>
       </div>
       <p class="footnote">Observed response, not an independent numerical audit. Experimental starter: configure your own connection, model metadata and business definitions before publishing. This website is documentation, not a live agent.</p>
@@ -342,6 +343,19 @@ ORDER BY 'Date'[YearMonth]</code></pre>
 
     <section id="tools-topics">
       <div class="section-title"><div><span class="eyebrow">Configuration / Native capabilities</span><h2>Tools and topics, in detail.</h2></div><a href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/docs/topic-and-tool-reference.md">Complete contracts and YAML</a></div>
+      <div id="source-downloads" class="panel">
+        <h3>Download complete instructions and topic YAML</h3>
+        <p>These topics are long: <b>download the complete files instead of copying a screenshot or a shortened code snippet</b>. Each topic download includes every action, condition, formula and declared input/output schema in the reference source.</p>
+        <div class="table-scroll" tabindex="0" role="region" aria-label="Complete instructions and topic downloads"><table><thead><tr><th>File</th><th>Contents</th><th>Download</th></tr></thead><tbody>
+          <tr><td><code>agent.mcs.yml</code></td><td>Full agent instructions, capabilities, starters and model settings; not a topic.</td><td><a href="downloads/agent.mcs.yml" download>Download agent instructions/config</a></td></tr>
+          <tr><td><code>ModelMetadata.mcs.yml</code></td><td>Complete Get model metadata topic.</td><td><a href="downloads/ModelMetadata.mcs.yml" download>Download metadata topic</a></td></tr>
+          <tr><td><code>GeneratedDaxQuery.mcs.yml</code></td><td>Complete Run generated DAX topic.</td><td><a href="downloads/GeneratedDaxQuery.mcs.yml" download>Download execution topic</a></td></tr>
+          <tr><td><code>GeneratedDaxAdvice.mcs.yml</code></td><td>Complete Compile DAX advice topic.</td><td><a href="downloads/GeneratedDaxAdvice.mcs.yml" download>Download advice topic</a></td></tr>
+          <tr><td><code>GeneratedQueryError.mcs.yml</code></td><td>Complete Generated query error topic.</td><td><a href="downloads/GeneratedQueryError.mcs.yml" download>Download error topic</a></td></tr>
+        </tbody></table></div>
+        <p><b>Complete reference files, not the private configured demo.</b> The topics use synthetic Entity/Event metadata and placeholder resource IDs. Generate model-specific topics using the setup guide before deployment; simply renaming a topic or replacing a dataset ID is not sufficient.</p>
+        <p>For manual topic authoring, use the <b>entire generated topic YAML</b> in that topic's <b>More &gt; Open code editor</b>. Keep indentation and all input/output definitions. The agent configuration file is different: its <code>instructions</code> field contains the instruction text; do not paste the whole agent file into a topic editor. <a href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/docs/topic-and-tool-reference.md#download-the-complete-files">Download and usage guide</a>.</p>
+      </div>
       <p class="section-copy"><strong>Yes, these capabilities call Power BI.</strong> They live under <strong>Topics</strong>, with embedded connector actions. There is no dedicated top-100 tool and no new tool per question. Copilot Studio selects reusable topics and fills their technical inputs from the question and verified metadata.</p>
       <div class="three-grid">
         <article class="panel feature"><h3>Get model metadata</h3><p><strong>Trigger:</strong> generative selection.</p><p>Validates the model alias, probes schema visibility as the requester, then returns the governed catalog or selected tables.</p><p><strong>Inputs:</strong> <code>modelAlias</code> (String, blank defaults to <code>primary</code>), <code>view</code> (String: catalog/tables), <code>tableNames</code> (String: at most four verified names).</p><p><strong>Output:</strong> metadata JSON in <code>result</code>, plus the shared status/visibility fields below.</p><a href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/agent/example-topics/ModelMetadata.mcs.yml">Full synthetic metadata topic</a></article>

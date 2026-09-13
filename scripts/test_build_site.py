@@ -4,7 +4,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from build_site import image_uri
+from build_site import DOWNLOAD_SOURCES, build_downloads, image_uri
 
 
 class ImageEmbeddingTests(unittest.TestCase):
@@ -26,6 +26,19 @@ class ImageEmbeddingTests(unittest.TestCase):
             actual = image_uri(image)
             self.assertTrue(actual.startswith("data:image/png;base64,"))
             self.assertEqual(base64.b64decode(actual.split(",", 1)[1]), source)
+
+    def test_downloads_preserve_complete_sources_and_normalize_newlines(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for filename, relative in DOWNLOAD_SOURCES.items():
+                source = root / relative
+                source.parent.mkdir(parents=True, exist_ok=True)
+                source.write_bytes((filename + "\r\n" + "  complete source line\r\n" * 1500).encode("utf-8"))
+            build_downloads(root)
+            self.assertEqual(len(list((root / "docs" / "downloads").iterdir())), 5)
+            for filename, relative in DOWNLOAD_SOURCES.items():
+                expected = (root / relative).read_text(encoding="utf-8").encode("utf-8")
+                self.assertEqual((root / "docs" / "downloads" / filename).read_bytes(), expected)
 
 
 if __name__ == "__main__":

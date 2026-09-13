@@ -8,6 +8,7 @@ import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlparse
+from build_site import DOWNLOAD_SOURCES
 
 ROOT = Path(__file__).resolve().parents[1]
 IGNORED_PARTS = {".git", "__pycache__", ".venv", "node_modules"}
@@ -100,6 +101,12 @@ def main():
     for name in required:
         if not (ROOT / name).is_file():
             errors.append(f"Missing publication asset: {name}")
+    for filename, source in DOWNLOAD_SOURCES.items():
+        download = ROOT / "docs" / "downloads" / filename
+        if not download.is_file():
+            errors.append(f"Missing complete YAML download: {filename}")
+        elif download.read_text(encoding="utf-8") != (ROOT / source).read_text(encoding="utf-8"):
+            errors.append(f"YAML download differs from complete source: {filename}")
 
     # Live deployment GUIDs are not needed in this public template.
     guid = re.compile(r"\b[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}\b")

@@ -3,6 +3,21 @@ import base64
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+DOWNLOAD_SOURCES = {
+    "agent.mcs.yml": Path("agent") / "agent.mcs.yml",
+    **{
+        name + ".mcs.yml": Path("agent") / "example-topics" / (name + ".mcs.yml")
+        for name in ("ModelMetadata", "GeneratedDaxQuery", "GeneratedDaxAdvice", "GeneratedQueryError")
+    },
+}
+
+
+def build_downloads(root=ROOT):
+    destination = root / "docs" / "downloads"
+    destination.mkdir(parents=True, exist_ok=True)
+    for filename, source in DOWNLOAD_SOURCES.items():
+        (destination / filename).write_text(
+            (root / source).read_text(encoding="utf-8"), encoding="utf-8", newline="\n")
 
 
 def image_uri(image):
@@ -18,6 +33,7 @@ def image_uri(image):
 
 
 def main():
+    build_downloads()
     html = (ROOT / "site" / "index.template.html").read_text(encoding="utf-8")
     images = {
         "__HERO_PROMPT__": "m365-prompt-intro.png",

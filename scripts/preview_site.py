@@ -1,6 +1,7 @@
 """Optional local Playwright preview; never connects to a tenant or changes browser profiles."""
 from pathlib import Path
 from playwright.sync_api import sync_playwright
+from build_site import DOWNLOAD_SOURCES
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -32,6 +33,10 @@ def main():
         assert page.locator("#tested-model-report img").count() == 1
         assert "not an agent response" in page.locator("#tested-model-report").inner_text()
         assert page.locator("#tools-topics").count() == 1
+        assert page.locator("#source-downloads a[download]").count() == 5
+        for filename in DOWNLOAD_SOURCES:
+            link = page.locator(f'#source-downloads a[href="downloads/{filename}"]')
+            assert link.count() == 1 and link.get_attribute("download") is not None
         for name in ("Get model metadata", "Run generated DAX", "Compile DAX advice", "Generated query error"):
             assert name in page.locator("#tools-topics").inner_text()
         assert page.locator("#tools-topics img").count() == 3

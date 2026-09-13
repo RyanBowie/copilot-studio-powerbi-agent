@@ -22,6 +22,41 @@ configuration stops. The [import guide](solution-import.md) explains how deploym
 stops with topics generated from your authorized model. Do not confuse the unconfigured ZIP with
 the working demonstration's private generated metadata.
 
+## Download the complete files
+
+**The topics are long. Download the full YAML rather than copying a screenshot, a preview or
+a shortened snippet.** The [walkthrough's download buttons](https://ryanbowie.github.io/copilot-studio-powerbi-agent/#source-downloads)
+save all five files directly. The downloadable copies below contain the complete reference source,
+including every topic action, condition, formula and declared input/output schema.
+
+| Download | What it contains |
+|---|---|
+| [agent.mcs.yml](downloads/agent.mcs.yml) | Full instruction text, capabilities, starters and model settings |
+| [ModelMetadata.mcs.yml](downloads/ModelMetadata.mcs.yml) | Complete Get model metadata topic |
+| [GeneratedDaxQuery.mcs.yml](downloads/GeneratedDaxQuery.mcs.yml) | Complete Run generated DAX topic |
+| [GeneratedDaxAdvice.mcs.yml](downloads/GeneratedDaxAdvice.mcs.yml) | Complete Compile DAX advice topic |
+| [GeneratedQueryError.mcs.yml](downloads/GeneratedQueryError.mcs.yml) | Complete Generated query error topic |
+
+If viewing these links through GitHub, use **Download raw file**, or use the direct download buttons
+on the walkthrough. Downloads are generated from the canonical files in `agent/` and
+`agent/example-topics/`; the build and publication checks reject stale or truncated copies.
+
+**Reference YAML is not a tenant-ready export.** These are complete synthetic Entity/Event examples,
+with placeholder model/workspace/connection references, not the private demo's metadata.
+Follow [setup](setup.md) or the [import/customization guide](solution-import.md) to prepare your own
+metadata and generate the complete topics for your model.
+
+For manual topic authoring, open the target topic in Copilot Studio, choose **More > Open code
+editor**, and use the **entire generated topic file**. Keep its indentation, conditions, action
+bindings and input/output definitions. Do not paste a shortened excerpt or a screenshot transcription.
+Review the native parsed configuration and test before publishing.
+
+`agent.mcs.yml` is **agent configuration, not topic YAML**. Its `instructions` field contains the
+instruction text; when using the Studio instructions editor, copy that field's text without its YAML
+wrapper. Review capabilities, starters and model settings separately. Do not paste the entire agent
+configuration into a topic code editor. The downloadable solution ZIP is a third artifact: an
+import-verified but deliberately unconfigured starter with onboarding stops.
+
 ## Capability inventory
 
 | Studio name | Schema suffix | Trigger | Configured behavior |

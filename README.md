@@ -35,6 +35,7 @@ the solution ZIP.
 
 ## Start here
 
+- [Download complete topic YAML and agent instructions](https://ryanbowie.github.io/copilot-studio-powerbi-agent/#source-downloads) — all four full-length topics and the agent configuration, not snippets. Synthetic reference metadata; generate your model-specific versions before deployment.
 - [Published walkthrough](https://ryanbowie.github.io/copilot-studio-powerbi-agent/) — architecture, screenshots, download and setup. The [self-contained local copy](docs/index.html) also opens without a build step.
 - [Architecture and execution identity](docs/architecture.md)
 - [Setup and adaptation](docs/setup.md)
