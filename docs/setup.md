@@ -64,6 +64,12 @@ It is not an automatically refreshed remote catalog, and only alias `primary` is
 
 ## Publish and test in M365 Copilot
 
+The demonstrated agent is built and managed in **Copilot Studio**, with the **Microsoft 365
+Copilot channel configured** so users can run it inside M365 Copilot. This is not the Agent Builder
+creation path. Publishing a Copilot Studio agent and making it available through that channel
+are distinct from creating an agent inside the M365 Copilot interface.
+The starter ZIP does not include a working channel registration; configure it in your own tenant.
+
 1. Open the agent's Overview and inspect its instructions and model picker. Preserve the intended
    model selection; preview models carry separate suitability warnings.
 2. Inspect Topics: **Get model metadata**, **Run generated DAX**, **Compile DAX advice** and

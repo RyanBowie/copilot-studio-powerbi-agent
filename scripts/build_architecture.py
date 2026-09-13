@@ -65,7 +65,7 @@ def build(simple=False):
     if simple:
         text("heading", 40, 24, "Message -> Copilot Studio / topics -> Power BI tool -> answer", 30)
         text("subheading", 40, 80, "Topics control the workflow. The embedded connector tool executes the DAX against the semantic model.", 17)
-        box("message", 40, 150, 240, 160, "Message", "Natural-language question\nSigned-in user")
+        box("message", 40, 150, 240, 160, "M365 Copilot", "User asks published agent\nCopilot Studio channel")
         box("capabilities", 320, 150, 320, 160, "Copilot Studio + topics", "Retrieve governed metadata\nAgent generates DAX\nTopics gate and validate")
         box("powerbi-tool", 680, 150, 400, 160, "Power BI tool", "Run a query against a dataset\nExecuteDatasetQuery\nExecute as the user / Invoker")
         box("answer", 1120, 150, 280, 160, "Answer", "Explain returned rows\nOr label DAX as unexecuted")
@@ -80,7 +80,7 @@ def build(simple=False):
     text("heading", 40, 24, "Copilot Studio + Power BI", 30)
     text("subheading", 40, 80, "A reusable pattern for compatible semantic models. No Fabric data agent required.", 17)
     nodes = [
-        ("user", "Business question", "Authenticated user\nNatural-language request"),
+        ("user", "Business question", "Microsoft 365 Copilot\nPublished Studio agent"),
         ("copilot", "Copilot Studio", "Retrieve metadata\nGenerate DAX expression"),
         ("analytics", "Query envelope", "Structural checks\nProjection and bounds"),
         ("connector", "Power BI connector", "Execute DAX\nEnd-user / Invoker"),

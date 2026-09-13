@@ -1,5 +1,10 @@
 # Published M365 Copilot tests and screenshots
 
+**This is a Copilot Studio-built agent with the Microsoft 365 Copilot channel configured.**
+It is published from Copilot Studio and runs inside M365 Copilot through that channel.
+It was not created in Microsoft 365 Copilot's Agent Builder; M365 Copilot is the user-facing
+channel for the Studio-authored instructions, topics and Power BI connector actions.
+
 **Three prompts completed in the real published M365 Copilot UI.** These are browser-observed
 responses, not fabricated transcripts or direct-API substitutes. The checks below establish
 response shape and conversational consistency, not independent numerical correctness for all data.

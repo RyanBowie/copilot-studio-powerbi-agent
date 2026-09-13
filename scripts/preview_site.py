@@ -16,6 +16,8 @@ def main():
         page.goto(url + "?scoutTheme=light", wait_until="load")
         assert page.locator("html").get_attribute("data-theme") == "light"
         assert "generate DAX" in page.locator(".hero .lead").inner_text()
+        assert "Microsoft 365 Copilot channel configured" in page.locator(".hero .lead").inner_text()
+        assert "not an Agent Builder agent" in page.locator(".hero .lead").inner_text()
         assert page.locator(".hero img").count() == 2
         assert "Synthetic illustration" not in page.locator(".hero").inner_text()
         assert "first 8 of 20 rows" in page.locator("#hero-output").inner_text()

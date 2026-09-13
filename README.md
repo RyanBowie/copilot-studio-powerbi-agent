@@ -2,9 +2,20 @@
 
 **An experimental standard Copilot Studio agent for metadata-grounded DAX generation, execution, and explanation. No Fabric data agent is required.**
 
+**Built in Copilot Studio; used inside Microsoft 365 Copilot.** The tested agent has the
+**Microsoft 365 Copilot channel configured** and is published and made available through that
+channel. The screenshots show users interacting with this Copilot Studio agent in M365 Copilot,
+not an agent created with Microsoft 365 Copilot's Agent Builder. Its instructions, native topics
+and Power BI connector actions are authored and managed in Copilot Studio.
+
 Ask a question about your Power BI semantic model: the configured agent uses prepared metadata to
 generate new DAX, executes it with the requesting user's permissions, and explains the results.
 You do not need a fixed query or separate tool for each question.
+
+The downloadable ZIP is an unpublished Copilot Studio starter with no channel registration.
+After configuring it for your model, publish it and configure the M365 Copilot channel in your
+own tenant; [channel setup and testing steps](docs/setup.md#publish-and-test-in-m365-copilot)
+are included.
 
 **[Open the GitHub Pages walkthrough](https://ryanbowie.github.io/copilot-studio-powerbi-agent/)** for
 the architecture, real anonymized screenshots, solution download and setup steps.

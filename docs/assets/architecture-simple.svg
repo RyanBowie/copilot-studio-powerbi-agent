@@ -7,9 +7,9 @@
 <text x="40" y="54.0" font-size="30">Message -&gt; Copilot Studio / topics -&gt; Power BI tool -&gt; answer</text>
 <text x="40" y="97.0" font-size="17">Topics control the workflow. The embedded connector tool executes the DAX against the semantic model.</text>
 <rect x="40" y="150" width="240" height="160" rx="12" class="box"/>
-<text x="56" y="184.0" font-size="18">Message</text>
-<text x="56" y="222.0" font-size="14">Natural-language question</text>
-<text x="56" y="243.7" font-size="14">Signed-in user</text>
+<text x="56" y="184.0" font-size="18">M365 Copilot</text>
+<text x="56" y="222.0" font-size="14">User asks published agent</text>
+<text x="56" y="243.7" font-size="14">Copilot Studio channel</text>
 <rect x="320" y="150" width="320" height="160" rx="12" class="box"/>
 <text x="336" y="184.0" font-size="18">Copilot Studio + topics</text>
 <text x="336" y="222.0" font-size="14">Retrieve governed metadata</text>

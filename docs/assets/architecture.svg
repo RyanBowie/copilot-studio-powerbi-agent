@@ -8,8 +8,8 @@
 <text x="40" y="97.0" font-size="17">A reusable pattern for compatible semantic models. No Fabric data agent required.</text>
 <rect x="40" y="160" width="240" height="170" rx="12" class="box"/>
 <text x="56" y="194.0" font-size="18">Business question</text>
-<text x="56" y="232.0" font-size="14">Authenticated user</text>
-<text x="56" y="253.7" font-size="14">Natural-language request</text>
+<text x="56" y="232.0" font-size="14">Microsoft 365 Copilot</text>
+<text x="56" y="253.7" font-size="14">Published Studio agent</text>
 <path class="line" marker-end="url(#arrowhead)" d="M284 245 L312 245"/>
 <rect x="320" y="160" width="240" height="170" rx="12" class="box"/>
 <text x="336" y="194.0" font-size="18">Copilot Studio</text>

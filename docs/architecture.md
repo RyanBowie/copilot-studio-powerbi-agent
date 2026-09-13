@@ -10,6 +10,10 @@ That distinction belongs in documentation, not runtime prompts.
 
 ## Message to answer
 
+The user-facing surface is **Microsoft 365 Copilot**, reached through the configured M365 Copilot
+channel of a **Copilot Studio-built agent**. Copilot Studio owns the instructions, topics and
+connector actions; the agent was not created with Microsoft 365 Copilot's Agent Builder.
+
 ![Message flows through Copilot Studio and topics, then the Power BI tool Run a query against a dataset, to an explained answer.](assets/architecture-simple.svg)
 
 Copilot Studio retrieves governed metadata, generates DAX, invokes the native query topic and
