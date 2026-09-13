@@ -45,6 +45,18 @@ This is not an assistant-captured test response, a synthetic illustration or pro
 report's totals reconcile with conversation answers. Its displayed date window differs.
 The report and semantic model are not included in the solution ZIP.
 
+## User-provided Studio metadata example
+
+`studio-metadata-example.png` was supplied and approved for use as an example by the owner on
+13 September 2026. It retains the exact prompt, **Give me some details of the semantic model**,
+the completed Get model metadata topic, its catalog input and the partially visible model overview.
+It is a Studio test-pane capture, not a M365 channel screenshot or an independently rerun test.
+
+The visible model table names, counts and snapshot timestamp are included with the owner's
+approval. No personal names, connection secrets or tenant/resource identifiers are visible.
+No redaction was needed; embedded image metadata was removed without changing RGB pixels.
+This approval covers the supplied image, not publication of the complete private model snapshot.
+
 ## Actual configuration, not a historical tool inventory
 
 ![Actual Power BI connector configuration in the Studio code editor, with resource IDs masked.](assets/studio-powerbi-action.png)

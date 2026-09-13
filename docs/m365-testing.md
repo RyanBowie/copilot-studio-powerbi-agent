@@ -79,6 +79,10 @@ filter-removal and outer-filter interactions require semantic testing before reu
 
 ## Current authoring surfaces
 
+An additional [user-supplied Studio metadata example](examples.md#user-supplied-studio-metadata-example)
+shows the prompt **Give me some details of the semantic model** and the completed metadata topic.
+It is recorded separately from the three published-channel tests above.
+
 The generic runtime appears under **Topics**. Four capabilities are enabled; three retired bounded
 topics remain off. The standalone **Tools** tab no longer contains the original fixed-query tools:
 the Power BI connector calls are nodes inside the active topics.

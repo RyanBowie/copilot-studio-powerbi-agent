@@ -24,6 +24,7 @@ def main():
         "__HERO_OUTPUT__": "m365-output-intro.png",
         "__SIMPLE_ARCHITECTURE__": "architecture-simple.svg",
         "__TESTED_MODEL_REPORT__": "powerbi-agents-report.png",
+        "__STUDIO_METADATA_EXAMPLE__": "studio-metadata-example.png",
         "__M365_CONSENT__": "m365-connection-consent.png",
         "__M365_RANKING__": "m365-ranking-redacted.png",
         "__M365_FOLLOWUP__": "m365-followup-redacted.png",

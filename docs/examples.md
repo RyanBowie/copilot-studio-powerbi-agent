@@ -33,6 +33,24 @@ nonexecution were not independently audited. These are observations, not reusabl
 
 ## Metadata before querying
 
+### User-supplied Studio metadata example
+
+> Give me some details of the semantic model
+
+![User-supplied Copilot Studio test-pane screenshot showing the exact prompt, completed Get model metadata topic, catalog input and a model overview.](assets/studio-metadata-example.png)
+
+The owner supplied this screenshot on 13 September 2026. **Get model metadata** is marked
+**Completed**, its visible `view` input is `catalog`, and the answer shows snapshot details and
+visible table/column counts. The response explains that it uses a governed snapshot rather than
+guaranteeing a live schema version.
+
+This is a **Copilot Studio test-pane example**, not another M365 published-channel test.
+The answer is only partially visible; the displayed 5.21 seconds belongs to the topic in this
+capture, not a measured end-to-end chat latency or benchmark.
+[Open the full-size screenshot](assets/studio-metadata-example.png).
+
+### Another metadata prompt
+
 > What tables and measures are in this model? Retrieve the model metadata before answering.
 
 Expected behavior: invoke metadata retrieval, complete its requesting-user visibility probe, and

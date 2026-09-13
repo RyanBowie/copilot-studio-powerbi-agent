@@ -317,6 +317,12 @@ ORDER BY 'Date'[YearMonth]</code></pre>
           <p>Clarify ambiguity or explain actual access failures rather than inventing fields. Publication requires the owner's approval; personal identities and tenant configuration remain redacted.</p>
         </div>
       </div>
+      <div id="metadata-example" style="margin-top:32px">
+        <h3>Explore the semantic model before asking for analysis</h3>
+        <p class="section-copy">Ask for a model overview to see what data is available. This user-supplied example shows the Copilot Studio agent selecting its metadata topic and explaining the prepared model snapshot.</p>
+        <div class="prompt-box"><p id="prompt-metadata">Give me some details of the semantic model</p><button class="copy" data-copy="prompt-metadata" type="button">Copy</button></div>
+        <figure><a href="assets/studio-metadata-example.png"><img src="__STUDIO_METADATA_EXAMPLE__" loading="lazy" alt="User-supplied Copilot Studio test-pane screenshot: Give me some details of the semantic model; Get model metadata completes with view catalog and returns snapshot details and visible table counts."></a><figcaption><strong>Actual Copilot Studio metadata example</strong>The Get model metadata topic is marked Completed, with <code>view</code> set to <code>catalog</code>. The visible answer includes the model alias, snapshot timestamp and table/column counts. This is the Studio test pane, not the M365 Copilot channel; the response is only partially visible. <a href="assets/studio-metadata-example.png">Open the full-size screenshot</a>.</figcaption></figure>
+      </div>
       <div id="copy-status" class="footnote" aria-live="polite"></div>
     </section>
 

@@ -26,6 +26,9 @@ def main():
             assert bounds and bounds["y"] + bounds["height"] <= 900, "Opening screenshots must fit before scrolling on desktop."
         assert page.locator("#setup").count() == 1
         assert "semantic model containing agents" in page.locator("#examples").inner_text()
+        assert page.locator("#prompt-metadata").inner_text() == "Give me some details of the semantic model"
+        assert page.locator("#metadata-example img").count() == 1
+        assert "Studio test pane, not the M365 Copilot channel" in page.locator("#metadata-example").inner_text()
         assert page.locator("#tested-model-report img").count() == 1
         assert "not an agent response" in page.locator("#tested-model-report").inner_text()
         assert page.locator("#tools-topics").count() == 1
