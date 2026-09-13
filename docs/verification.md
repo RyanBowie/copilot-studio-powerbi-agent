@@ -57,7 +57,8 @@ the familiar ranking, explicit dates, complete-month comparisons, a table outsid
 and empty output. They are **LLM-authored test fixtures used by the test executor**, not evidence
 that the cloud agent generated those expressions.
 
-No business rows, identity values, or fabricated success screenshots are published.
+No fabricated success screenshots are published. Reviewed M365 captures retain owner-approved
+agent names, usage figures and dates; people's names are masked. Unredacted originals remain private.
 
 ## Three separate runtime observations
 
@@ -253,7 +254,8 @@ It must not be dismissed as an earlier answer still displayed in the pane.
 The next investigation correlates that execution's timestamp, actual topic contract, returned shape
 and normalized result with the published correction. Native authoring readback alone is insufficient
 to establish what ran. No additional refresh/retry, permission change, dataset switch or speculative
-type change is indicated before that reconciliation. Actual identity/business rows remain private.
+type change is indicated before that reconciliation. The user-supplied captures for this earlier
+failure remain private; later approved M365 derivatives are documented separately below.
 
 ## User-observed success after the final correction
 

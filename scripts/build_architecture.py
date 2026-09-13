@@ -7,15 +7,16 @@ ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "docs" / "assets"
 
 
-def main():
+def build(simple=False):
     elements = []
+    height = 440 if simple else 680
     svg = [
-        '<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="680" viewBox="0 0 1440 680" role="img" aria-labelledby="title desc">',
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="{height}" viewBox="0 0 1440 {height}" role="img" aria-labelledby="title desc">',
         '<title id="title">Copilot Studio and Power BI architecture</title>',
         '<desc id="desc">A user asks a question. Copilot Studio uses curated model context and a reusable analytics capability. The Power BI connector queries the model as the user. Advice-only DAX returns without execution. The custom Agent365 example is not Microsoft Agent 365.</desc>',
         '<style>svg{--cp-bg:#f7f4ef;--cp-surface:#ffffff;--cp-border:#dedede;--cp-text:#242424;--cp-text-muted:#5c5c5c;--cp-accent:#b11f4b;--cp-accent-soft:rgba(177,31,75,0.08);font-family:"Segoe UI",Aptos,Calibri,sans-serif}text{fill:var(--cp-text)}.box{fill:var(--cp-surface);stroke:var(--cp-border)}.branch{fill:var(--cp-accent-soft);stroke:var(--cp-accent)}.line{fill:none;stroke:var(--cp-accent);stroke-width:2}</style>',
         '<defs><marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" style="fill:var(--cp-accent)"/></marker></defs>',
-        '<rect width="1440" height="680" style="fill:var(--cp-bg)"/>',
+        f'<rect width="1440" height="{height}" style="fill:var(--cp-bg)"/>',
     ]
 
     def base(kind, identity, x, y, width, height):
@@ -61,6 +62,19 @@ def main():
         elements.append(item)
         svg.append(f'<path class="line" marker-end="url(#arrowhead)" d="M{x1} {y1} L{x2} {y2}"/>')
 
+    if simple:
+        text("heading", 40, 24, "Message -> reusable capabilities -> answer", 30)
+        text("subheading", 40, 80, "Copilot Studio orchestrates the work. A different question does not require another fixed-query tool.", 17)
+        box("message", 40, 150, 300, 160, "Message", "Natural-language question\nSigned-in user")
+        box("capabilities", 400, 150, 600, 160, "Copilot Studio + callable topics", "Get metadata -> generate DAX\nTopic validates -> Power BI executes as user")
+        box("answer", 1060, 150, 340, 160, "Answer", "Explain returned rows\nOr label DAX as unexecuted")
+        arrow("ask", 352, 230, 388, 230)
+        arrow("respond", 1012, 230, 1048, 230)
+        text("connector-note", 40, 350, "The standard Power BI connector queries the semantic model. No Fabric data agent or MCP is required.", 17, 1360)
+        text("advice-note", 40, 390, "Advice skips the proposed business query; metadata authorization may still probe Power BI.", 16, 1360)
+        write_assets("architecture-simple", elements, svg)
+        return
+
     text("heading", 40, 24, "Copilot Studio + Power BI", 30)
     text("subheading", 40, 80, "A reusable pattern for compatible semantic models. No Fabric data agent required.", 17)
     nodes = [
@@ -81,15 +95,20 @@ def main():
     arrow("advice-path", 560, 335, 870, 395)
     text("identity-note", 40, 580, "Power BI permissions and RLS follow the execution identity. Agent instructions are not an authorization boundary.", 16, 1350)
     text("model-note", 40, 625, "Example: Agent365 is a custom model/report name, not the Microsoft Agent 365 product.", 16, 1350)
+    write_assets("architecture", elements, svg)
+
+
+def write_assets(name, elements, svg):
     ASSETS.mkdir(parents=True, exist_ok=True)
-    (ASSETS / "architecture.excalidraw").write_text(json.dumps({
+    (ASSETS / (name + ".excalidraw")).write_text(json.dumps({
         "type": "excalidraw", "version": 2, "source": "copilot",
         "elements": elements, "appState": {"viewBackgroundColor": "#f7f4ef"}, "files": {},
     }, indent=2) + "\n", encoding="utf-8")
     svg.append("</svg>")
-    (ASSETS / "architecture.svg").write_text("\n".join(svg) + "\n", encoding="utf-8")
-    print("Built editable Excalidraw and SVG architecture assets.")
+    (ASSETS / (name + ".svg")).write_text("\n".join(svg) + "\n", encoding="utf-8")
+    print(f"Built {name}: editable Excalidraw and SVG.")
 
 
 if __name__ == "__main__":
-    main()
+    build()
+    build(simple=True)

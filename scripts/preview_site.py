@@ -17,6 +17,13 @@ def main():
         assert page.locator("html").get_attribute("data-theme") == "light"
         assert "generate DAX" in page.locator(".hero .lead").inner_text()
         assert page.locator("#setup").count() == 1
+        assert page.locator("#tools-topics").count() == 1
+        for name in ("Get model metadata", "Run generated DAX", "Compile DAX advice", "Generated query error"):
+            assert name in page.locator("#tools-topics").inner_text()
+        assert page.locator("#tools-topics img").count() == 3
+        assert page.locator('img[data-diagram="simple"]').count() == 1
+        assert page.get_by_role("heading", name="Historical initial PoC", exact=True).count() == 0
+        assert page.get_by_role("img", name="Actual empty standalone Tools tab.", exact=True).count() == 0
         assert page.get_by_role("link", name="Download solution ZIP", exact=True).get_attribute("href") == (
             "https://github.com/RyanBowie/copilot-studio-powerbi-agent/raw/refs/heads/main/"
             "solution/PowerBIQueryStarter_unmanaged.zip")

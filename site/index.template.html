@@ -147,6 +147,13 @@
     .screen-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; align-items: start; }
     figure { margin: 0; overflow: hidden; border: 1px solid var(--cp-border); border-radius: 16px; background: var(--cp-surface); }
     figure img { width: 100%; display: block; height: auto; }
+    .diagram-scroll, .table-scroll { overflow-x: auto; }
+    .diagram-scroll img { min-width: 900px; }
+    .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; margin-top: 24px; }
+    .config-grid img { max-width: 340px; margin: auto; }
+    .connector-capture { margin-top: 24px; }
+    .table-scroll table { min-width: 600px; }
+    .table-scroll th, .table-scroll td { text-align: left; }
     figcaption { padding: 20px; font-size: 13px; color: var(--cp-text-muted); }
     figcaption strong { display: block; font-size: 15px; color: var(--cp-text); margin-bottom: 6px; }
     .evidence-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
@@ -168,6 +175,7 @@
       nav { gap: 16px; }
       .three-grid { grid-template-columns: 1fr; }
       .screen-grid, .evidence-grid { grid-template-columns: 1fr; }
+      .config-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 640px) {
       .wrap { width: calc(100% - 32px); }
@@ -194,6 +202,7 @@
       <a class="brand" href="#main"><span aria-hidden="true">P</span> Copilot Studio + Power BI</a>
       <nav aria-label="Main navigation">
         <a href="#architecture">Architecture</a>
+        <a href="#tools-topics">Tools &amp; topics</a>
         <a href="#setup">Setup</a>
         <a href="#examples">Examples</a>
         <a href="#screenshots">Screenshots</a>
@@ -239,7 +248,11 @@
     <div class="note"><strong>A custom example, not Microsoft Agent 365.</strong> The demonstration model/report happens to be named <code>Agent365</code>. It is not the Microsoft product or an official product schema. Use this pattern with other compatible Power BI models by adapting the model context, queries, configuration, and permissions.</div>
 
     <section id="architecture">
-      <div class="section-title"><div><span class="eyebrow">01 / How it works</span><h2>A small set of capabilities.<br>Many different questions.</h2></div><a href="assets/architecture.excalidraw" download>Download editable diagram</a></div>
+      <div class="section-title"><div><span class="eyebrow">01 / How it works</span><h2>A small set of capabilities.<br>Many different questions.</h2></div><a href="assets/architecture-simple.excalidraw" download>Download simple editable diagram</a></div>
+      <figure>
+        <div class="diagram-scroll" tabindex="0" role="region" aria-label="Simple architecture diagram; scroll horizontally on narrow screens"><img src="__SIMPLE_ARCHITECTURE__" data-diagram="simple" alt="Message flows to Copilot Studio: retrieve metadata, generate DAX, validate it and call Power BI as the user. Returned rows become an explained answer. Advice returns unexecuted DAX."></div>
+        <figcaption><strong>Message -> reusable capabilities -> answer</strong>The middle step is orchestrated by Copilot Studio, not a separate fixed query for each question. <a href="assets/architecture.svg">Detailed diagram</a> &middot; <a href="assets/architecture.excalidraw" download>Editable detailed source</a>.</figcaption>
+      </figure>
       <p class="section-copy">A governed metadata snapshot supplies structure. The orchestrator is expected to author a new DAX table expression. Native runtime controls form a bounded execution envelope. Deployment of those pieces is not proof of successful orchestration.</p>
       <div class="panel">
         <div class="architecture-visual" role="img" aria-label="Authenticated user question flows through Copilot Studio, a grounded analytics tool, Power BI connector, and the semantic model. Model context supports interpretation; DAX advice can return without execution.">
@@ -306,7 +319,7 @@ ORDER BY 'Date'[YearMonth]</code></pre>
           <span class="eyebrow">Question -> honest boundary</span><h3>Unsupported should be explicit</h3>
           <div class="prompt-box"><p id="prompt-limits">Rank agents by customer satisfaction and include their owners' email addresses.</p><button class="copy" data-copy="prompt-limits" type="button">Copy</button></div>
           <p><strong>Expected behavior:</strong> establish whether an appropriate satisfaction metric exists and what it means. Do not quietly substitute usage for satisfaction. Identity fields follow actual metadata and the requesting user's permissions; the retired blanket demo ban is not a model limitation.</p>
-          <p>Clarify ambiguity or explain actual access failures rather than inventing fields. Private identity/business values must never enter this public-safe documentation.</p>
+          <p>Clarify ambiguity or explain actual access failures rather than inventing fields. Publication requires the owner's approval; personal identities and tenant configuration remain redacted.</p>
         </div>
       </div>
       <div id="copy-status" class="footnote" aria-live="polite"></div>
@@ -314,23 +327,48 @@ ORDER BY 'Date'[YearMonth]</code></pre>
 
     <section id="screenshots">
       <div class="section-title"><div><span class="eyebrow">03 / Published M365 Copilot</span><h2>Real responses. Clear provenance.</h2></div><a href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/docs/m365-testing.md">Exact prompts and test observations</a></div>
-      <p class="section-copy">Actual published-channel prompts and responses. Composites are explicitly labeled; identifying and business result cells are covered with opaque pixels, never replacement values. Checks establish visible shape and consistency, not independently audited numerical accuracy.</p>
+      <p class="section-copy">Actual published-channel prompts and responses. With the owner's approval, only people's names are covered in the result captures; agent names, usage figures and dates are unchanged. Composites are labeled and no replacement values are invented. Checks establish visible shape and consistency, not independently audited numerical accuracy.</p>
       <div class="prompt-box"><p id="prompt-m365">Review the Agents semantic model and provide me the top 20 used agents and their creators.</p><button class="copy" data-copy="prompt-m365" type="button">Copy</button></div>
       <div class="screen-grid">
-        <figure><img src="__M365_RANKING__" loading="lazy" alt="Real generic top-20 request and response, with all sensitive result rows redacted."><figcaption><strong>One generic request, 20 ranked rows</strong>Creators included, displayed usage descending and distinct. The agent declared its own 30-day default. Values were not independently audited; an extra per-row date lacked a label.</figcaption></figure>
-        <figure><img src="__M365_FOLLOWUP__" loading="lazy" alt="Real same-period top-five follow-up, with sensitive result rows redacted."><figcaption><strong>Context retained across turns</strong>The five agent, creator and usage triples matched the preceding first five. The agent retained the period but rendered a list rather than the requested table.</figcaption></figure>
+        <figure><img src="__M365_RANKING__" loading="lazy" alt="Real generic top-20 request and response; people's names redacted, actual agent names, usage and dates visible."><figcaption><strong>One generic request, 20 ranked rows</strong>Creators included, displayed usage descending and distinct. The agent declared its own 30-day default. Values were not independently audited; an extra per-row date lacked a label.</figcaption></figure>
+        <figure><img src="__M365_FOLLOWUP__" loading="lazy" alt="Real same-period top-five follow-up; people's names redacted, actual agent names and usage visible."><figcaption><strong>Context retained across turns</strong>The five agent, creator and usage triples matched the preceding first five. The agent retained the period but rendered a list rather than the requested table.</figcaption></figure>
         <figure><img src="__M365_ADVICE__" loading="lazy" alt="Real prompt and DAX advice explicitly labeled unexecuted."><figcaption><strong>Model-grounded DAX advice</strong>Same-period platform comparison and filter-context explanation. Prose instead of a code block; neither semantic correctness nor business-query nonexecution was independently instrumented.</figcaption></figure>
         <figure><img src="__CURRENT_TOPICS__" loading="lazy" alt="Actual current four active and three inactive topics; editor identity redacted."><figcaption><strong>Current generic capabilities</strong>Metadata, generated execution, advice and error handling live under Topics. Three older bounded topics remain inactive.</figcaption></figure>
-        <figure><img src="__CURRENT_TOOLS__" loading="lazy" alt="Actual empty standalone Tools tab."><figcaption><strong>No tool per question</strong>The original fixed connector tools were removed. Power BI actions are embedded inside the generic topics; the empty Tools tab is expected.</figcaption></figure>
+        <figure><img src="__M365_CONSENT__" loading="lazy" alt="Actual M365 Copilot prompt and Power BI Allow or Cancel consent card."><figcaption><strong>Power BI access as the requesting user</strong>The current published-channel consent step, not a historical tool-registration screen. Connection consent does not grant missing model permissions.</figcaption></figure>
         <figure><img src="__MODEL_SELECTION__" loading="lazy" alt="Actual GPT-5 Reasoning Preview model picker."><figcaption><strong>Rendered model selection observed</strong>GPT-5 Reasoning (Preview). Current warnings concern preview-model suitability and no formal Studio evaluation; inference telemetry is not verified.</figcaption></figure>
         <figure><img src="__UPDATED_STARTER__" loading="lazy" alt="Actual Studio Suggested prompts section showing Analyze agent usage and the generic top-20 question."><figcaption><strong>Updated starter, not another tool</strong>Analyze agent usage replaces Top 100 agents. Saved and published; Studio shows the new title and prompt. A post-publication M365 landing reload still showed the old label, so channel presentation is not claimed updated.</figcaption></figure>
       </div>
-      <h3>Historical initial PoC</h3>
-      <p class="section-copy">These earlier user-provided crops show registration and consent, not the current inventory or proof of successful execution.</p>
-      <div class="screen-grid">
-        <figure><img src="__TOOLS_SCREENSHOT__" width="1254" height="369" loading="lazy" alt="Actual Copilot Studio Tools section listing Power BI governance counts, smoke test, and top 100 agents by usage."><figcaption><strong>The initial callable tools</strong>The three connector tools made the first smoke, count, and ranking scenarios available. This is a historical PoC view, not a guarantee of the latest tool inventory.</figcaption></figure>
-        <figure><img src="__CONSENT_SCREENSHOT__" width="694" height="520" loading="lazy" alt="Actual Copilot Studio Connect to continue card requesting permission to run a Power BI query using the user's credentials, with Allow and Cancel buttons."><figcaption><strong>End-user approval is explicit</strong>An environment connection can be connected while the agent still needs consent. Select an existing authorized connection rather than falling back to a maker identity.</figcaption></figure>
+    </section>
+
+    <section id="tools-topics">
+      <div class="section-title"><div><span class="eyebrow">Configuration / Native capabilities</span><h2>Tools and topics, in detail.</h2></div><a href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/docs/topic-and-tool-reference.md">Complete contracts and YAML</a></div>
+      <p class="section-copy"><strong>Yes, these capabilities call Power BI.</strong> They live under <strong>Topics</strong>, with embedded connector actions. There is no dedicated top-100 tool and no new tool per question. Copilot Studio selects reusable topics and fills their technical inputs from the question and verified metadata.</p>
+      <div class="three-grid">
+        <article class="panel feature"><h3>Get model metadata</h3><p><strong>Trigger:</strong> generative selection.</p><p>Validates the model alias, probes schema visibility as the requester, then returns the governed catalog or selected tables.</p><p><strong>Inputs:</strong> <code>modelAlias</code> (String, blank defaults to <code>primary</code>), <code>view</code> (String: catalog/tables), <code>tableNames</code> (String: at most four verified names).</p><p><strong>Output:</strong> metadata JSON in <code>result</code>, plus the shared status/visibility fields below.</p><a href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/agent/example-topics/ModelMetadata.mcs.yml">Full synthetic metadata topic</a></article>
+        <article class="panel feature"><h3>Run generated DAX</h3><p><strong>Trigger:</strong> generative selection.</p><p>Requires the current-turn/user metadata gate, validates newly authored DAX and forms a bounded query. The embedded Power BI action executes it as the requesting user.</p><p><strong>Inputs:</strong> the seven query parameters below.</p><p><strong>Output:</strong> bounded row-envelope JSON in <code>result</code>, the final <code>generatedDax</code> and execution status.</p><a href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/agent/example-topics/GeneratedDaxQuery.mcs.yml">Full synthetic execution topic</a></article>
+        <article class="panel feature"><h3>Compile DAX advice</h3><p><strong>Trigger:</strong> generative selection.</p><p>Uses the same expression contract, but compiles the proposed business query without executing it. The answer must label it unexecuted; metadata authorization may still probe Power BI.</p><p><strong>Inputs:</strong> the same seven query parameters.</p><p><strong>Output:</strong> proposed <code>generatedDax</code> and advice/status envelope, not business result rows.</p><a href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/agent/example-topics/GeneratedDaxAdvice.mcs.yml">Full synthetic advice topic</a></article>
       </div>
+      <div class="note"><strong>Generated query error</strong> &middot; Trigger: <code>OnError</code>. Reports the actual error and stops rather than fabricating an answer. No declared task inputs or outputs. <a href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/agent/example-topics/GeneratedQueryError.mcs.yml">Full synthetic error topic</a>.</div>
+      <h3>Query and advice inputs</h3>
+      <p>The orchestrator fills these arguments; the user asks an ordinary business question. Workspace/model IDs and execution identity are trusted configuration, not model-authored inputs.</p>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Query input contract"><table><thead><tr><th>Input</th><th>Type</th><th>Contract</th></tr></thead><tbody>
+        <tr><td><code>modelAlias</code></td><td>String</td><td>Blank defaults to primary; only the onboarded primary alias is supported.</td></tr>
+        <tr><td><code>tableExpression</code></td><td>String</td><td>New DAX table expression, not a full EVALUATE/DEFINE/ORDER BY script; maximum 12,000 characters.</td></tr>
+        <tr><td><code>columns</code></td><td>String</td><td>1-16 distinct output aliases, comma-separated.</td></tr>
+        <tr><td><code>sortBy</code></td><td>String</td><td>Declared aliases and asc/desc; remaining aliases break ties.</td></tr>
+        <tr><td><code>limit</code></td><td>Number</td><td>Integer 1-100; default 20.</td></tr>
+        <tr><td><code>startDateExpression</code></td><td>String</td><td>Optional scalar DAX date bound, paired with end.</td></tr>
+        <tr><td><code>endDateExpression</code></td><td>String</td><td>Optional scalar DAX date bound, paired with start. Dates use UTC_TODAY, QUERY_START and QUERY_END.</td></tr>
+      </tbody></table></div>
+      <h3>Shared outputs</h3>
+      <p><code>status</code>, <code>stage</code>, <code>probeResultStatus</code>, <code>resolvedModelAlias</code>, <code>error</code>, <code>result</code> and <code>generatedDax</code> are Strings. <code>connectorAttempted</code>, <code>connectorReturned</code> and <code>visibilityVerified</code> are Booleans. Completion or a generated query alone does not prove execution, valid rows or semantic correctness.</p>
+      <h3>Actual Studio configuration</h3>
+      <div class="config-grid">
+        <figure><img src="__QUERY_DETAILS__" loading="lazy" alt="Actual Run generated DAX topic details: model-facing execution description, status On and ask-before-running Off."><figcaption><strong>Callable execution topic</strong>The model-facing description distinguishes execution from advice. Ask-before-running is off here; this does not bypass Power BI connection consent.</figcaption></figure>
+        <figure><img src="__QUERY_INPUT__" loading="lazy" alt="Actual tableExpression String input, dynamically filled, with a metadata-grounded DAX description and the visible display-name warning."><figcaption><strong>AI-filled DAX, not a fixed query</strong>The actual tableExpression input is dynamically filled. Studio's display-name warning is retained in this capture; no runtime settings were changed for documentation. The full input description and contract are in the source.</figcaption></figure>
+      </div>
+      <figure class="connector-capture"><img src="__POWERBI_ACTION__" loading="lazy" alt="Actual Studio code editor: query bound to Topic.generatedDax, Invoker mode, ExecuteDatasetQuery, firstTableRows Any and a 30000 millisecond timeout; resource IDs masked."><figcaption><strong>Embedded Power BI action: Run a query against a dataset</strong><code>ExecuteDatasetQuery</code> receives <code>Topic.generatedDax</code>, uses <code>Invoker</code> mode and returns dynamic rows as <code>Any</code>. Null omission is explicit; rows are serialized directly. The workspace and semantic-model IDs are redacted, not replaced with fake settings.</figcaption></figure>
+      <div class="note"><strong>Working demo versus downloadable starter:</strong> these are genuine captures of the configured demo. The ZIP deliberately has no live metadata or connection binding and stops before queries until customized. <a href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/docs/solution-import.md">Follow the full import guide</a>. <a href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/agent/agent.mcs.yml">Read the full agent instructions</a>.</div>
     </section>
 
     <section id="limits">
@@ -365,7 +403,7 @@ ORDER BY 'Date'[YearMonth]</code></pre>
           <div class="check-row"><span class="status">DIRECT TEST</span><span>A constant-only DAX query executed successfully against the model.</span></div>
           <div class="check-row"><span class="status">DIRECT TEST</span><span>Counts and a 100-row ranking executed using the audited Interactions metric.</span></div>
           <div class="check-row"><span class="status">USER REPORT</span><span>The user confirmed they liked the top-100 output.</span></div>
-          <div class="check-row"><span class="status">SCREENSHOT</span><span>Callable tools and a per-agent connection approval card are visible.</span></div>
+          <div class="check-row"><span class="status">SCREENSHOT</span><span>Active topics, AI-filled DAX input, Invoker connector configuration and published-channel consent are visible.</span></div>
           <div class="check-row"><span class="status">OFFLINE</span><span>The generic source has 54 Python tests, 5 client-harness tests, and 55 synthetic native Power Fx checks; the native null-serialization caveat is documented.</span></div>
           <div class="check-row"><span class="status">DIRECT TEST</span><span>Eight varied expression cases passed, including new combinations and the original ranking membership/order.</span></div>
           <div class="check-row"><span class="status">M365 UI</span><span>Top-20 ranking, consistent top-five follow-up and explicitly unexecuted DAX advice completed. Real redacted captures are included.</span></div>
@@ -376,7 +414,7 @@ ORDER BY 'Date'[YearMonth]</code></pre>
           <details open><summary>Does RLS automatically make this safe?</summary><p>RLS follows the actual execution identity and workspace role. Verify restricted users, Build permission, and the model's sensitive fields. Agent instructions do not enforce authorization.</p></details>
           <details><summary>Can it answer any question?</summary><p>No guarantee. The generic contract removes the five-metric mapping but still requires valid metadata, permissions, supported table-expression syntax and correct reasoning. Dated ranking and creator follow-up are user-observed working; the combined request and broader question coverage remain unverified. Exact measure implementations and automatic multi-model routing are not provided.</p></details>
           <details><summary>Is Fabric capacity or MCP required?</summary><p>A Fabric data agent is not required for the connector/REST route. Power BI licensing still applies. Hosted Power BI MCP is a separate optional integration; its query-generation tool has Copilot entitlement requirements.</p></details>
-          <details><summary>Are these real business results?</summary><p>The UI screenshots are real. Public example names and numbers are synthetic. No customer result rows or private conversation transcripts are published here.</p></details>
+          <details><summary>Are these real business results?</summary><p>The M365 result screenshots are real, with owner-approved agent names, usage figures and dates unchanged. People's names are masked. Separately labeled illustrative tables use invented names and numbers; they are not test evidence. Original captures and tenant configuration remain private.</p></details>
         </div>
       </div>
     </section>
@@ -400,7 +438,7 @@ ORDER BY 'Date'[YearMonth]</code></pre>
       </div>
     </section>
     <div class="release">
-      <div><h3>Public documentation. Private data stays private.</h3><p>Real screenshots use opaque redactions for identities and business result cells; illustrative names and numbers are labeled synthetic. The reviewed ZIP excludes credentials, tenant bindings and the demo model. No open-source license has been selected; public visibility does not grant additional reuse rights.</p></div>
+      <div><h3>Reviewed documentation. Clear publication boundaries.</h3><p>People's names are masked in real result screenshots; agent names, usage figures and dates remain visible with owner approval. Configuration captures redact private resource IDs and identities. Illustrations are labeled synthetic. The reviewed ZIP excludes credentials, tenant bindings and the demo model. No open-source license has been selected; public visibility does not grant additional reuse rights.</p></div>
       <a class="button secondary" href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/docs/public-release.md">Release review and limitations</a>
     </div>
   </main>

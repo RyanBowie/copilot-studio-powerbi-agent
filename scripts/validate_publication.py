@@ -90,7 +90,9 @@ def main():
         "docs/capabilities-and-limits.md", "docs/scalability-experiment.md",
         "docs/date-filtering.md",
         "docs/assets/architecture.excalidraw", "docs/assets/architecture.svg",
-        "docs/assets/tools-initial-poc.png", "docs/assets/connection-approval.png",
+        "docs/assets/architecture-simple.excalidraw", "docs/assets/architecture-simple.svg",
+        "docs/assets/studio-query-details.png", "docs/assets/studio-query-input.png",
+        "docs/assets/studio-powerbi-action.png", "docs/assets/m365-connection-consent.png",
         "agent/README.md",
         "solution/PowerBIQueryStarter_unmanaged.zip", "solution/package-manifest.json",
         "docs/solution-import.md",
@@ -126,8 +128,8 @@ def main():
             continue
         file_count += 1
         text = path.read_text(encoding="utf-8")
-        # Embedded PNGs are binary assets, not text to scan for coincidental patterns.
-        scan_text = re.sub(r"data:image/png;base64,[A-Za-z0-9+/=]+", "EMBEDDED_IMAGE", text)
+        # SVG source is scanned separately; base64 is not meaningful plaintext.
+        scan_text = re.sub(r"data:image/(?:png|svg\+xml);base64,[A-Za-z0-9+/=]+", "EMBEDDED_IMAGE", text)
         for label, pattern in [("deployment GUID", guid), ("credential", token), ("private tenant URL", private_url)]:
             if pattern.search(scan_text):
                 errors.append(f"Possible {label}: {relative}")
@@ -156,8 +158,12 @@ def main():
             errors.append(f"Duplicate HTML IDs: {page.duplicates}")
         if page.images_missing_alt:
             errors.append("HTML images are missing alternative text.")
-        if "__TOOLS_SCREENSHOT__" in source or "__CONSENT_SCREENSHOT__" in source:
+        if re.search(r"__[A-Z][A-Z0-9_]*__", re.sub(r"data:image/(?:png|svg\+xml);base64,[A-Za-z0-9+/=]+", "", source)):
             errors.append("Site still contains unresolved screenshot markers.")
+        template = (ROOT / "site" / "index.template.html").read_text(encoding="utf-8")
+        for retired in ("__TOOLS_SCREENSHOT__", "__CURRENT_TOOLS__", "Historical initial PoC"):
+            if retired in template:
+                errors.append(f"Walkthrough contains retired screenshot content: {retired}")
         for ref in page.links:
             url = urlparse(ref)
             if url.scheme or url.netloc:

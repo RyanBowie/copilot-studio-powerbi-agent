@@ -8,34 +8,42 @@ These captures come from actual browser tests, not the synthetic illustration be
 | Asset | What it records |
 |---|---|
 | `m365-connection-consent.png` | Generic prompt and normal Power BI Allow/Cancel card |
-| `m365-ranking-redacted.png` | Genuine top-20 prompt/response composite; all sensitive result cells masked |
-| `m365-followup-redacted.png` | Genuine contextual top-five composite; result cells masked |
+| `m365-ranking-redacted.png` | Genuine top-20 composite; people's names masked, agent names/usage/dates unchanged |
+| `m365-followup-redacted.png` | Genuine top-five composite; people's names masked, agent names/usage/dates unchanged |
 | `m365-dax-advice.png` | Genuine advice prompt/response composite; DAX explicitly labeled unexecuted |
 | `studio-current-topics.png` | Four active and three inactive topics; editor identity masked |
-| `studio-current-tools.png` | Empty standalone Tools tab; connector actions reside in topics |
+| `studio-query-details.png` | Actual Run generated DAX details, model description and enabled status |
+| `studio-query-input.png` | Actual dynamically filled tableExpression input, including Studio's display-name warning |
+| `studio-powerbi-action.png` | Actual code-editor crop: generated DAX binding, Invoker mode, dynamic output and timeout; resource IDs masked |
 | `studio-model-selection.png` | Actual GPT-5 Reasoning (Preview) picker |
 | `studio-current-warnings.png` | Current preview-model and formal-evaluation warnings |
 | `studio-updated-starter.png` | Actual saved Analyze agent usage title/prompt in Studio; not M365 propagation evidence |
 
-Opaque pixel replacement removes identities and business values. No replacement business values
-are invented. Prompt/response composites are labeled as such; browser scrolling and a taller
+Opaque pixels remove people's names in result captures; the owner approved keeping agent names,
+usage figures and dates visible. Configuration captures also redact private resource IDs and
+personal identity. No replacement business values are invented.
+Prompt/response composites are labeled as such; browser scrolling and a taller
 viewport made the actual content visible without changing its text. Originals remain private.
 
-## Historical Copilot Studio interface
+## Actual configuration, not a historical tool inventory
 
-The following PNGs are crops of a screenshot supplied by the user during the initial PoC on 12 September 2026. They retain actual UI pixels; only the surrounding area was cropped away. Embedded source-image metadata was not carried into the exported images.
+![Actual Power BI connector configuration in the Studio code editor, with resource IDs masked.](assets/studio-powerbi-action.png)
 
-### Initial tool registration
+The old fixed top-100 tool and empty standalone Tools screenshots have been removed from the
+current walkthrough and asset set. Historical states remain in Git history, not the current gallery.
+The working capabilities are native topics with embedded connector actions.
 
-![Actual initial Power BI tools in Copilot Studio](assets/tools-initial-poc.png)
+See the [visible topic contracts and genuine input/details captures](topic-and-tool-reference.md).
+The input screenshot retains Studio's display-name warning. Capturing it did not change or save
+runtime configuration. The model-facing description, dynamic filling, query binding and Invoker
+mode are actual configuration, not a reconstructed mockup.
 
-Shows three connector tools: governance counts, smoke test, and top-100 ranking. This is a **historical initial-state screenshot**, not the latest enhancement's inventory.
+## Simple architecture
 
-### Connection approval
+![Message through Copilot Studio capabilities to an answer, with Power BI execution as the user.](assets/architecture-simple.svg)
 
-![Actual end-user connection approval card with Allow and Cancel](assets/connection-approval.png)
-
-Shows the requesting user's consent step. **This is not a completed query result.** Registering a connection, binding a reference, and approving agent use are distinct steps.
+[Editable simple diagram](assets/architecture-simple.excalidraw).
+This is an authored architecture illustration, not a product screenshot.
 
 ## Synthetic output illustration
 
@@ -45,7 +53,7 @@ Rendered from this repository's walkthrough. **Not a screenshot of Copilot Studi
 
 ## Documentation-site previews
 
-These are screenshots of the documentation itself, not a deployed public GitHub Pages site:
+These are local renders of the documentation source, not signed-in product screenshots:
 
 - [Light desktop preview](assets/walkthrough-light.png)
 - [Dark desktop preview](assets/walkthrough-dark.png)
@@ -59,7 +67,9 @@ They are deliberately not copied into this repository or embedded in the site. T
 scenarios are documented in [verification](verification.md) without those values. The synthetic
 ranking illustration remains labeled synthetic; it is not substituted as photographic proof.
 
-The owner approved public release after the current and historical imagery was reviewed. Real
-identities and business-result cells remain masked, with no substitute values. Continue reviewing
+The owner approved public release after the current and historical imagery was reviewed, then
+requested names-only result redaction. The reviewed M365 captures now retain actual agent names,
+usage figures and dates, with no substitute values. Earlier user-supplied screenshots described
+above remain private. Continue reviewing
 new images at full resolution before publication. Microsoft product UI and trademarks remain their
 owners' property; no additional intellectual-property license is implied by public visibility.

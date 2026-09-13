@@ -5,8 +5,9 @@ responses, not fabricated transcripts or direct-API substitutes. The checks belo
 response shape and conversational consistency, not independent numerical correctness for all data.
 
 Testing took place on 13 September 2026 local UK time, while the UTC date was still 12 September.
-The tenant-specific agent link, conversation identifiers, original result images and business
-values remain private. The working deployment was not changed to make these tests pass.
+The tenant-specific agent link, conversation identifiers and unredacted originals remain private.
+The owner later approved publishing actual agent names, usage figures and dates while masking
+people's names. The working deployment was not changed to make these tests pass.
 
 ## Results
 
@@ -37,7 +38,7 @@ retained and discussed, rather than replaced with invented identity values.
 An extra per-row timestamp was displayed without a column label. Its meaning was not independently
 established; the screenshot is not an endorsement of that presentation.
 
-![Actual top-20 prompt and response, with identifying and business result cells redacted.](assets/m365-ranking-redacted.png)
+![Actual top-20 prompt and response; people's names redacted, actual agent names, usage and dates retained.](assets/m365-ranking-redacted.png)
 
 ## 2. Contextual refinement
 
@@ -48,7 +49,7 @@ matched the first five rows of the previous response. The same date range and me
 The output was a list with separators, not a rendered table; this format deviation is retained
 in the capture rather than edited into an apparently compliant table.
 
-![Actual contextual follow-up prompt and response; five sensitive result rows redacted.](assets/m365-followup-redacted.png)
+![Actual contextual follow-up; people's names redacted, actual agent names and usage retained.](assets/m365-followup-redacted.png)
 
 ## 3. DAX advice
 
@@ -72,7 +73,10 @@ the Power BI connector calls are nodes inside the active topics.
 
 ![Actual topic inventory with editor identity redacted.](assets/studio-current-topics.png)
 
-![Actual standalone Tools tab; connector invocations live inside the generic topics.](assets/studio-current-tools.png)
+![Actual embedded Power BI action in the Studio code editor; resource IDs redacted.](assets/studio-powerbi-action.png)
+
+The action binds `query` to `Topic.generatedDax`, executes in `Invoker` mode and returns
+`firstTableRows: Any`. See [complete topic details and actual input captures](topic-and-tool-reference.md).
 
 The rendered model picker was observed as **GPT-5 Reasoning (Preview)**. This is UI-selection
 evidence, not inference-model telemetry.
@@ -107,8 +111,11 @@ a cosmetic refresh, and the completed test conversation was preserved.
 ## Capture and privacy method
 
 The prompt/response images are explicitly labeled composites of real element screenshots from the
-same conversation. Result cells containing names, creators, values and per-row dates were covered
-with opaque pixels. No synthetic values were substituted. UI inventory captures exclude the
+same conversation. At the owner's request, opaque masks now cover only people's names in the
+ranking and follow-up: 17 and five name occurrences respectively. Agent names, usage figures,
+dates, blank entries and system labels remain unchanged. A pixel comparison confirmed every
+response pixel outside those masks is identical to the original. No synthetic values were
+substituted. Configuration screenshots also mask resource IDs. UI inventory captures exclude the
 environment/account header and redact the editor identity. The consent and advice captures
 contain no personal result rows.
 
@@ -118,5 +125,5 @@ overwriting originals. Every derivative was visually reviewed. These images are 
 older, explicitly synthetic ranking illustration.
 
 The owner subsequently authorized a public repository and GitHub Pages release after privacy review.
-Only these reviewed derivatives are included; original captures and business rows remain private.
+Only reviewed derivatives are included; unredacted originals and private configuration remain private.
 Publishing an agent into M365 Copilot does not itself authorize public release of its data.

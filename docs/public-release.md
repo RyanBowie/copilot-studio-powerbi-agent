@@ -4,21 +4,21 @@ The owner authorized public repository and GitHub Pages publication on **13 Sept
 subject to anonymizing screenshots and reviewing the solution. The website documents the agent;
 it does not host a connected agent or provide access to the demonstration's Power BI data.
 
-## Review performed
+## Initial release review performed
 
 | Area | Scope and result |
 |---|---|
 | Existing Git history | All 12 reachable commits through `63e7cf9`; 284 unique text objects/archive entries scanned |
 | Historical images | 48 unique images, including images embedded in HTML; 238 tiles processed with local Windows OCR, not an external service |
-| Current screenshots | Visual review of real captures and redactions; names, creators, business values and editor identity remain covered by opaque pixels |
+| Initial-release screenshots | Visual review of real captures and redactions; at that release, names, creators, business values and editor identity were covered by opaque pixels |
 | Text scan findings | Two email-pattern matches were `parentbotid@odata.bind`, an OData property name, not personal email addresses |
 | Image scan findings | No identity/tenant pattern hits; no flagged comment, description, XMP or EXIF payloads |
 | Unknown binary artifacts | None found in the history inventory |
 | Solution ZIP | Every decompressed entry inspected and matched against its manifest/source; no tenant IDs, live connection binding, customer schema or credentials |
 | Download integrity | Unchanged import-verified ZIP; SHA-256 recorded in the package manifest and import observation |
 
-The real ranking and follow-up images contain **redacted result cells**, not invented replacement
-values. Other numeric rows/names in the site are explicitly labeled synthetic illustrations.
+At the initial release, the real ranking and follow-up images contained **redacted result cells**,
+not invented replacement values. Other numeric rows/names were labeled synthetic illustrations.
 Generic prompts, declared date ranges and response-shape counts remain visible to explain the tests.
 The public GitHub owner name and normal public commit attribution are intentionally retained.
 Original captures, private audit/OCR output, deployment configuration and transcripts are not published.
@@ -26,6 +26,24 @@ Original captures, private audit/OCR output, deployment configuration and transc
 The history scan found no private-content removal requiring a history rewrite. Pattern matching and
 OCR support, but do not replace, human review; this is not a guarantee that every possible sensitive
 fact can be detected automatically.
+
+## Owner-approved screenshot update - 13 September 2026
+
+The owner subsequently requested **only people's names** be masked in result screenshots.
+The ranking and follow-up derivatives now retain actual agent names, usage figures and dates.
+Opaque masks cover 17 and five personal-name occurrences respectively; every response pixel
+outside the masks was compared against the private original and found unchanged. System labels
+and blank entries are retained. No substitute values or reconstructed answers are used.
+
+The historical fixed-tool and empty standalone Tools images were removed from the current asset
+set and visible documentation. New genuine Studio crops show the topic details, dynamically
+filled DAX input and embedded Power BI action. Private workspace/model IDs are masked in the
+action; no live runtime settings were edited or saved. The input's display-name warning remains
+visible rather than being cosmetically removed. An authored simple architecture diagram and
+visible topic contracts complement the captures; diagrams are not execution evidence.
+
+This update does not expand the initial history-scan counts above. Unredacted originals, private
+OCR output and mask specifications remain excluded. The solution ZIP is unchanged.
 
 ## Solution review boundary
 

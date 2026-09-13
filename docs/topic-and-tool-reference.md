@@ -32,8 +32,32 @@ the working demonstration's private generated metadata.
 | Generated query error | `topic.GeneratedQueryError` | OnError | Report error and stop rather than fabricate an answer |
 
 The original three fixed connector tools are deleted in the demonstration. Three historical bounded
-topics remain inactive there; they are not included in the starter solution. The empty standalone
-Tools tab is expected: connector invocations are embedded nodes in the active topics.
+topics remain inactive there; they are not included in the starter solution.
+Connector invocations are embedded nodes in the active topics, not separate fixed-query tool cards.
+
+## Actual Studio configuration
+
+These genuine crops show the configured working demo, not the deliberately unconfigured ZIP.
+No runtime settings were edited or saved to capture them.
+
+<img src="assets/studio-query-details.png" width="340" alt="Actual Run generated DAX topic details and model-facing description.">
+
+The execution topic is enabled and its model-facing description distinguishes execution from
+advice. Ask-before-running is off; Power BI connection consent and permissions still apply.
+
+<img src="assets/studio-query-input.png" width="266" alt="Actual tableExpression String input with dynamic filling, DAX description and display-name warning.">
+
+The `tableExpression` input is dynamically filled. Studio's visible display-name warning is
+retained in the screenshot; the technical variable name and description are configured.
+The description directs the orchestrator to author new DAX from verified metadata, including
+VAR/RETURN, SUMMARIZECOLUMNS, FILTER, CALCULATETABLE, ADDCOLUMNS, SELECTCOLUMNS, UNION and derived
+calculations. It is not a fixed query or finite business-metric mapping.
+
+![Actual generated-DAX Power BI action in the Studio code editor; workspace and semantic-model IDs masked.](assets/studio-powerbi-action.png)
+
+The action binds `query` to `Topic.generatedDax`, leaves `impersonatedUserName` blank and uses
+`connectionProperties.mode: Invoker`. It declares `firstTableRows: Any`, explicit null omission,
+a 30,000 ms timeout and `operationId: ExecuteDatasetQuery`. Resource IDs are masked, not replaced.
 
 ## Metadata inputs
 

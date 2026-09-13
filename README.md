@@ -110,15 +110,19 @@ Follow the [complete import and customization guide](docs/solution-import.md), n
 
 ## Architecture at a glance
 
-![Copilot Studio interprets a question with model context, constructs a supported query, and invokes Power BI as the user. DAX guidance can return without execution.](docs/assets/architecture.svg)
+![Message flows through Copilot Studio's reusable metadata and DAX capabilities to an explained answer; Power BI executes as the requesting user.](docs/assets/architecture-simple.svg)
+
+[Detailed architecture](docs/assets/architecture.svg) and editable Excalidraw sources
+([simple](docs/assets/architecture-simple.excalidraw), [detailed](docs/assets/architecture.excalidraw)).
 
 ## Screenshots and examples
 
-![Actual M365 top-20 request and response, with identities and business values redacted.](docs/assets/m365-ranking-redacted.png)
+![Actual M365 top-20 request and response; people's names redacted, agent names, usage figures and dates unchanged.](docs/assets/m365-ranking-redacted.png)
 
-This genuine prompt/response composite is explicitly labeled and uses opaque redactions, not
-invented result values. [All current channel tests and authoring captures](docs/m365-testing.md)
-include consent, follow-up, advice, active topics, the empty standalone Tools tab and model settings.
+This genuine prompt/response composite is explicitly labeled. With owner approval, only people's
+names are masked; agent names, usage figures and dates are unchanged. No values are invented.
+[All current channel tests and authoring captures](docs/m365-testing.md)
+include consent, follow-up, advice, active topics, actual connector configuration and model settings.
 Formatting and semantic-verification limitations are documented alongside the images.
 
 The old **Top 100 agents** conversation starter is now **Analyze agent usage**, saved and published
@@ -126,9 +130,25 @@ with a generic top-20/creator prompt. [The actual Studio capture](docs/assets/st
 shows the change. A post-publication M365 landing reload still showed the old label; channel
 presentation is not claimed updated.
 
-![Actual initial Copilot Studio tool registration: governance counts, smoke test, and top 100 agents by usage.](docs/assets/tools-initial-poc.png)
+## Tools and topics
 
-This actual UI crop shows the **initial three-tool PoC**, not the later enhancement or proof of query success. See [screenshot provenance and previews](docs/screenshots.md).
+The reusable capabilities are **native Topics with embedded Power BI connector actions**,
+not a standalone tool per question.
+
+| Topic | Trigger | Purpose |
+|---|---|---|
+| Get model metadata | Generative selection | Verify requester schema visibility; return governed metadata |
+| Run generated DAX | Generative selection | Validate and execute newly generated DAX as the user |
+| Compile DAX advice | Generative selection | Compile proposed DAX without executing the business query |
+| Generated query error | OnError | Report the actual error and stop |
+
+![Actual Studio Power BI action: generated DAX binding, Invoker mode and dynamic rows, with resource IDs masked.](docs/assets/studio-powerbi-action.png)
+
+The connector operation is `ExecuteDatasetQuery`; its query is `Topic.generatedDax`, not a fixed
+top-100 expression. Read the [complete topic inputs, outputs, triggers and configuration captures](docs/topic-and-tool-reference.md),
+[full agent instructions](agent/agent.mcs.yml), and [all four complete synthetic topic YAML definitions](agent/example-topics/README.md).
+These screenshots show the configured demo; the ZIP remains deliberately unconfigured.
+See [screenshot provenance and previews](docs/screenshots.md).
 
 <img src="docs/assets/illustrative-ranking-output.png" width="480" alt="Clearly labeled synthetic illustration of a ranked answer, with three invented demo agents and values.">
 
@@ -175,8 +195,10 @@ Both builds use only the Python standard library. `scripts\preview_site.py` is a
 
 **Public repository and documentation website, released with owner approval after privacy review.**
 The review covered current files, tracked history, screenshots and the exact import-verified solution ZIP.
-Real identities and business result cells are masked; unredacted originals and tenant configuration
-remain excluded. See the [release review](docs/public-release.md) for scope and limitations.
+People's names are masked in result screenshots; actual agent names, usage and dates remain visible
+with owner approval. Resource IDs and personal identities are redacted in configuration captures.
+Unredacted originals and tenant configuration remain excluded.
+See the [release review](docs/public-release.md) for scope and limitations.
 
 Pages deployment remains manual-only and gated to public repositories. After reviewing future
 changes, run **Actions > Publish reviewed documentation > Run workflow**. The workflow checks that

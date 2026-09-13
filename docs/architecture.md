@@ -8,6 +8,18 @@ historical preview/SDK blockers.
 The example named `Agent365` is a custom Power BI model/report, not Microsoft Agent 365.
 That distinction belongs in documentation, not runtime prompts.
 
+## Message to answer
+
+![Message flows through Copilot Studio's reusable metadata and DAX capabilities to an explained answer.](assets/architecture-simple.svg)
+
+Copilot Studio retrieves governed metadata, generates DAX, invokes the native query topic and
+explains the returned rows. That topic calls Power BI as the requesting user. Advice instead
+returns proposed DAX without executing the business query; metadata authorization may still probe.
+
+[Editable simple diagram](assets/architecture-simple.excalidraw) |
+[Detailed diagram](assets/architecture.svg) |
+[Actual topic and connector configuration](topic-and-tool-reference.md).
+
 ## What replaces the earlier query templates
 
 The six fixed/bounded legacy components are retired from the active design. Native topic capabilities
