@@ -83,7 +83,12 @@
     nav a { color: var(--cp-text-muted); text-decoration: none; }
     nav a:hover { color: var(--cp-accent); }
     .icon-button { border: 1px solid var(--cp-border); background: var(--cp-surface); color: var(--cp-text); padding: 7px 12px; border-radius: .625rem; font-size: 13px; }
-    .hero { padding: 76px 0 56px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 56px; align-items: center; }
+    .hero { padding: 32px 0 40px; }
+    .hero h1 { font-size: clamp(32px, 3.5vw, 44px); margin-bottom: 12px; }
+    .hero .eyebrow { margin-bottom: 12px; }
+    .hero .lead { max-width: 1000px; margin-bottom: 24px; }
+    .hero-demo { display: grid; grid-template-columns: 1fr 1.2fr; gap: 24px; align-items: start; }
+    .hero-demo figcaption { padding: 16px; }
     .eyebrow { display: block; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--cp-accent); margin-bottom: 20px; }
     h1 { font-size: clamp(36px, 4.8vw, 60px); line-height: 1.08; letter-spacing: -.05em; margin: 0 0 24px; font-weight: 650; }
     h1 em { color: var(--cp-accent); font-style: normal; }
@@ -170,8 +175,7 @@
     code { font-family: Consolas, "Courier New", Courier, monospace; font-size: .9em; overflow-wrap: anywhere; }
     pre { overflow-x: auto; background: var(--cp-bg-elevated); border: 1px solid var(--cp-border); border-radius: .625rem; padding: 16px; }
     @media (max-width: 940px) {
-      .hero { grid-template-columns: 1fr; gap: 32px; padding-top: 48px; }
-      .hero .chat-card { max-width: 600px; }
+      .hero-demo { grid-template-columns: 1fr; }
       nav { gap: 16px; }
       .three-grid { grid-template-columns: 1fr; }
       .screen-grid, .evidence-grid { grid-template-columns: 1fr; }
@@ -214,32 +218,21 @@
   </header>
   <main id="main" class="wrap">
     <div class="hero">
-      <div>
-        <span class="eyebrow">A practical agent blueprint</span>
-        <h1>Your semantic model.<br>Your questions.<br><em>No Fabric data agent.</em></h1>
-        <p class="lead">Ask questions about a Power BI semantic model. A standard Copilot Studio agent uses prepared model metadata to generate DAX, run it with your Power BI permissions, and explain the results. No tool per question.</p>
-        <div class="actions">
+      <span class="eyebrow">See it in action / Real M365 Copilot screenshots</span>
+      <h1>Ask about your model. <em>Get an answer.</em></h1>
+      <p class="lead">A standard Copilot Studio agent uses model metadata to generate DAX, run it with your Power BI permissions, and explain the results. No Fabric data agent.</p>
+      <div class="hero-demo">
+        <figure id="hero-prompt"><img src="__HERO_PROMPT__" width="590" height="106" fetchpriority="high" alt="Actual user prompt: Review the Agents semantic model and provide me the top 20 used agents and their creators."><figcaption><strong>1. Ask a question</strong>Actual prompt from the published M365 test. The tested Power BI semantic model contains agents, creators and usage data.</figcaption></figure>
+        <figure id="hero-output"><img src="__HERO_OUTPUT__" width="740" height="362" fetchpriority="high" alt="Actual agent response excerpt showing the first eight of twenty ranked agents, creators and interaction counts; people's names masked."><figcaption><strong>2. Get a model-grounded response</strong>Actual output, cropped to the first 8 of 20 rows. People's names are masked; agent names, values and dates are unchanged. <a href="#screenshots">View the complete response and test notes</a>.</figcaption></figure>
+      </div>
+      <div class="actions">
           <a class="button" href="https://github.com/RyanBowie/copilot-studio-powerbi-agent/raw/refs/heads/main/solution/PowerBIQueryStarter_unmanaged.zip">Download solution ZIP</a>
           <a class="button secondary" href="#setup">Import and configure</a>
           <a class="button secondary" href="https://github.com/RyanBowie/copilot-studio-powerbi-agent">View repository</a>
-        </div>
-        <p class="footnote">Experimental, import-verified unmanaged starter. Configure your own connection, model metadata and business definitions before publishing. This website is documentation, not a live agent or a connection to your data.</p>
       </div>
-      <div class="chat-card">
-        <div class="chat-title"><strong>A question, not another tool</strong><span class="small-tag">Synthetic illustration</span></div>
-        <div class="chat-body">
-          <div class="bubble user">Give me the top 100 agents by usage.</div>
-          <div class="tool-call"><span class="dot"></span> Power BI query &middot; end-user connection</div>
-          <p><strong>Agents ranked by Interactions</strong><br><span class="muted">Illustrative excerpt &middot; selected reporting period</span></p>
-          <table aria-label="Synthetic ranking excerpt">
-            <thead><tr><th>Agent</th><th>Interactions</th></tr></thead>
-            <tbody><tr><td>Service Desk Demo</td><td>1,284</td></tr><tr><td>Policy Finder Demo</td><td>976</td></tr><tr><td>Onboarding Demo</td><td>811</td></tr></tbody>
-          </table>
-          <p class="footnote">Invented names and values. Three-row documentation excerpt, not a live result or a full top 100.</p>
-        </div>
-      </div>
+      <p class="footnote">Observed response, not an independent numerical audit. Experimental starter: configure your own connection, model metadata and business definitions before publishing. This website is documentation, not a live agent.</p>
     </div>
-    <div class="note"><strong>Published M365 conversations tested.</strong> A generic top-20 request returned agents and creators; a top-five follow-up matched the prior first five; advice returned explicitly unexecuted DAX. Real redacted screenshots appear below. This is scoped response and consistency evidence, not universal query correctness. The earlier repeated-value concern is deferred and the combined single-turn request remains unresolved.</div>
+    <div class="note"><strong>Published M365 conversations tested.</strong> A generic top-20 request returned agents and creators; a top-five follow-up matched the prior first five; advice returned explicitly unexecuted DAX. Complete redacted captures appear below. This is scoped response and consistency evidence, not universal query correctness. The earlier repeated-value concern is deferred and the combined single-turn request remains unresolved.</div>
     <div class="strip">
       <div><strong>Standard Copilot Studio</strong><span>No alternative agent runtime required.</span></div>
       <div><strong>Existing Power BI model</strong><span>Query the semantic layer, not exported spreadsheets.</span></div>

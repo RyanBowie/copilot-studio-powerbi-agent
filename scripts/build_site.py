@@ -20,6 +20,8 @@ def image_uri(image):
 def main():
     html = (ROOT / "site" / "index.template.html").read_text(encoding="utf-8")
     images = {
+        "__HERO_PROMPT__": "m365-prompt-intro.png",
+        "__HERO_OUTPUT__": "m365-output-intro.png",
         "__SIMPLE_ARCHITECTURE__": "architecture-simple.svg",
         "__TESTED_MODEL_REPORT__": "powerbi-agents-report.png",
         "__M365_CONSENT__": "m365-connection-consent.png",

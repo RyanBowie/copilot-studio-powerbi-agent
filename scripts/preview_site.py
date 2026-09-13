@@ -16,6 +16,12 @@ def main():
         page.goto(url + "?scoutTheme=light", wait_until="load")
         assert page.locator("html").get_attribute("data-theme") == "light"
         assert "generate DAX" in page.locator(".hero .lead").inner_text()
+        assert page.locator(".hero img").count() == 2
+        assert "Synthetic illustration" not in page.locator(".hero").inner_text()
+        assert "first 8 of 20 rows" in page.locator("#hero-output").inner_text()
+        for selector in ("#hero-prompt img", "#hero-output img"):
+            bounds = page.locator(selector).bounding_box()
+            assert bounds and bounds["y"] + bounds["height"] <= 900, "Opening screenshots must fit before scrolling on desktop."
         assert page.locator("#setup").count() == 1
         assert "semantic model containing agents" in page.locator("#examples").inner_text()
         assert page.locator("#tested-model-report img").count() == 1
@@ -42,7 +48,7 @@ def main():
         assert page.locator("img").evaluate_all("(images) => images.every(img => img.complete && img.naturalWidth > 0)")
         assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
         page.screenshot(path=str(ROOT / "docs" / "assets" / "walkthrough-light.png"), full_page=True)
-        page.locator(".hero .chat-card").screenshot(path=str(ROOT / "docs" / "assets" / "illustrative-ranking-output.png"))
+        page.locator("#panel-rank").screenshot(path=str(ROOT / "docs" / "assets" / "illustrative-ranking-output.png"))
         page.locator("#tab-dax").click()
         assert page.locator("#panel-dax").is_visible()
         page.locator("#tab-dax").press("ArrowUp")
@@ -56,6 +62,8 @@ def main():
         page.set_viewport_size({"width": 390, "height": 844})
         page.goto(url + "?scoutTheme=light", wait_until="load")
         assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth"), "Mobile layout overflows."
+        bounds = page.locator("#hero-output img").bounding_box()
+        assert bounds and bounds["y"] < 844, "The real output should begin in the first mobile viewport."
         page.screenshot(path=str(ROOT / "docs" / "assets" / "walkthrough-mobile.png"), full_page=True)
         assert not errors, f"Browser JavaScript errors: {errors}"
         browser.close()

@@ -5,6 +5,13 @@
 See the [M365 test walkthrough](m365-testing.md) for exact prompts, results and limitations.
 These captures come from actual browser tests, not the synthetic illustration below.
 
+The walkthrough opens with two real screenshot crops, not a recreated chat mockup.
+`m365-prompt-intro.png` is the prompt crop `(32, 68, 622, 174)` from the reviewed
+740 x 1273 `m365-ranking-redacted.png` composite. `m365-output-intro.png` is the response crop
+`(0, 204, 740, 566)`, showing the first eight of twenty rows. Coordinates are left/top/right/bottom.
+The crops preserve the original pixels and existing name masks; the output excerpt is explicitly
+labeled and links to the complete capture. No result was regenerated or retyped for the opening.
+
 | Asset | What it records |
 |---|---|
 | `m365-connection-consent.png` | Generic prompt and normal Power BI Allow/Cancel card |
