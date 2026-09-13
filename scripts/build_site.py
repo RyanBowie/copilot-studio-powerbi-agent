@@ -5,6 +5,18 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def image_uri(image):
+    if image.suffix == ".svg":
+        # Git checkout line endings must not change the embedded text asset.
+        data = image.read_text(encoding="utf-8").encode("utf-8")
+        mime = "image/svg+xml"
+    else:
+        data = image.read_bytes()
+        mime = "image/png"
+    encoded = base64.b64encode(data).decode("ascii")
+    return f"data:{mime};base64,{encoded}"
+
+
 def main():
     html = (ROOT / "site" / "index.template.html").read_text(encoding="utf-8")
     images = {
@@ -24,9 +36,7 @@ def main():
         if html.count(marker) != 1:
             raise ValueError(f"Expected one image marker: {marker}")
         image = ROOT / "docs" / "assets" / filename
-        encoded = base64.b64encode(image.read_bytes()).decode("ascii")
-        mime = "image/svg+xml" if image.suffix == ".svg" else "image/png"
-        html = html.replace(marker, f"data:{mime};base64,{encoded}")
+        html = html.replace(marker, image_uri(image))
     (ROOT / "docs" / "index.html").write_text(html, encoding="utf-8", newline="\n")
     print("Built docs/index.html with embedded screenshots.")
 

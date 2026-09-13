@@ -103,9 +103,9 @@ def write_assets(name, elements, svg):
     (ASSETS / (name + ".excalidraw")).write_text(json.dumps({
         "type": "excalidraw", "version": 2, "source": "copilot",
         "elements": elements, "appState": {"viewBackgroundColor": "#f7f4ef"}, "files": {},
-    }, indent=2) + "\n", encoding="utf-8")
+    }, indent=2) + "\n", encoding="utf-8", newline="\n")
     svg.append("</svg>")
-    (ASSETS / (name + ".svg")).write_text("\n".join(svg) + "\n", encoding="utf-8")
+    (ASSETS / (name + ".svg")).write_text("\n".join(svg) + "\n", encoding="utf-8", newline="\n")
     print(f"Built {name}: editable Excalidraw and SVG.")
 
 
