@@ -217,7 +217,25 @@ python scripts\build_architecture.py
 python scripts\build_site.py
 ```
 
-Both builds use only the Python standard library. `scripts\preview_site.py` is an optional screenshot/interaction check that requires Python Playwright and an installed Microsoft Edge browser; it launches its own headless browser and does not use a signed-in profile.
+Both builds use only the Python standard library. The site's `--cp-*` foundation and theme detection
+remain in `site/index.template.html`; the later token overrides match the
+[Cowork benchmark's effective palette](https://ryanbowie.github.io/copilot-cowork-app-benchmark/#overview).
+The hero title uses its blue/purple/magenta text gradient, with solid text for print and forced colors.
+
+`scripts\preview_site.py` is an optional screenshot/interaction check that requires Python Playwright
+and an installed Microsoft Edge browser; it launches its own headless browser and does not use a
+signed-in profile. It checks both themes at desktop and mobile widths, system preference, keyboard
+focus/navigation, the theme toggle, examples, copy feedback, and title fallbacks. Screenshots use
+temporary storage by default and never overwrite the published evidence images.
+
+```powershell
+python scripts\preview_site.py
+# Optional: retain screenshots in a directory outside the repository.
+python scripts\preview_site.py --output-dir "$env:TEMP\powerbi-site-preview"
+```
+
+Use `--browser-channel chromium` or `--browser-channel chrome` for another installed Playwright
+browser, or `--url https://ryanbowie.github.io/copilot-studio-powerbi-agent/` to check the published site.
 
 ## Publication status
 
