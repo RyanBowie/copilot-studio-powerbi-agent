@@ -5,6 +5,7 @@ if (args.Length != 2)
     throw new ArgumentException("Provide synthetic-case JSON and result JSON paths.");
 var config = new PowerFxConfig(Features.PowerFxV1);
 config.EnableJsonFunctions();
+config.EnableRegExFunctions();
 var engine = new RecalcEngine(config);
 var options = new ParserOptions { AllowsSideEffects = true };
 var cases = JsonDocument.Parse(File.ReadAllText(args[0])).RootElement;
@@ -33,6 +34,8 @@ foreach (var item in cases.EnumerateArray())
         evidence.Add(new { name, passed, exceptionType,
                           missingAssembly = error is FileNotFoundException missing ? Path.GetFileName(missing.FileName) : null,
                           schemaVisibilityEstablished = false });
+        if (!passed)
+            Console.WriteLine(error.Message); // Only synthetic fixtures are accepted by this offline runner.
     }
     if (!passed)
         failures++;

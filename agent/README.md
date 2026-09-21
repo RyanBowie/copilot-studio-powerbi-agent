@@ -1,10 +1,19 @@
 # Metadata-grounded generated DAX in Copilot Studio
 
-This sanitized source includes [four complete synthetic native topic definitions](example-topics/README.md).
+**Import-first configuration path:** [PORTABLE.md](PORTABLE.md) documents the full
+native runtime's supported environment-variable boundary, package-builder API,
+private onboarding helper, size constraints and offline tests. Import the portable
+ZIP first, then configure the adopter's connection/model and private governed metadata
+without replacing topics. Explicit Studio publication is still required.
+
+This sanitized source also includes [four complete synthetic native topic definitions](example-topics/README.md).
 For the newer parent-run channel observations and actual screenshots, see
 [M365 testing](../docs/m365-testing.md). The separately import-verified
-[unmanaged starter solution](../docs/solution-import.md) intentionally contains onboarding stops,
-not the demonstration's private metadata or connection bindings.
+[older unmanaged starter solution](../docs/solution-import.md) was a stop-only onboarding
+artifact; its historical import verification does not validate the new portable
+configuration boundary. The portable API retains the full native runtime and ships
+no private model/schema/IDs. The source-deployment instructions below describe the
+legacy path; use **PORTABLE.md** for an imported portable agent instead of `deploy.py`.
 
 > **Example naming:** Agent365 is this demonstration's custom semantic model/report, **not the
 > Microsoft Agent 365 product**. This clarification belongs in documentation, not runtime instructions.

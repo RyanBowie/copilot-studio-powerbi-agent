@@ -1,10 +1,13 @@
 """The embedded site must be identical across Windows and Linux checkouts."""
 import base64
 from pathlib import Path
+import re
 import tempfile
 import unittest
+from urllib.parse import unquote, urlparse
 
-from build_site import DOWNLOAD_SOURCES, build_downloads, image_uri
+from build_site import DOWNLOAD_SOURCES, SOLUTION_DOWNLOADS, ROOT, build_downloads, image_uri
+from validate_publication import Page
 
 
 class ImageEmbeddingTests(unittest.TestCase):
@@ -34,11 +37,41 @@ class ImageEmbeddingTests(unittest.TestCase):
                 source = root / relative
                 source.parent.mkdir(parents=True, exist_ok=True)
                 source.write_bytes((filename + "\r\n" + "  complete source line\r\n" * 1500).encode("utf-8"))
+            for filename, relative in SOLUTION_DOWNLOADS.items():
+                source = root / relative
+                source.parent.mkdir(parents=True, exist_ok=True)
+                source.write_bytes(b"PK\x03\x04\r\n\x00\xff" + filename.encode("utf-8"))
             build_downloads(root)
-            self.assertEqual(len(list((root / "docs" / "downloads").iterdir())), 5)
+            self.assertEqual(len(list((root / "docs" / "downloads").iterdir())),
+                             len(DOWNLOAD_SOURCES) + len(SOLUTION_DOWNLOADS))
             for filename, relative in DOWNLOAD_SOURCES.items():
                 expected = (root / relative).read_text(encoding="utf-8").encode("utf-8")
                 self.assertEqual((root / "docs" / "downloads" / filename).read_bytes(), expected)
+            for filename, relative in SOLUTION_DOWNLOADS.items():
+                self.assertEqual((root / "docs" / "downloads" / filename).read_bytes(),
+                                 (root / relative).read_bytes())
+
+    def test_primary_solution_is_a_same_origin_download(self):
+        source = (ROOT / "site" / "index.template.html").read_text(encoding="utf-8")
+        page = Page()
+        page.feed(source)
+        self.assertIn("downloads/PowerBIQueryRuntime_unmanaged.zip", page.links)
+        self.assertNotIn("PowerBIQueryStarter_unmanaged.zip", source)
+        self.assertIn('href="downloads/PowerBIQueryRuntime_unmanaged.zip" download', source)
+
+    def test_documentation_links_work_in_github_and_pages_contexts(self):
+        docs = (ROOT / "docs").resolve()
+        for document in docs.glob("*.md"):
+            name = document.name
+            text = document.read_text(encoding="utf-8")
+            for ref in re.findall(r"\[[^\]]+\]\(([^)]+)\)", text):
+                url = urlparse(ref)
+                if url.scheme or url.netloc or not url.path:
+                    continue
+                target = (docs / unquote(url.path)).resolve()
+                self.assertTrue(target.is_relative_to(docs),
+                                f"{name}: repository-only links need an explicit GitHub URL: {ref}")
+                self.assertTrue(target.exists(), f"{name}: missing publication link: {ref}")
 
 
 if __name__ == "__main__":

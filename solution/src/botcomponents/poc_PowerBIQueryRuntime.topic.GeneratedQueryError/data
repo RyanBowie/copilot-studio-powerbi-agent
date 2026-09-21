@@ -1,0 +1,65 @@
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnError
+  id: main
+  actions:
+    - kind: ConditionGroup
+      id: ConfigUnexpected_u32PsV
+      conditions:
+        - id: ConfigUnexpected_u32PsVCondition
+          condition: =Global.AnalyticsStage = "configuration_validation"
+          actions:
+            - kind: SetVariable
+              id: ConfigUnexpected_u32PsVSchemaSnapshot
+              variable: Global.SchemaSnapshot
+              value: ''
+            - kind: SetVariable
+              id: ConfigUnexpected_u32PsVSchemaTurn
+              variable: Global.SchemaTurn
+              value: ''
+            - kind: SetVariable
+              id: ConfigUnexpected_u32PsVSchemaUser
+              variable: Global.SchemaUser
+              value: ''
+            - kind: SetVariable
+              id: ConfigUnexpected_u32PsVSchemaConfiguration
+              variable: Global.SchemaConfiguration
+              value: ''
+            - kind: SetVariable
+              id: ConfigUnexpected_u32PsVStatus
+              variable: Topic.status
+              value: stopped
+            - kind: SetVariable
+              id: ConfigUnexpected_u32PsVError
+              variable: Topic.error
+              value: 'CONFIG_EVALUATION_ERROR: the native Power BI tool is not configured with a complete reviewed configuration. No connector was attempted and no metadata was disclosed. Ask the agent owner to configure and publish; do not retry or diagnose this as a Power BI permission failure.'
+            - kind: SendActivity
+              id: ConfigUnexpected_u32PsVMessage
+              activity: 'CONFIG_EVALUATION_ERROR: the native Power BI tool is not configured with a complete reviewed configuration. No connector was attempted and no metadata was disclosed. Ask the agent owner to configure and publish; do not retry or diagnose this as a Power BI permission failure.'
+            - kind: CancelAllDialogs
+              id: ConfigUnexpected_u32PsVStop
+              activityProcessed: true
+    - kind: SetVariable
+      id: setGlobalLastQueryError
+      variable: Global.LastQueryError
+      value: =If(Global.AnalyticsStage = "query_result_validation", "Local decoder failure; no provider diagnosis is established.", Left(System.Error.Message, 2000))
+    - kind: SetVariable
+      id: setGlobalLastQueryErrorCode
+      variable: Global.LastQueryErrorCode
+      value: =Text(System.Error.Code)
+    - kind: SendActivity
+      id: ReportActualError
+      activity: 'The operation failed at the last recorded stage {Global.AnalyticsStage}; no successful query result is claimed. Error: {Global.LastQueryErrorCode} — {Global.LastQueryError}. Local input-validation and decoder failures are not Power BI authorization failures. A connector attempt alone does not prove a request reached Power BI. Access errors do not prove model fields are absent. Do not change identities, widen scope, or repeat an identical failed metadata request. At query_result_validation stop without another DAX attempt. Only an actual execution error may be corrected at most once using that error and verified metadata.'
+    - kind: ConditionGroup
+      id: StopDecoderError
+      conditions:
+        - id: LocalDecoderError
+          condition: =Global.AnalyticsStage = "query_result_validation"
+          actions:
+            - kind: CancelAllDialogs
+              id: CancelDecoderError
+              activityProcessed: true
+    - kind: EndDialog
+      id: EndError
+inputType: {}
+outputType: {}

@@ -1,0 +1,11 @@
+<botcomponent schemaname="poc_PowerBIQueryRuntime.globalvariable.MetadataFailureKey">
+  <componenttype>12</componenttype>
+  <iscustomizable>1</iscustomizable>
+  <language>1033</language>
+  <name>MetadataFailureKey</name>
+  <parentbotid>
+    <schemaname>poc_PowerBIQueryRuntime</schemaname>
+  </parentbotid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</botcomponent>

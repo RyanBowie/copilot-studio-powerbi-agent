@@ -1,0 +1,11 @@
+<botcomponent schemaname="poc_PowerBIQueryRuntime.globalvariable.MetadataAttemptTurn">
+  <componenttype>12</componenttype>
+  <iscustomizable>1</iscustomizable>
+  <language>1033</language>
+  <name>MetadataAttemptTurn</name>
+  <parentbotid>
+    <schemaname>poc_PowerBIQueryRuntime</schemaname>
+  </parentbotid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</botcomponent>

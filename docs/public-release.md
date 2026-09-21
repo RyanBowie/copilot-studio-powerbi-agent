@@ -53,12 +53,21 @@ conversation evidence and does not reconcile totals across different date window
 
 ## Solution review boundary
 
-The ZIP contains a separate **unconfigured unmanaged starter**, not the working tenant export.
-Its import was already verified in an authorized development environment. It remains unpublished,
-with no configured channels or bound connection. Metadata explains required setup rather than
-probing an example model; query and advice paths stop before a connector can execute.
-Package invariants and native parsed-contract checks are documented in the
-[import guide](solution-import.md) and [import observation](../solution/import-verification.json).
+The **new runtime package is a separate review scope**, not the previously approved starter.
+Its four functional native topics derive from the demonstrated implementation; the configuration
+boundary is parameterized so adopters can import first and supply model configuration without
+rewriting the topics. The read-only source comparison found the sanitized generic core matched
+the original implementation and the active native topics matched its private generated source.
+The raw tenant export is not a publication artifact.
+
+`PowerBIQueryRuntime_unmanaged.zip` must contain no private metadata, fixed workspace/model IDs,
+credentials, connection bindings or channel registrations. It ships unpublished and disabled by
+configuration, but retains the complete authorization probe and query/advice paths.
+The [import guide](solution-import.md) and [artifact-specific observation](https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/solution/import-verification.json)
+state which checks actually ran. The historical starter observation is not evidence for this ZIP.
+The site download must be byte-identical to the reviewed package; publication CI rejects absent or
+mismatched successful native-import evidence. Local structural-only checks can explicitly bypass
+that requirement, but cannot authorize publication.
 
 Runtime query generation still requires model-specific metadata, business definitions, destination
 permissions and correctness testing. This release review is **not** a production security
@@ -79,12 +88,13 @@ changed to publish this website.
 - [ ] Confirm architecture descriptions match the deployed implementation and distinguish enforced controls from instructions.
 - [ ] Recheck implementation status, direct-query versus chat evidence, limitations, and Microsoft preview/licensing documentation.
 - [ ] Run `python scripts\validate_publication.py` and inspect the rendered site in light and dark themes.
-- [ ] Inspect every decompressed starter ZIP entry against its unpacked source and checksum manifest;
-      retain its unconfigured stop-before-query behavior and exclude all tenant-bound exports.
+- [ ] Inspect every decompressed runtime ZIP entry against its unpacked source and checksum manifest;
+      reject nested archives/unexpected payloads, verify disabled configuration and retained runtime logic,
+      and exclude all tenant-bound exports and current environment-variable values.
 - [ ] Test adaptation with a clean nonproduction environment and synthetic model.
 - [ ] Test restricted-user permissions and RLS separately from maker testing.
 - [ ] Review dependencies and GitHub Actions versions.
-- [ ] Review the included unmanaged starter ZIP and import/customization caveats before public distribution;
+- [ ] Review the included unmanaged runtime ZIP and import/configuration caveats before public distribution;
       development import success does not establish configured cross-tenant query behavior.
 - [ ] Treat publication as disclosure; obtain approval for any newly included private material.
 - [ ] Configure **Settings -> Pages -> Source: GitHub Actions**, then manually run the Pages workflow.

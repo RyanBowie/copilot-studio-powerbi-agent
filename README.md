@@ -12,7 +12,9 @@ Ask a question about your Power BI semantic model: the configured agent uses pre
 generate new DAX, executes it with the requesting user's permissions, and explains the results.
 You do not need a fixed query or separate tool for each question.
 
-The downloadable ZIP is an unpublished Copilot Studio starter with no channel registration.
+The downloadable ZIP contains the native query, advice, metadata and error-handling runtime,
+with configuration disabled and no channel registration. Import it first, then configure your
+connection, model and reviewed metadata without replacing the runtime topics.
 After configuring it for your model, publish it and configure the M365 Copilot channel in your
 own tenant; [channel setup and testing steps](docs/setup.md#publish-and-test-in-m365-copilot)
 are included.
@@ -39,7 +41,7 @@ the solution ZIP.
 - [Published walkthrough](https://ryanbowie.github.io/copilot-studio-powerbi-agent/) — architecture, screenshots, download and setup. The [self-contained local copy](docs/index.html) also opens without a build step.
 - [Architecture and execution identity](docs/architecture.md)
 - [Setup and adaptation](docs/setup.md)
-- [Download and import the unmanaged starter solution](docs/solution-import.md)
+- [Download and configure the unmanaged runtime solution](docs/solution-import.md)
 - [Full instruction, topic and connector reference](docs/topic-and-tool-reference.md)
 - [Complete synthetic native topic YAML](agent/example-topics/README.md)
 - [Published M365 tests, exact prompts and real redacted screenshots](docs/m365-testing.md)
@@ -98,8 +100,10 @@ implementations. Preparation/refresh uses an already-authorized owner with read/
 agent users receive no new permissions.
 
 Eight varied direct-query cases passed, including combinations outside the retired compiler and a
-top-100 membership/order regression. The current offline suite comprises **54 Python tests and
-5 client-harness tests**, plus 55 synthetic native Power Fx checks. The native null-serialization
+top-100 membership/order regression. The demonstrated baseline's offline evidence comprises **54 Python tests and
+5 client-harness tests**, plus 55 synthetic native Power Fx checks. The portable configuration
+adaptation adds separate offline coverage; see its [contract and evidence boundaries](agent/PORTABLE.md).
+The native null-serialization
 caveat is documented in [verification](docs/verification.md). These are not cloud-generated
 conversational-query evidence.
 
@@ -114,7 +118,7 @@ definition retrieval. That model is **not a runtime option**. See the [separate 
 
 ```text
 agent/                  Sanitized, environment-independent agent source
-solution/               Importable unmanaged starter ZIP, unpacked source and checksums
+solution/               Unmanaged runtime ZIP, unpacked source, checksums and import evidence
 examples/               Synthetic examples and a public-safe M365 observation summary
 scripts/                Packaging and documentation validation
 docs/
@@ -123,13 +127,18 @@ docs/
 .github/workflows/      Manual-only, public-repository-gated Pages deployment
 ```
 
-Tenant-bound solution exports, credentials, connection IDs, sync caches, live transcripts, and raw customer data are deliberately excluded. This is an adaptation kit, not a preauthenticated one-click deployment.
+Tenant-bound solution exports, credentials, connection IDs, sync caches, live transcripts, and raw customer data are deliberately excluded. This is a configurable implementation, not a preauthenticated one-click deployment.
 
-**[Download the solution ZIP](solution/PowerBIQueryStarter_unmanaged.zip).** Its import was verified
-as a separate unpublished agent. It deliberately stops before queries until you bind your own
-connection, prepare the target model metadata, customize business definitions and deploy the generated
-topics. The demo report/model and report-specific guidance are not bundled.
-Follow the [complete import and customization guide](docs/solution-import.md), not just an ID replacement.
+**[Download the solution ZIP](https://ryanbowie.github.io/copilot-studio-powerbi-agent/downloads/PowerBIQueryRuntime_unmanaged.zip).**
+`PowerBIQueryRuntime_unmanaged.zip` is the directly importable solution, not an outer bundle or a source
+archive. It retains the demonstrated runtime logic behind configuration-driven guards. Bind your own
+end-user connection, prepare the target model's governed metadata and review its business definitions
+before publishing; no runtime topic replacement is required. The private demo report/model and its
+metadata are not bundled. Follow the [import and configuration guide](docs/solution-import.md).
+The [artifact-specific observation](solution/import-verification.json) distinguishes native import
+from configured runtime validation. This exact ZIP passed native sandbox import and readback on
+21 September 2026; it remained unpublished, unbound and unconfigured. Configured runtime execution
+has not been verified for this adaptation, and the old starter's import is separate evidence.
 
 ## Architecture at a glance
 
@@ -175,7 +184,7 @@ The [manual connector wiring guide](docs/topic-and-tool-reference.md#build-the-c
 lists the exact fields, formula bindings, output schemas and required surrounding logic.
 Read the [complete topic inputs, outputs, triggers and configuration captures](docs/topic-and-tool-reference.md),
 [full agent instructions](agent/agent.mcs.yml), and [all four complete synthetic topic YAML definitions](agent/example-topics/README.md).
-These screenshots show the configured demo; the ZIP remains deliberately unconfigured.
+These screenshots show the configured demo; the runtime ZIP ships with configuration disabled.
 See [screenshot provenance and previews](docs/screenshots.md).
 
 <img src="docs/assets/illustrative-ranking-output.png" width="480" alt="Clearly labeled synthetic illustration of a ranked answer, with three invented demo agents and values.">
@@ -245,6 +254,8 @@ People's names are masked in result screenshots; actual agent names, usage and d
 with owner approval. Resource IDs and personal identities are redacted in configuration captures.
 Unredacted originals and tenant configuration remain excluded.
 See the [release review](docs/public-release.md) for scope and limitations.
+The new runtime ZIP is a separate artifact/review scope; the historical starter's approval and
+import observation must not be reused as evidence for it.
 
 Pages deployment remains manual-only and gated to public repositories. After reviewing future
 changes, run **Actions > Publish reviewed documentation > Run workflow**. The workflow checks that

@@ -26,6 +26,11 @@ PROBE_OUTPUT_SCHEMA = {
     },
 }
 PROBE_TYPED_MARKER_CHECK = "=IfError(First(Topic.ProbeRows).'[AccessProbe]' = 1, false)"
+CATALOG_POLICY = {
+    "freshness": "Governed snapshot, not a live schema-version guarantee. Refresh after model changes.",
+    "visibility": "Caller must pass a zero-row reference probe covering prepared columns. Narrower OLS visibility fails closed.",
+    "definitionPolicy": "Measure names are verified, not proof every measure evaluates successfully. Expressions/source queries/roles/connections are not disclosed.",
+}
 
 
 def connector_rows_json(variable):
@@ -215,23 +220,35 @@ def schema_probe(snapshot):
     return 'EVALUATE ROW("AccessProbe", 1 + ' + " + ".join(terms) + ")"
 
 
-def build_metadata_topic(config, snapshot):
+def metadata_catalog(snapshot):
     digest = snapshot_hash(snapshot)
-    catalog = {
+    return {
         "modelAlias": "primary", "snapshotHash": digest, "preparedAtUtc": snapshot["retrievedAtUtc"],
-        "freshness": "Governed snapshot, not a live schema-version guarantee. Refresh after model changes.",
-        "visibility": "Caller must pass a zero-row reference probe covering prepared columns. Narrower OLS visibility fails closed.",
+        "freshness": CATALOG_POLICY["freshness"],
+        "visibility": CATALOG_POLICY["visibility"],
         "tables": [{"name": t["name"], "hidden": t["hidden"], "columns": len(t["columns"]), "measures": len(t["measures"])}
                    for t in snapshot["tables"]],
         "measures": [{"table": t["name"], **m} for t in snapshot["tables"] for m in t["measures"]],
         "relationships": snapshot["relationships"], "guidance": snapshot.get("guidance", {}),
-        "definitionPolicy": "Measure names are verified, not proof every measure evaluates successfully. Expressions/source queries/roles/connections are not disclosed.",
+        "definitionPolicy": CATALOG_POLICY["definitionPolicy"],
     }
-    rows = ", ".join("{Name: " + fx_text(t["name"].lower()) + ", Payload: " +
-                     fx_text(json.dumps(t, ensure_ascii=True, separators=(",", ":"))) + "}" for t in snapshot["tables"])
+
+
+def build_metadata_topic(config, snapshot, runtime=None):
+    # The optional boundary supplies configuration expressions, never replacement
+    # business-query/compiler/probe-decoder logic. Legacy generation is unchanged.
+    digest = "=Topic.ConfigSnapshotHash" if runtime else snapshot_hash(snapshot)
+    catalog_value = "=Topic.ConfigCatalogJson" if runtime else json.dumps(
+        metadata_catalog(snapshot), ensure_ascii=True, separators=(",", ":"))
+    rows_value = "=Topic.ConfigSchemaRows" if runtime else "=Table(" + ", ".join(
+        "{Name: " + fx_text(t["name"].lower()) + ", Payload: " +
+        fx_text(json.dumps(t, ensure_ascii=True, separators=(",", ":"))) + "}"
+        for t in snapshot["tables"]) + ")"
+    result_value = runtime.metadata_result if runtime else '="{""utcNow"":""" & Topic.UtcNow & """,""schema"":" & If(Topic.view = "catalog", Topic.CatalogJson, "{""snapshotHash"":""' + digest + '"",""preparedAtUtc"":""' + snapshot["retrievedAtUtc"] + '"",""tables"":[" & Concat(Filter(Topic.SchemaRows, Name in Topic.SelectedNames), Payload, ",") & "]}") & "}"'
     actions = [
         set_value("status", "rejected"), set_value("error", ""), set_value("result", ""), set_value("generatedDax", ""),
         *fixed_model_initialization("metadata_input_validation"),
+        *(runtime.initialize(metadata=True) if runtime else []),
         set_value("view", '=Coalesce(Topic.view, "catalog")', "DefaultMetadataView"),
         set_value("tableNames", '=Coalesce(Topic.tableNames, "")', "DefaultMetadataTables"),
         set_value("MetadataTurnKey", '=System.Conversation.Id & ":" & Coalesce(System.LastMessage.Id, "no-message-id") & ":" & System.User.Id'),
@@ -248,7 +265,7 @@ def build_metadata_topic(config, snapshot):
         set_value("stage", "schema_visibility_probe"),
         set_value("Global.AnalyticsStage", "schema_visibility_probe"),
         set_value("connectorAttempted", True),
-        connector(config, schema_probe(snapshot), "Topic.ProbeRows", "VerifyCallerSchemaVisibility", PROBE_OUTPUT_SCHEMA),
+        connector(config, "=Topic.ConfigProbe" if runtime else schema_probe(snapshot), "Topic.ProbeRows", "VerifyCallerSchemaVisibility", PROBE_OUTPUT_SCHEMA),
         set_value("connectorReturned", True),
         set_value("stage", "schema_probe_output_validation"),
         set_value("Global.AnalyticsStage", "schema_probe_output_validation"),
@@ -262,13 +279,14 @@ def build_metadata_topic(config, snapshot):
         set_value("Global.SchemaSnapshot", digest),
         set_value("Global.SchemaTurn", "=System.LastMessage.Id"),
         set_value("Global.SchemaUser", "=System.User.Id"),
+        *(runtime.authorized() if runtime else []),
         set_value("UtcNow", '=Text(Now(), "yyyy-mm-ddThh:mm:ssZ", "en-US")'),
-        set_value("SchemaRows", "=Table(" + rows + ")"),
+        set_value("SchemaRows", rows_value),
         set_value("SelectedNames", '=ForAll(Split(Topic.tableNames, ","), Lower(TrimEnds(Value)))'),
         reject_metadata("ValidateTableSelection", '=Topic.view = "tables" && (IsBlank(Topic.tableNames) || CountRows(Topic.SelectedNames) > 4 || CountIf(Topic.SelectedNames, !(Value in ForAll(Topic.SchemaRows, Name))) > 0)',
                "Specify 1–4 table names from the verified catalog. A name not found in this snapshot is not proof of absence from the current model."),
-        set_value("CatalogJson", json.dumps(catalog, ensure_ascii=True, separators=(",", ":"))),
-        set_value("result", '="{""utcNow"":""" & Topic.UtcNow & """,""schema"":" & If(Topic.view = "catalog", Topic.CatalogJson, "{""snapshotHash"":""' + digest + '"",""preparedAtUtc"":""' + snapshot["retrievedAtUtc"] + '"",""tables"":[" & Concat(Filter(Topic.SchemaRows, Name in Topic.SelectedNames), Payload, ",") & "]}") & "}"'),
+        set_value("CatalogJson", catalog_value),
+        set_value("result", result_value),
         reject_metadata("BoundMetadata", "=Len(Topic.result) > 64000", "Metadata response exceeds the preview budget; request fewer tables."),
         set_value("status", "success"),
     ]
@@ -302,7 +320,7 @@ def expression_checks(variable, suffix, maximum):
     ]
 
 
-def build_query_topic(config, snapshot, advice=False):
+def build_query_topic(config, snapshot, advice=False, runtime=None):
     inputs = {
         "modelAlias": ("primary", "Optional fixed-model alias. Blank defaults to primary at runtime; other supplied aliases reject. Fixed workspace/dataset and Invoker."),
         "tableExpression": ("", "AUTHOR NEW DAX from verified metadata: any valid table expression, including VAR/RETURN, SUMMARIZECOLUMNS, FILTER, CALCULATETABLE, ADDCOLUMNS, SELECTCOLUMNS, UNION and derived calculations. Not a full EVALUATE/DEFINE/ORDER BY query. No finite business-metric mapping. Return the declared output aliases."),
@@ -314,6 +332,7 @@ def build_query_topic(config, snapshot, advice=False):
     }
     actions = [set_value("status", "rejected"), set_value("error", ""), set_value("result", ""), set_value("generatedDax", ""),
                *fixed_model_initialization("query_input_validation"),
+               *(runtime.initialize(metadata=False) if runtime else []),
                set_value("limit", "=Coalesce(Topic.limit, 20)", "DefaultPreviewLimit"),
                set_value("sortBy", '=Coalesce(Topic.sortBy, "")', "DefaultSort"),
                set_value("startDateExpression", '=Coalesce(Topic.startDateExpression, "")', "DefaultStart"),
@@ -321,7 +340,7 @@ def build_query_topic(config, snapshot, advice=False):
                reject("ValidateQueryModel", '=Topic.resolvedModelAlias <> "primary"',
                       "Query input validation failed BEFORE any Power BI connector attempt: a supplied model alias must be primary. No authorization failure was observed."),
                reject("RequireMetadata",
-                      '=Global.SchemaSnapshot <> ' + fx_text(snapshot_hash(snapshot)) + ' || IsBlank(System.LastMessage.Id) || Global.SchemaTurn <> System.LastMessage.Id || Global.SchemaUser <> System.User.Id',
+                      (runtime.require_metadata if runtime else '=Global.SchemaSnapshot <> ' + fx_text(snapshot_hash(snapshot)) + ' || IsBlank(System.LastMessage.Id) || Global.SchemaTurn <> System.LastMessage.Id || Global.SchemaUser <> System.User.Id'),
                       "Local prerequisite validation failed before this query connector was attempted. Get current-turn model metadata through your connection. This is not an observed Power BI authorization failure."),
                set_value("visibilityVerified", True),
                reject("InputBounds", '=Topic.limit < 1 || Topic.limit > 100 || Topic.limit <> RoundDown(Topic.limit, 0) || Len(Topic.columns) > 1000 || Len(Topic.sortBy) > 1000 || IsBlank(Topic.startDateExpression) <> IsBlank(Topic.endDateExpression)',

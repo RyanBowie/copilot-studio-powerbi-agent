@@ -8,28 +8,47 @@ import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlparse
-from build_site import DOWNLOAD_SOURCES
+from build_site import DOWNLOAD_SOURCES, SOLUTION_DOWNLOADS
 
 ROOT = Path(__file__).resolve().parents[1]
 IGNORED_PARTS = {".git", "__pycache__", ".venv", "node_modules"}
 TEXT_SUFFIXES = {".md", ".html", ".yml", ".yaml", ".json", ".py", ".js", ".cjs", ".cs", ".csproj", ".svg", ".excalidraw", ".txt", ".xml"}
-SOLUTION_ZIP = ROOT / "solution" / "PowerBIQueryStarter_unmanaged.zip"
+SOLUTION_ZIP = ROOT / "solution" / "PowerBIQueryRuntime_unmanaged.zip"
+PAGES_SOLUTION_ZIP = ROOT / "docs" / "downloads" / SOLUTION_ZIP.name
 
 
-def solution_texts(path):
-    """Only accept the reviewed starter archive, and inspect every decompressed entry."""
+def has_private_tenant_url(relative, text, pattern):
+    allowed = {"https://globaldisco.crm.dynamics.com"}
+    if relative.replace("\\", "/") == "agent/tests/test_portable_runtime.py":
+        # These two fixture origins are invented and never exempted inside a package.
+        allowed.update("https://" + name + ".crm.dynamics.com" for name in ("synthetic", "other"))
+    return any(match.group().lower() not in allowed for match in pattern.finditer(text))
+
+
+def solution_texts(path, require_import=True):
+    """Inspect every payload; a source-built package is not proof of native import."""
     manifest = json.loads((path.parent / "package-manifest.json").read_text(encoding="utf-8"))
     if hashlib.sha256(path.read_bytes()).hexdigest() != manifest["sha256"]:
         raise ValueError("Solution ZIP checksum differs from its manifest.")
     observation = json.loads((path.parent / "import-verification.json").read_text(encoding="utf-8"))
-    if observation["sha256"] != manifest["sha256"]:
+    if observation["artifact"] != path.name or observation["sha256"] != manifest["sha256"]:
         raise ValueError("Import observation is for a different ZIP; verify this rebuilt artifact.")
+    if require_import and observation.get("importSucceeded") is not True:
+        raise ValueError("Native import has not succeeded for this exact ZIP; publication is blocked.")
+    if require_import:
+        for check in ("unpublishedAfterImport", "channelsEmpty", "connectionUnbound",
+                      "nativeComponentsVerified", "environmentDefinitionsVerified",
+                      "environmentAssociationsVerified", "authPolicyVerified"):
+            if observation.get(check) is not True:
+                raise ValueError("Required native import readback is unverified: " + check)
     if manifest["configured"] or manifest["publishOnImport"] or manifest["managed"]:
-        raise ValueError("Publication package must remain an unconfigured unmanaged starter.")
+        raise ValueError("Publication package must be unconfigured, unpublished and unmanaged.")
+    if manifest.get("kind") != "functional-runtime":
+        raise ValueError("The download must contain the functional runtime, not an onboarding stub.")
     with zipfile.ZipFile(path) as archive:
         entries = archive.infolist()
         if (len(entries) != len({item.filename for item in entries})
-                or len(entries) > 30 or sum(item.file_size for item in entries) > 2_000_000
+                or len(entries) > 1024 or sum(item.file_size for item in entries) > 16_000_000
                 or set(archive.namelist()) != set(manifest["entries"])):
             raise ValueError("Unexpected or oversized solution archive inventory.")
         result = []
@@ -46,7 +65,11 @@ def solution_texts(path):
                 raise ValueError("Solution entry differs from manifest: " + name)
             text = data.decode("utf-8-sig")
             if name.endswith(".xml"):
-                ET.fromstring(text)
+                tree = ET.fromstring(text)
+                if any(node.text and node.text.strip() for node in tree.iter("connectionid")):
+                    raise ValueError("Bound connection inside solution: " + name)
+                if any(True for _ in tree.iter("environmentvariablevalue")):
+                    raise ValueError("Private environment variable current value inside solution: " + name)
             if name.endswith(".json"):
                 json.loads(text)
             # PAC aggregates the two XML manifests; all other payloads must match tracked source.
@@ -55,9 +78,21 @@ def solution_texts(path):
                 if source.read_text(encoding="utf-8-sig").replace("\r\n", "\n") != text.replace("\r\n", "\n"):
                     raise ValueError("Solution payload differs from source: " + name)
             result.append((str(path.relative_to(ROOT)) + "::" + name, text))
-        config = json.loads(archive.read("bots/poc_PowerBIQueryStarter/configuration.json"))
+        config = json.loads(archive.read(f"bots/{manifest['solution']}/configuration.json"))
         if config["publishOnImport"] or config["channels"]:
-            raise ValueError("Starter must not publish or configure channels on import.")
+            raise ValueError("The package must not publish or configure channels on import.")
+        solution = ET.fromstring(archive.read("solution.xml")).find("SolutionManifest")
+        if (solution is None or solution.findtext("UniqueName") != manifest["solution"]
+                or solution.findtext("Version") != manifest["version"]
+                or solution.findtext("Managed") != "0"):
+            raise ValueError("Native solution identity differs from package manifest.")
+        for relative, digest in manifest["sourceSha256"].items():
+            source = ROOT / relative
+            if not source.resolve().is_relative_to(ROOT.resolve()):
+                raise ValueError("Source manifest path escapes the repository.")
+            content = source.read_text(encoding="utf-8").replace("\r\n", "\n").encode("utf-8")
+            if hashlib.sha256(content).hexdigest() != digest:
+                raise ValueError("Package was built from different source: " + relative)
         return result
 
 
@@ -84,6 +119,11 @@ class Page(HTMLParser):
 
 
 def main():
+    import argparse
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--allow-unverified-import", action="store_true",
+                        help="Local inspection only; do not use this option in publication CI.")
+    args = parser.parse_args()
     errors = []
     required = [
         "README.md", "docs/index.html", "docs/architecture.md", "docs/setup.md",
@@ -95,7 +135,8 @@ def main():
         "docs/assets/studio-query-details.png", "docs/assets/studio-query-input.png",
         "docs/assets/studio-powerbi-action.png", "docs/assets/m365-connection-consent.png",
         "agent/README.md",
-        "solution/PowerBIQueryStarter_unmanaged.zip", "solution/package-manifest.json",
+        "solution/PowerBIQueryRuntime_unmanaged.zip", "solution/package-manifest.json",
+        "solution/import-verification.json",
         "docs/solution-import.md",
     ]
     for name in required:
@@ -107,6 +148,12 @@ def main():
             errors.append(f"Missing complete YAML download: {filename}")
         elif download.read_text(encoding="utf-8") != (ROOT / source).read_text(encoding="utf-8"):
             errors.append(f"YAML download differs from complete source: {filename}")
+    for filename, source in SOLUTION_DOWNLOADS.items():
+        download = ROOT / "docs" / "downloads" / filename
+        if not download.is_file():
+            errors.append(f"Missing same-origin solution download: {filename}")
+        elif download.read_bytes() != (ROOT / source).read_bytes():
+            errors.append(f"Solution download differs byte-for-byte from reviewed source: {filename}")
 
     # Live deployment GUIDs are not needed in this public template.
     guid = re.compile(r"\b[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}\b")
@@ -119,7 +166,7 @@ def main():
             continue
         relative = str(path.relative_to(ROOT))
         if (
-            (path.suffix.lower() == ".zip" and path != SOLUTION_ZIP)
+            (path.suffix.lower() == ".zip" and path not in {SOLUTION_ZIP, PAGES_SOLUTION_ZIP})
             or path.suffix.lower() in {".har", ".log"}
             or ".mcs" in path.parts
             or ".generated-private" in path.parts
@@ -128,9 +175,9 @@ def main():
             errors.append(f"Tenant-bound/private artifact: {relative}")
         if path == SOLUTION_ZIP:
             try:
-                archive_texts.extend(solution_texts(path))
+                archive_texts.extend(solution_texts(path, require_import=not args.allow_unverified_import))
             except (ValueError, KeyError, OSError, zipfile.BadZipFile, ET.ParseError) as exc:
-                errors.append(f"Invalid starter solution: {exc}")
+                errors.append(f"Invalid runtime solution: {exc}")
         if path.suffix.lower() not in TEXT_SUFFIXES and not (path.name == "data" and "solution" in path.parts):
             continue
         file_count += 1
@@ -138,7 +185,9 @@ def main():
         # SVG source is scanned separately; base64 is not meaningful plaintext.
         scan_text = re.sub(r"data:image/(?:png|svg\+xml);base64,[A-Za-z0-9+/=]+", "EMBEDDED_IMAGE", text)
         for label, pattern in [("deployment GUID", guid), ("credential", token), ("private tenant URL", private_url)]:
-            if pattern.search(scan_text):
+            found = (has_private_tenant_url(relative, scan_text, pattern)
+                     if label == "private tenant URL" else pattern.search(scan_text))
+            if found:
                 errors.append(f"Possible {label}: {relative}")
         if "C:\\Users\\" in scan_text and path.name != "validate_publication.py":
             errors.append(f"Local user path: {relative}")
@@ -151,7 +200,9 @@ def main():
     for relative, text in archive_texts:
         file_count += 1
         for label, pattern in [("deployment GUID", guid), ("credential", token), ("private tenant URL", private_url)]:
-            if pattern.search(text):
+            found = (has_private_tenant_url(relative, text, pattern)
+                     if label == "private tenant URL" else pattern.search(text))
+            if found:
                 errors.append(f"Possible {label} inside archive: {relative}")
         if "C:\\Users\\" in text:
             errors.append(f"Local user path inside archive: {relative}")
@@ -186,7 +237,9 @@ def main():
         for error in errors:
             print(f"ERROR: {error}", file=sys.stderr)
         raise SystemExit(1)
-    print(f"Publication checks passed for {file_count} text assets. Manually review screenshots and history before release.")
+    qualification = "Local checks only; native import requirement bypassed. " if args.allow_unverified_import else ""
+    print(f"{qualification}Publication checks passed for {file_count} text assets. "
+          "Manually review screenshots and history before release.")
 
 
 if __name__ == "__main__":

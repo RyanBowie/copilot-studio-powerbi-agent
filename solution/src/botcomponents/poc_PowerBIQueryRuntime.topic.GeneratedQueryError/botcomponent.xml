@@ -1,0 +1,11 @@
+<botcomponent schemaname="poc_PowerBIQueryRuntime.topic.GeneratedQueryError">
+  <componenttype>9</componenttype>
+  <iscustomizable>1</iscustomizable>
+  <language>1033</language>
+  <name>Generated query error</name>
+  <parentbotid>
+    <schemaname>poc_PowerBIQueryRuntime</schemaname>
+  </parentbotid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</botcomponent>

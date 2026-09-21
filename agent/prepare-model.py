@@ -48,6 +48,8 @@ def main():
         "source": "Fabric semantic model getDefinition TMSL",
         "retrievedAtUtc": dt.datetime.now(dt.timezone.utc).isoformat(),
         "sourcePermission": "Existing owner read+write; runtime users are not granted write.",
+        "sourceBinding": {"tenantId": CONFIG["tenantId"], "workspaceId": CONFIG["workspaceId"],
+                          "datasetId": CONFIG["datasetId"]},
         "tables": [{
             "name": t["name"], "description": t.get("description", ""), "hidden": t.get("isHidden", False),
             "columns": [{"name": c["name"], "type": c.get("dataType", "unknown"), "description": c.get("description", ""),
@@ -69,7 +71,8 @@ def main():
           sum(len(t["columns"]) for t in snapshot["tables"]), "columns;",
           sum(len(t["measures"]) for t in snapshot["tables"]), "measure names.")
     print("Raw definitions, partitions, connections, roles, source expressions and credentials were not persisted.")
-    print("Review the private snapshot, generate topics, then deploy/publish the same agent to refresh runtime metadata.")
+    print("Review the private snapshot. For an imported portable agent, use configure_portable.py prepare/check/apply and publish in Studio; do not deploy replacement topics.")
+    print("Legacy source deployment can still generate topics and deploy/publish the existing agent.")
 
 
 if __name__ == "__main__":
