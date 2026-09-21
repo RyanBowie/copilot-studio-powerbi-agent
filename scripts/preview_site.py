@@ -146,7 +146,7 @@ def check_theme_matrix(page, url, output):
     for theme in ("light", "dark"):
         page.emulate_media(color_scheme=theme)
         page.goto(theme_url(url, None), wait_until="load")
-        check_theme(page, theme)
+        check_theme(page, "dark")
     page.emulate_media(forced_colors="active")
     expect(page.locator("h1")).to_have_css("background-image", "none")
     assert page.locator("h1").evaluate("el => getComputedStyle(el).color") != "rgba(0, 0, 0, 0)"
@@ -253,7 +253,7 @@ def main():
         check_published_downloads(page, url)
         assert not errors, f"Browser JavaScript errors: {errors}"
         browser.close()
-    print("Checked light/dark at six viewport widths, system preference, theme toggle, title gradient, "
+    print("Checked light/dark at six viewport widths, dark default across system preferences, theme toggle, title gradient, "
           "focus, tabs, copy feedback, navigation, images, download links, forced colors, and print.")
 
 

@@ -1,5 +1,8 @@
 # Copilot Studio + Power BI
 
+The documentation site defaults to dark regardless of OS preference. Its theme
+button and explicit `?scoutTheme=light` / `?scoutTheme=dark` choices remain available.
+
 **An experimental standard Copilot Studio agent for metadata-grounded DAX generation, execution, and explanation. No Fabric data agent is required.**
 
 **Built in Copilot Studio; used inside Microsoft 365 Copilot.** The tested agent has the
