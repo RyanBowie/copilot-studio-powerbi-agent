@@ -11,8 +11,8 @@
   <CustomControls />
   <EntityDataProviders />
   <connectionreferences>
-    <connectionreference connectionreferencelogicalname="poc_PowerBIQueryStarter_PowerBI">
-      <connectionreferencedisplayname>Power BI Query Starter - end-user Power BI</connectionreferencedisplayname>
+    <connectionreference connectionreferencelogicalname="poc_PowerBIQueryRuntime_PowerBI">
+      <connectionreferencedisplayname>Power BI Query Runtime - end-user Power BI</connectionreferencedisplayname>
       <connectorid>/providers/Microsoft.PowerApps/apis/shared_powerbi</connectorid>
       <iscustomizable>1</iscustomizable>
       <promptingbehavior>0</promptingbehavior>

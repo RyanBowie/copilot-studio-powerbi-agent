@@ -10,6 +10,10 @@ DOWNLOAD_SOURCES = {
         for name in ("ModelMetadata", "GeneratedDaxQuery", "GeneratedDaxAdvice", "GeneratedQueryError")
     },
 }
+SOLUTION_DOWNLOADS = {
+    "PowerBIQueryRuntime_unmanaged.zip": Path("solution") / "PowerBIQueryRuntime_unmanaged.zip",
+    "package-manifest.json": Path("solution") / "package-manifest.json",
+}
 
 
 def build_downloads(root=ROOT):
@@ -18,6 +22,8 @@ def build_downloads(root=ROOT):
     for filename, source in DOWNLOAD_SOURCES.items():
         (destination / filename).write_text(
             (root / source).read_text(encoding="utf-8"), encoding="utf-8", newline="\n")
+    for filename, source in SOLUTION_DOWNLOADS.items():
+        (destination / filename).write_bytes((root / source).read_bytes())
 
 
 def image_uri(image):

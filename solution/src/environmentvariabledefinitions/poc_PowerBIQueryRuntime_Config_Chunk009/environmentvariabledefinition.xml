@@ -1,0 +1,14 @@
+<environmentvariabledefinition schemaname="poc_PowerBIQueryRuntime_Config_Chunk009">
+  <defaultvalue>NOT_CONFIGURED</defaultvalue>
+  <displayname default="poc_PowerBIQueryRuntime_Config_Chunk009">
+    <label description="poc_PowerBIQueryRuntime_Config_Chunk009" languagecode="1033" />
+  </displayname>
+  <description default="Owner configuration; leave NOT_CONFIGURED during import. Use the private setup helper.">
+    <label description="Owner configuration; leave NOT_CONFIGURED during import. Use the private setup helper." languagecode="1033" />
+  </description>
+  <introducedversion>1.0.0.0</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>

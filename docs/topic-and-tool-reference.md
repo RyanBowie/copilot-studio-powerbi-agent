@@ -1,26 +1,26 @@
 # Instructions, topics and connector details
 
 **The configured runtime uses generic native topics, not a separate tool for each question.**
-Read the [full agent instructions and starters](../agent/agent.mcs.yml), the
-[complete topic generator](../agent/general_runtime.py), the
-[DAX envelope/boundary implementation](../agent/generated_dax.py) and
-[dynamic result transport](../agent/query_transport.py).
+Read the [full agent instructions and starters](https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/agent/agent.mcs.yml), the
+[complete topic generator](https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/agent/general_runtime.py), the
+[DAX envelope/boundary implementation](https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/agent/generated_dax.py) and
+[dynamic result transport](https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/agent/query_transport.py).
 
 Four **complete synthetic native YAML definitions**, including every action and input/output
-schema, are available in [the reference topic folder](../agent/example-topics/README.md):
-[metadata](../agent/example-topics/ModelMetadata.mcs.yml),
-[execution](../agent/example-topics/GeneratedDaxQuery.mcs.yml),
-[advice](../agent/example-topics/GeneratedDaxAdvice.mcs.yml) and
-[error handling](../agent/example-topics/GeneratedQueryError.mcs.yml).
-The [machine-readable index](../agent/example-topics/index.json) describes their interfaces.
+schema, are available in [the reference topic folder](https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/agent/example-topics/README.md):
+[metadata](https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/agent/example-topics/ModelMetadata.mcs.yml),
+[execution](https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/agent/example-topics/GeneratedDaxQuery.mcs.yml),
+[advice](https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/agent/example-topics/GeneratedDaxAdvice.mcs.yml) and
+[error handling](https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/agent/example-topics/GeneratedQueryError.mcs.yml).
+The [machine-readable index](https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/agent/example-topics/index.json) describes their interfaces.
 These use invented Entity/Event metadata and placeholder resources, not a deployed snapshot.
 Regenerate them offline with `python example_topics.py` from the `agent` directory.
 
-The [importable solution's complete native source](../solution/src) is also included. Its metadata
-topic is intentionally an onboarding stop rather than a live catalog, and query/advice begin with
-configuration stops. The [import guide](solution-import.md) explains how deployment replaces these
-stops with topics generated from your authorized model. Do not confuse the unconfigured ZIP with
-the working demonstration's private generated metadata.
+The [importable solution's complete native source](https://github.com/RyanBowie/copilot-studio-powerbi-agent/tree/main/solution/src) is also included. It retains the
+metadata probe/disclosure path and generic query/advice logic, with trusted configuration loaded
+separately. The [import guide](solution-import.md) explains how to configure the imported implementation
+without replacing its topics. Missing configuration stops explicitly before a connector call.
+The private demonstration's metadata is not distributed.
 
 ## Download the complete files
 
@@ -43,8 +43,9 @@ on the walkthrough. Downloads are generated from the canonical files in `agent/`
 
 **Reference YAML is not a tenant-ready export.** These are complete synthetic Entity/Event examples,
 with placeholder model/workspace/connection references, not the private demo's metadata.
-Follow [setup](setup.md) or the [import/customization guide](solution-import.md) to prepare your own
-metadata and generate the complete topics for your model.
+Follow [developer setup](setup.md) to generate model-specific source, or use the
+[import-first configuration guide](solution-import.md) instead. Do not paste these synthetic examples
+over the imported runtime topics.
 
 For manual topic authoring, open the target topic in Copilot Studio, choose **More > Open code
 editor**, and use the **entire generated topic file**. Keep its indentation, conditions, action
@@ -54,8 +55,9 @@ Review the native parsed configuration and test before publishing.
 `agent.mcs.yml` is **agent configuration, not topic YAML**. Its `instructions` field contains the
 instruction text; when using the Studio instructions editor, copy that field's text without its YAML
 wrapper. Review capabilities, starters and model settings separately. Do not paste the entire agent
-configuration into a topic code editor. The downloadable solution ZIP is a third artifact: an
-import-verified but deliberately unconfigured starter with onboarding stops.
+configuration into a topic code editor. The downloadable solution ZIP is a third artifact: the
+native runtime with configuration-driven guards and no private model metadata. Its exact import
+evidence and configuration-only setup are documented separately.
 
 ## Capability inventory
 
@@ -206,7 +208,7 @@ Generated query error. Preserve their native compilation/error logic.
 
 Adding these two action nodes alone is not the complete agent: use the linked full native topic
 definitions for the metadata gate, input schemas, compilation, bounded results and error handling,
-plus the [full agent instructions](../agent/agent.mcs.yml). The supplied example YAML uses synthetic
+plus the [full agent instructions](https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/agent/agent.mcs.yml). The supplied example YAML uses synthetic
 Entity/Event metadata; generate your own rather than copying those example field names into a real
 model. Verify the parsed action bindings and test with the intended requesting user's permissions
 before publishing. The [Power BI action reference](https://learn.microsoft.com/en-us/connectors/powerbi/#run-a-query-against-a-dataset)

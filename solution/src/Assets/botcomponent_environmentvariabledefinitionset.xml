@@ -1,0 +1,1163 @@
+<botcomponent_environmentvariabledefinitionset>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk001">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk002">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk003">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk004">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk005">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk006">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk007">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk008">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk009">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk010">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk011">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk012">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk013">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk014">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk015">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk016">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk017">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk018">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk019">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk020">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk021">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk022">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk023">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk024">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk025">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk026">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk027">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk028">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk029">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk030">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk031">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk032">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk033">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk034">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk035">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk036">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk037">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk038">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk039">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk040">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk041">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk042">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk043">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk044">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk045">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk046">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk047">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk048">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk049">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk050">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk051">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk052">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk053">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk054">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk055">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk056">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk057">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk058">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk059">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk060">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk061">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk062">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk063">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk064">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk065">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk066">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk067">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk068">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk069">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk070">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk071">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk072">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk073">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk074">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk075">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk076">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk077">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk078">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk079">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk080">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk081">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk082">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk083">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk084">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk085">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk086">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk087">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk088">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk089">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk090">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk091">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk092">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk093">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk094">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk095">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk096">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk097">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk098">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk099">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk100">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk101">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk102">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk103">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk104">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk105">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk106">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk107">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk108">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk109">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk110">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk111">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk112">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk113">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk114">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk115">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk116">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk117">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk118">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk119">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk120">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk121">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk122">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk123">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk124">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk125">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk126">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk127">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk128">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.ModelMetadata" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Manifest">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk001">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk002">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk003">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk004">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk005">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk006">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk007">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk008">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk009">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk010">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk011">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk012">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk013">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk014">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk015">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk016">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk017">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk018">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk019">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk020">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk021">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk022">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk023">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk024">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk025">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk026">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk027">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk028">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk029">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk030">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk031">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk032">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk033">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk034">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk035">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk036">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk037">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk038">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk039">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk040">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk041">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk042">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk043">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk044">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk045">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk046">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk047">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk048">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk049">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk050">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk051">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk052">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk053">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk054">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk055">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk056">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk057">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk058">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk059">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk060">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk061">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk062">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk063">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk064">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk065">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk066">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk067">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk068">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk069">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk070">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk071">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk072">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk073">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk074">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk075">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk076">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk077">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk078">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk079">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk080">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk081">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk082">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk083">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk084">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk085">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk086">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk087">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk088">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk089">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk090">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk091">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk092">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk093">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk094">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk095">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk096">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk097">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk098">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk099">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk100">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk101">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk102">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk103">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk104">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk105">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk106">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk107">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk108">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk109">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk110">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk111">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk112">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk113">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk114">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk115">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk116">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk117">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk118">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk119">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk120">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk121">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk122">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk123">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk124">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk125">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk126">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk127">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk128">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxQuery" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Manifest">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk001">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk002">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk003">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk004">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk005">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk006">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk007">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk008">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk009">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk010">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk011">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk012">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk013">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk014">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk015">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk016">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk017">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk018">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk019">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk020">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk021">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk022">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk023">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk024">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk025">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk026">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk027">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk028">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk029">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk030">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk031">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk032">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk033">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk034">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk035">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk036">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk037">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk038">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk039">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk040">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk041">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk042">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk043">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk044">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk045">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk046">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk047">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk048">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk049">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk050">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk051">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk052">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk053">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk054">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk055">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk056">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk057">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk058">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk059">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk060">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk061">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk062">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk063">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk064">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk065">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk066">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk067">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk068">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk069">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk070">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk071">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk072">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk073">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk074">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk075">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk076">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk077">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk078">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk079">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk080">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk081">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk082">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk083">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk084">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk085">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk086">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk087">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk088">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk089">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk090">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk091">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk092">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk093">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk094">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk095">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk096">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk097">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk098">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk099">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk100">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk101">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk102">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk103">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk104">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk105">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk106">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk107">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk108">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk109">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk110">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk111">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk112">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk113">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk114">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk115">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk116">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk117">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk118">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk119">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk120">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk121">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk122">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk123">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk124">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk125">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk126">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk127">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Chunk128">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+  <botcomponent_environmentvariabledefinition botcomponentid.schemaname="poc_PowerBIQueryRuntime.topic.GeneratedDaxAdvice" environmentvariabledefinitionid.schemaname="poc_PowerBIQueryRuntime_Config_Manifest">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_environmentvariabledefinition>
+</botcomponent_environmentvariabledefinitionset>

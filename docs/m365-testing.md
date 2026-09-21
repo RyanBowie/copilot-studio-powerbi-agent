@@ -14,7 +14,7 @@ details, and usage/interaction data. The user-provided
 [Copilot interactions report screenshot](assets/powerbi-agents-report.png) illustrates that model's
 reporting context. The agent queries the underlying semantic model, not the visuals. The report's
 displayed date window differs from these tests, so its totals are not an independent reconciliation.
-The custom report and semantic model are not included in the starter ZIP.
+The custom report and semantic model are not included in the runtime ZIP.
 
 Testing took place on 13 September 2026 local UK time, while the UTC date was still 12 September.
 The tenant-specific agent link, conversation identifiers and unredacted originals remain private.
@@ -136,7 +136,7 @@ environment/account header and redact the editor identity. The consent and advic
 contain no personal result rows.
 
 Private originals and rectangle specifications are not committed. The reusable
-[`redact_capture.py`](../scripts/redact_capture.py) helper creates publication derivatives without
+[`redact_capture.py`](https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/scripts/redact_capture.py) helper creates publication derivatives without
 overwriting originals. Every derivative was visually reviewed. These images are distinct from the
 older, explicitly synthetic ranking illustration.
 

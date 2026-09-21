@@ -1,0 +1,7 @@
+kind: Variable
+name: LastQueryError
+scope: Conversation
+aIVisibility: Hidden
+isExternalInitializationAllowed: false
+isOutputToExternalCallers: false
+defaultValue: ''

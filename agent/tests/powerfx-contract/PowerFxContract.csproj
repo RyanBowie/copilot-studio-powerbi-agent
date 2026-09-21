@@ -12,5 +12,6 @@
     <Reference Include="Microsoft.PowerFx.Core"><HintPath>$(PowerFxLibraryDirectory)\Microsoft.PowerFx.Core.dll</HintPath></Reference>
     <Reference Include="Microsoft.PowerFx.Interpreter"><HintPath>$(PowerFxLibraryDirectory)\Microsoft.PowerFx.Interpreter.dll</HintPath></Reference>
     <Reference Include="Microsoft.PowerFx.Json"><HintPath>$(PowerFxLibraryDirectory)\Microsoft.PowerFx.Json.dll</HintPath></Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces"><HintPath>$(PowerFxLibraryDirectory)\Microsoft.Bcl.AsyncInterfaces.dll</HintPath></Reference>
   </ItemGroup>
 </Project>

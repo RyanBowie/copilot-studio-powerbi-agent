@@ -2,7 +2,7 @@
 import argparse
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
+from urllib.parse import parse_qsl, urlencode, urljoin, urlsplit, urlunsplit
 
 from playwright.sync_api import expect, sync_playwright
 from build_site import DOWNLOAD_SOURCES
@@ -168,9 +168,9 @@ def check_published_downloads(page, url):
         expected = (ROOT / "docs" / relative).read_bytes()
         assert Path(download.path()).read_bytes() == expected, f"Download differs: {relative}"
     solution = page.get_by_role("link", name="Download solution ZIP", exact=True)
-    response = page.context.request.get(solution.get_attribute("href"))
+    response = page.context.request.get(urljoin(url, solution.get_attribute("href")))
     assert response.ok, f"Solution download HTTP {response.status}"
-    assert response.body() == (ROOT / "solution" / "PowerBIQueryStarter_unmanaged.zip").read_bytes()
+    assert response.body() == (ROOT / "solution" / "PowerBIQueryRuntime_unmanaged.zip").read_bytes()
 
 
 def main():
@@ -228,9 +228,9 @@ def main():
         assert "Power BI tool" in diagram and "Run a query against a dataset" in diagram
         assert page.get_by_role("heading", name="Historical initial PoC", exact=True).count() == 0
         assert page.get_by_role("img", name="Actual empty standalone Tools tab.", exact=True).count() == 0
-        assert page.get_by_role("link", name="Download solution ZIP", exact=True).get_attribute("href") == (
-            "https://github.com/RyanBowie/copilot-studio-powerbi-agent/raw/refs/heads/main/"
-            "solution/PowerBIQueryStarter_unmanaged.zip")
+        solution_link = page.get_by_role("link", name="Download solution ZIP", exact=True)
+        assert solution_link.get_attribute("href") == "downloads/PowerBIQueryRuntime_unmanaged.zip"
+        assert solution_link.get_attribute("download") is not None
         page.locator("img").evaluate_all("(images) => Promise.all(images.map(img => { img.loading = 'eager'; return img.decode(); }))")
         assert page.locator("img").evaluate_all("(images) => images.every(img => img.complete && img.naturalWidth > 0)")
         assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")

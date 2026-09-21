@@ -1,0 +1,11 @@
+{
+  "tenantId": "__EXPLICIT_TENANT_GUID__",
+  "environmentId": "__EXPLICIT_DESTINATION_ENVIRONMENT_GUID__",
+  "dataverseUrl": "https://__DESTINATION_ORG__.crm.dynamics.com",
+  "agentId": "__IMPORTED_AGENT_GUID__",
+  "schemaName": "__IMPORTED_AGENT_SCHEMA_NAME__",
+  "environmentPrefix": "__PREFIX_FROM_PACKAGE_CONTRACT__",
+  "connectionReference": "__IMPORTED_POWERBI_CONNECTION_REFERENCE__",
+  "workspaceId": "__AUTHORIZED_POWERBI_WORKSPACE_GUID__",
+  "datasetId": "__AUTHORIZED_SEMANTIC_MODEL_GUID__"
+}

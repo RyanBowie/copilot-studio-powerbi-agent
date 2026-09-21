@@ -1,0 +1,7 @@
+kind: Variable
+name: MetadataAttemptTurn
+scope: Conversation
+aIVisibility: Hidden
+isExternalInitializationAllowed: false
+isOutputToExternalCallers: false
+defaultValue: ''

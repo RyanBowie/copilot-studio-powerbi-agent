@@ -1,6 +1,55 @@
 # Verification: what was observed, and what was not
 
-## Current status
+## Portable runtime package - 21 September 2026
+
+The new `PowerBIQueryRuntime_unmanaged.zip` retains the native implementation with a separate,
+trusted configuration boundary. Its [exact artifact hash and native import observation](https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/solution/import-verification.json)
+are separate from both the historical starter and the configured demo below.
+
+**Native sandbox import succeeded on 21 September 2026**, using the exact recorded checksum
+and one explicitly authorized import with activation and overwrite disabled. Readback matched
+all 20 component bodies byte-for-byte, 129 Text definitions with `NOT_CONFIGURED` defaults and
+zero current values, and 387 unique associations. All 538 solution memberships were accounted for.
+The bot remained unpublished with no channels, authentication policy `2/1/2`, an unbound Power BI
+reference and unchanged Invoker/blank-impersonation connector contracts. The import log had no
+failures. No configuration, permission, binding, publication or runtime-execution operation followed.
+
+| Offline/local check | Result and boundary |
+|---|---|
+| Python contracts | 78 passed in an independent offline Test-agent run, including five maintained transport-boundary regressions |
+| Mocked Node client harness | 5 passed; no SDK/evaluation endpoint contacted |
+| Portable Microsoft Power Fx expressions | 56 passed, including configured synthetic probe/catalog behavior and transport boundaries |
+| Existing probe/transport Power Fx cases | 55 passed under their documented assertions; one null-marker case accepts `NotSupportedException`, not a successful native null decode |
+| Additional authorization expressions | 14 private supplemental cases passed; these are not additional committed regressions |
+| Legacy source preservation | Four topic bodies byte-identical for the same synthetic input; both portable connector contracts match except intended configuration bindings |
+| Offline schema validation | Author reported 168 declarations checked; not independently rerun by the Test agent |
+| Package/download/privacy regression suite | 14 passed, including native dependency counts, entity-fragment shape, exact ZIP delivery over local HTTP and GitHub/Pages documentation-link contexts |
+| Reproducible build | Repacking produced the same ZIP bytes; every expanded payload matched its source and checksum manifest |
+| Walkthrough | Existing light/dark, six-width, focus, navigation, copy, image, download-link, forced-color and print checks passed; CSS and JavaScript unchanged |
+
+No configured cloud query, agent conversation, publication or configuration-value transaction was
+performed for this adaptation. Expression tests and structural checks do **not** establish a full
+AdaptiveDialog execution, service-internal environment-variable visibility, publication-time `Env`
+resolution, actual caller/RLS/OLS behavior, connector precision/null handling or answer correctness.
+The exact **243,200-ASCII-character / 128-occupied-chunk** configuration round-trip passed offline:
+each occupied stored value is 1,945 ASCII characters/UTF-16 units including its header.
+One character beyond the payload limit was rejected. A simulated 128-to-one-chunk update decoded all
+129 PATCH bodies and proved that every obsolete trailing slot was reset; a partial update failed.
+Unicode, JSON escapes split across chunk boundaries, and native `Len` measurements also passed.
+The transport stores escaped ASCII JSON, so actual stored-value units, not unescaped display-text
+length, determine the platform limit.
+
+Two initial tests composing separate runtime nodes into deeply nested expressions hit the local
+engine's maximum call depth. Stage-level expression cases passed without runtime or runner changes;
+they are not a substitute for a complete native topic lifecycle. That lifecycle and the live
+configuration-apply transaction/readback remain untested. Native import/readback is an independent gate recorded only
+in the artifact-specific observation, never inferred from XML parsing or PAC packing.
+
+The setup helper writes current configuration values rather than runtime topics; publication and
+new-conversation testing are separate adopter steps. See the [setup guide](solution-import.md) and
+[portable configuration contract](https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/agent/PORTABLE.md).
+
+## Configured demonstration status
 
 **Published M365 UI testing completed three scenarios:** top-20 agents with creators,
 same-period top-five follow-up, and explicitly unexecuted model-grounded DAX advice.

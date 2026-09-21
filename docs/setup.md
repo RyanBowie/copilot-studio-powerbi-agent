@@ -7,10 +7,15 @@ See the [actual M365 tests and limitations](m365-testing.md).
 The custom `Agent365` example is not Microsoft Agent 365. Reuse requires metadata preparation,
 appropriate identity access, deployment review, and realistic testing on the intended model.
 
+**Recommended import-first route:** use the [runtime solution setup guide](solution-import.md).
+It installs the implemented native topics and configures them without rebuilding or replacing
+their code. The source-generation commands below are the separate developer route for an existing
+agent; do not run them over the imported runtime solution.
+
 ## Prerequisites
 
 - An existing standard Copilot Studio agent and dedicated development solution, or the
-  [importable unmanaged starter ZIP](solution-import.md).
+  [importable unmanaged runtime ZIP](solution-import.md).
 - Copilot Studio/Power BI licensing and permitted connector use.
 - Runtime users with appropriate Power BI Read/Build rights.
 - The tenant Execute Queries setting and applicable model/RLS/OLS permissions.
@@ -68,7 +73,7 @@ The demonstrated agent is built and managed in **Copilot Studio**, with the **Mi
 Copilot channel configured** so users can run it inside M365 Copilot. This is not the Agent Builder
 creation path. Publishing a Copilot Studio agent and making it available through that channel
 are distinct from creating an agent inside the M365 Copilot interface.
-The starter ZIP does not include a working channel registration; configure it in your own tenant.
+The runtime ZIP does not include a working channel registration; configure it in your own tenant.
 
 1. Open the agent's Overview and inspect its instructions and model picker. Preserve the intended
    model selection; preview models carry separate suitability warnings.
@@ -138,7 +143,7 @@ It does not enter credentials or fabricate interaction evidence.
 
 Do not commit `.generated-private`, real metadata snapshots, resource IDs, browser profiles, raw
 definitions, tenant-bound solution exports, runtime probes, transcripts, or business rows. Only the
-separately generated and inspected unconfigured starter ZIP is approved for this repository. The source bundle has
+separately generated and inspected, disabled-by-default runtime ZIP belongs in the publication bundle. The source bundle has
 synthetic metadata for offline tests, not the live model snapshot.
 
 Before enabling Pages or changing repository visibility, complete the [release checklist](public-release.md).

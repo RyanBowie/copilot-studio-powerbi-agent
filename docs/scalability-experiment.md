@@ -97,7 +97,7 @@ The practical conclusion is **reusable execution plus a viable structural-metada
 
 ## Publication and evidence
 
-The [public-safe evidence summary](../examples/second-model-evidence.json) contains only anonymized results, counts, timing methodology, and limitations. Raw definitions, field names, expressions, source/partition queries, credentials, report links, and business records are excluded.
+The [public-safe evidence summary](https://github.com/RyanBowie/copilot-studio-powerbi-agent/blob/main/examples/second-model-evidence.json) contains only anonymized results, counts, timing methodology, and limitations. Raw definitions, field names, expressions, source/partition queries, credentials, report links, and business records are excluded.
 
 See [capabilities and limits](capabilities-and-limits.md) for the distinction between platform limits, this PoC's deliberate scope, and unverified scaling claims.
 
