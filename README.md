@@ -263,7 +263,7 @@ import observation must not be reused as evidence for it.
 Pages deployment remains manual-only and gated to public repositories. After reviewing future
 changes, run **Actions > Publish reviewed documentation > Run workflow**. The workflow checks that
 the committed site matches its source and validates the publication bundle before deploying `docs`.
-No open-source license has been selected; public visibility alone does not grant additional reuse rights.
+This repository is licensed under the MIT licence. It is a community project, not a Microsoft product, and is provided as is without Microsoft support, SLA or warranty.
 
 ## Microsoft references
 
@@ -273,3 +273,7 @@ No open-source license has been selected; public visibility alone does not grant
 - [Power BI remote MCP server](https://learn.microsoft.com/en-us/power-bi/developer/mcp/remote-mcp-server-get-started)
 
 The hosted Power BI MCP server is an optional, separate route. It is not used by this connector-based implementation. Its `Generate Query` tool has Power BI Copilot entitlement/capacity requirements; these must not be confused with a requirement for a Fabric data agent.
+
+## Licence and support
+
+This repository is licensed under the MIT licence. It is a community project, not a Microsoft product, and is not supported by Microsoft. It is provided as is, without warranty of any kind. Test in a non-production environment and obtain your organisation's approvals before importing any solution into an environment that holds real data.

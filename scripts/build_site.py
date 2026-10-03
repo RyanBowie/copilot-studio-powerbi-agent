@@ -40,6 +40,9 @@ def image_uri(image):
 
 def main():
     build_downloads()
+    (ROOT / "docs" / "og.html").write_text(
+        (ROOT / "site" / "og.html").read_text(encoding="utf-8"),
+        encoding="utf-8", newline="\n")
     html = (ROOT / "site" / "index.template.html").read_text(encoding="utf-8")
     images = {
         "__HERO_PROMPT__": "m365-prompt-intro.png",
