@@ -5,6 +5,8 @@ button and explicit `?scoutTheme=light` / `?scoutTheme=dark` choices remain avai
 
 **An experimental standard Copilot Studio agent for metadata-grounded DAX generation, execution, and explanation. No Fabric data agent is required.**
 
+> **Community project, built with GitHub Copilot, under the [MIT licence](LICENSE).** Not a Microsoft product and not supported by Microsoft; provided as is, without warranty.
+
 **Built in Copilot Studio; used inside Microsoft 365 Copilot.** The tested agent has the
 **Microsoft 365 Copilot channel configured** and is published and made available through that
 channel. The screenshots show users interacting with this Copilot Studio agent in M365 Copilot,
@@ -263,7 +265,7 @@ import observation must not be reused as evidence for it.
 Pages deployment remains manual-only and gated to public repositories. After reviewing future
 changes, run **Actions > Publish reviewed documentation > Run workflow**. The workflow checks that
 the committed site matches its source and validates the publication bundle before deploying `docs`.
-This repository is licensed under the MIT licence. It is a community project, not a Microsoft product, and is provided as is without Microsoft support, SLA or warranty.
+This repository is licensed under the MIT licence. It is a community project, built with GitHub Copilot, not a Microsoft product, and is provided as is without Microsoft support, SLA or warranty.
 
 ## Microsoft references
 
@@ -276,4 +278,4 @@ The hosted Power BI MCP server is an optional, separate route. It is not used by
 
 ## Licence and support
 
-This repository is licensed under the MIT licence. It is a community project, not a Microsoft product, and is not supported by Microsoft. It is provided as is, without warranty of any kind. Test in a non-production environment and obtain your organisation's approvals before importing any solution into an environment that holds real data.
+This repository is licensed under the [MIT licence](LICENSE). It is a community project, built with GitHub Copilot, not a Microsoft product, and is not supported by Microsoft. It is provided as is, without warranty of any kind. Test in a non-production environment and obtain your organisation's approvals before importing any solution into an environment that holds real data.

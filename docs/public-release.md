@@ -78,8 +78,8 @@ changed to publish this website.
 ## Future release checklist
 
 - [ ] Confirm ownership and permission to publish all code, documentation, and images.
-- [ ] Choose and add a license if granting reuse rights. No open-source license has been selected;
-      public visibility alone does not grant additional reuse rights.
+- [x] MIT licence and community notices are in place (community project, built with GitHub Copilot; not a
+      Microsoft product). Microsoft UI, trademarks and screenshots of Microsoft products are not covered by it.
 - [ ] Review every tracked file and Git history, not just the latest working tree.
 - [ ] Remove credentials, token-bearing links, connection bindings, `.mcs` state, tenant exports, live transcripts, and raw model data.
 - [ ] Confirm every environment, model, workspace, report, connection, user, and agent identifier is a placeholder or harmless documented schema name.
